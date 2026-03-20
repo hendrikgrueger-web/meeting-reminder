@@ -24,20 +24,7 @@ struct MeetingReminderApp: App {
 
     var body: some Scene {
         MenuBarExtra {
-            VStack(spacing: 12) {
-                Text("Meeting Reminder")
-                    .font(.headline)
-                Text("Status: \(calendarService.accessGranted ? "Zugriff OK" : "Kein Zugriff")")
-                    .font(.subheadline)
-                Text("Kalender: \(calendarService.calendars.count)")
-                    .font(.caption)
-
-                Divider()
-
-                SettingsView(calendarService: calendarService)
-            }
-            .padding()
-            .frame(width: 340)
+            SettingsView(calendarService: calendarService)
         } label: {
             Image(systemName: menuBarIcon)
         }

@@ -9,17 +9,17 @@ struct SettingsView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            // Status: Nächstes Meeting
             statusSection
 
             Divider().padding(.vertical, 8)
 
-            // Settings
-            settingsSection
+            ScrollView {
+                settingsSection
+            }
+            .frame(maxHeight: 400)
 
             Divider().padding(.vertical, 8)
 
-            // App-Info
             HStack {
                 Text("Meeting Reminder")
                     .font(.caption)
@@ -36,7 +36,6 @@ struct SettingsView: View {
             .padding(.bottom, 8)
         }
         .frame(width: 320)
-        .fixedSize(horizontal: false, vertical: true)
     }
 
     // MARK: - Status
@@ -88,102 +87,111 @@ struct SettingsView: View {
 
     @ViewBuilder
     private var settingsSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: 0) {
             // Kalender-Auswahl
             if !calendarService.calendars.isEmpty {
                 Text("Kalender")
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .padding(.horizontal, 16)
+                    .padding(.bottom, 6)
 
                 ForEach(calendarService.calendars, id: \.calendarIdentifier) { calendar in
                     let isEnabled = calendarService.enabledCalendarIDs.contains(calendar.calendarIdentifier)
-                    Toggle(isOn: Binding(
-                        get: { isEnabled },
-                        set: { enabled in
+                    calendarRow(
+                        title: calendar.title,
+                        color: Color(cgColor: calendar.cgColor),
+                        isEnabled: isEnabled,
+                        onToggle: { enabled in
                             var ids = calendarService.enabledCalendarIDs
                             if enabled { ids.insert(calendar.calendarIdentifier) }
                             else { ids.remove(calendar.calendarIdentifier) }
                             calendarService.enabledCalendarIDs = ids
                         }
-                    )) {
-                        HStack(spacing: 6) {
-                            Circle()
-                                .fill(Color(cgColor: calendar.cgColor))
-                                .frame(width: 8, height: 8)
-                            Text(calendar.title)
-                                .font(.subheadline)
-                        }
-                    }
-                    .toggleStyle(.switch)
-                    .controlSize(.small)
-                    .padding(.horizontal, 16)
+                    )
                 }
             }
 
-            Divider().padding(.vertical, 4)
+            Divider().padding(.vertical, 8)
 
             // Vorlaufzeit
-            Picker("Vorlaufzeit", selection: $calendarService.leadTimeMinutes) {
-                Text("1 Min").tag(1)
-                Text("2 Min").tag(2)
-                Text("3 Min").tag(3)
-                Text("5 Min").tag(5)
+            settingRow("Vorlaufzeit") {
+                Picker("", selection: $calendarService.leadTimeMinutes) {
+                    Text("1 Min").tag(1)
+                    Text("2 Min").tag(2)
+                    Text("3 Min").tag(3)
+                    Text("5 Min").tag(5)
+                }
+                .labelsHidden()
+                .pickerStyle(.menu)
+                .frame(width: 80)
             }
-            .pickerStyle(.menu)
-            .font(.subheadline)
-            .padding(.horizontal, 16)
 
-            // Toggles
-            Toggle("Nur Online-Meetings", isOn: $calendarService.onlyOnlineMeetings)
-                .font(.subheadline)
-                .toggleStyle(.switch)
-                .controlSize(.small)
-                .padding(.horizontal, 16)
-
-            Toggle("Bei Bildschirmfreigabe: nur Notification", isOn: $calendarService.silentWhenScreenSharing)
-                .font(.subheadline)
-                .toggleStyle(.switch)
-                .controlSize(.small)
-                .padding(.horizontal, 16)
-
-            Toggle("Sound", isOn: $calendarService.soundEnabled)
-                .font(.subheadline)
-                .toggleStyle(.switch)
-                .controlSize(.small)
-                .padding(.horizontal, 16)
-
-            Toggle("Bei Anmeldung starten", isOn: $launchAtLogin)
-                .font(.subheadline)
-                .toggleStyle(.switch)
-                .controlSize(.small)
-                .padding(.horizontal, 16)
+            settingToggle("Nur Online-Meetings", isOn: $calendarService.onlyOnlineMeetings)
+            settingToggle("Bildschirmfreigabe: Notification", isOn: $calendarService.silentWhenScreenSharing)
+            settingToggle("Sound", isOn: $calendarService.soundEnabled)
+            settingToggle("Bei Anmeldung starten", isOn: $launchAtLogin)
                 .onChange(of: launchAtLogin) { _, newValue in
                     do {
-                        if newValue {
-                            try SMAppService.mainApp.register()
-                        } else {
-                            try SMAppService.mainApp.unregister()
-                        }
+                        if newValue { try SMAppService.mainApp.register() }
+                        else { try SMAppService.mainApp.unregister() }
                     } catch {
                         launchAtLogin = SMAppService.mainApp.status == .enabled
                     }
                 }
 
             if SMAppService.mainApp.status == .requiresApproval {
-                Label("Login Item in Systemeinstellungen aktivieren", systemImage: "exclamationmark.triangle")
+                Label("In Systemeinstellungen aktivieren", systemImage: "exclamationmark.triangle")
                     .font(.caption)
                     .foregroundStyle(.orange)
                     .padding(.horizontal, 16)
-                Button("Systemeinstellungen öffnen") {
-                    NSWorkspace.shared.open(
-                        URL(string: "x-apple.systempreferences:com.apple.LoginItems-Settings.extension")!
-                    )
-                }
-                .buttonStyle(.borderless)
-                .font(.caption)
-                .padding(.horizontal, 16)
+                    .padding(.top, 4)
             }
         }
+    }
+
+    // MARK: - Reusable Rows
+
+    private func calendarRow(title: String, color: Color, isEnabled: Bool, onToggle: @escaping (Bool) -> Void) -> some View {
+        HStack {
+            Circle()
+                .fill(color)
+                .frame(width: 8, height: 8)
+            Text(title)
+                .font(.subheadline)
+                .lineLimit(1)
+            Spacer()
+            Toggle("", isOn: Binding(get: { isEnabled }, set: onToggle))
+                .labelsHidden()
+                .toggleStyle(.switch)
+                .controlSize(.small)
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 3)
+    }
+
+    private func settingRow(_ label: String, @ViewBuilder control: () -> some View) -> some View {
+        HStack {
+            Text(label)
+                .font(.subheadline)
+            Spacer()
+            control()
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 4)
+    }
+
+    private func settingToggle(_ label: String, isOn: Binding<Bool>) -> some View {
+        HStack {
+            Text(label)
+                .font(.subheadline)
+            Spacer()
+            Toggle("", isOn: isOn)
+                .labelsHidden()
+                .toggleStyle(.switch)
+                .controlSize(.small)
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 4)
     }
 }
