@@ -37,6 +37,8 @@ targets:
 
     entitlements:
       path: Meeting Reminder/Meeting_Reminder.entitlements
+      properties:
+        com.apple.security.personal-information.calendars: true
 
     infoPlist:
       path: Meeting Reminder/Info.plist

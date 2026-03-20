@@ -24,7 +24,20 @@ struct MeetingReminderApp: App {
 
     var body: some Scene {
         MenuBarExtra {
-            SettingsView(calendarService: calendarService)
+            VStack(spacing: 12) {
+                Text("Meeting Reminder")
+                    .font(.headline)
+                Text("Status: \(calendarService.accessGranted ? "Zugriff OK" : "Kein Zugriff")")
+                    .font(.subheadline)
+                Text("Kalender: \(calendarService.calendars.count)")
+                    .font(.caption)
+
+                Divider()
+
+                SettingsView(calendarService: calendarService)
+            }
+            .padding()
+            .frame(width: 340)
         } label: {
             Image(systemName: menuBarIcon)
         }
@@ -53,6 +66,7 @@ final class MeetingAppDelegate: NSObject, NSApplicationDelegate {
     private var cancellable: AnyCancellable?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
+        print("[MeetingReminder] App gestartet")
         let calendarService = CalendarService.shared
         let overlayController = OverlayController.shared
 
@@ -75,9 +89,12 @@ final class MeetingAppDelegate: NSObject, NSApplicationDelegate {
                 calendarService.hasLaunchedBefore = true
             }
 
-            _ = try? await UNUserNotificationCenter.current().requestAuthorization(
-                options: [.alert, .sound]
-            )
+            // Notification-Berechtigung nur anfragen wenn Bundle-ID vorhanden
+            if Bundle.main.bundleIdentifier != nil {
+                _ = try? await UNUserNotificationCenter.current().requestAuthorization(
+                    options: [.alert, .sound]
+                )
+            }
         }
     }
 
@@ -136,6 +153,7 @@ final class MeetingAppDelegate: NSObject, NSApplicationDelegate {
     // MARK: - System Notification (Screen-Sharing Fallback)
 
     private func sendSystemNotification(for event: MeetingEvent, soundEnabled: Bool) {
+        guard Bundle.main.bundleIdentifier != nil else { return }
         let content = UNMutableNotificationContent()
         content.title = event.title
         content.body = event.hasTeamsLink

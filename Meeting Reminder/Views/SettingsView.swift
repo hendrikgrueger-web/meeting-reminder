@@ -36,6 +36,7 @@ struct SettingsView: View {
             .padding(.bottom, 8)
         }
         .frame(width: 320)
+        .fixedSize(horizontal: false, vertical: true)
     }
 
     // MARK: - Status

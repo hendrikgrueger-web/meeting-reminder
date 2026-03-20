@@ -68,14 +68,20 @@ final class CalendarService: ObservableObject {
     // MARK: - Lifecycle
 
     func start() async {
+        print("[CalendarService] Start...")
         // 1. Berechtigung anfragen
         do {
             accessGranted = try await eventStore.requestFullAccessToEvents()
+            print("[CalendarService] Zugriff: \(accessGranted)")
         } catch {
+            print("[CalendarService] Fehler bei Berechtigung: \(error)")
             accessGranted = false
         }
 
-        guard accessGranted else { return }
+        guard accessGranted else {
+            print("[CalendarService] Kein Zugriff, stoppe.")
+            return
+        }
 
         // 2. Kalender laden
         calendars = eventStore.calendars(for: .event)
