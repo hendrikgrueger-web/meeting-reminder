@@ -1,0 +1,52 @@
+name: Meeting Reminder
+projectPath: Meeting Reminder.xcodeproj
+
+settings:
+  MARKETING_VERSION: 1.0.0
+  CURRENT_PROJECT_VERSION: 1
+
+
+targets:
+  Meeting Reminder:
+    type: application
+    platform: macOS
+    deploymentTarget: "15.0"
+    bundleId: de.hendrikgrueger.meeting-reminder
+
+    sources:
+      - path: Meeting Reminder
+        includes:
+          - "**/*.swift"
+
+    resources:
+      - path: Meeting Reminder
+        includes:
+          - "**/*.xcassets"
+
+    entitlements:
+      path: Meeting Reminder/Meeting_Reminder.entitlements
+
+    infoPlist:
+      path: Meeting Reminder/Info.plist
+      properties:
+        LSUIElement: true
+        NSCalendarsUsageDescription: "Meeting Reminder benötigt Zugriff auf deine Kalender, um dich an anstehende Events zu erinnern."
+        NSNotificationCenterUsageDescription: "Meeting Reminder sendet dir Benachrichtigungen für bevorstehende Events."
+
+    frameworks:
+      - EventKit
+      - AppKit
+      - SwiftUI
+      - UserNotifications
+      - ServiceManagement
+
+  Meeting ReminderTests:
+    type: bundle
+    platform: macOS
+    deploymentTarget: "15.0"
+    sources:
+      - path: Meeting ReminderTests
+        includes:
+          - "**/*.swift"
+    dependencies:
+      - target: Meeting Reminder

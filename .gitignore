@@ -1,0 +1,25 @@
+# Xcode
+xcuserdata/
+*.xcodeproj/xcuserdata/
+*.xcworkspace/xcuserdata/
+build/
+DerivedData/
+*.swiftpm/xcode/package.xcworkspace/xcuserdata/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+*.playground
+
+# CocoaPods
+Pods/
+Podfile.lock
+
+# Temporary files
+*.tmp
+*.temp
+
+# Environment
+.env
+.env.local
