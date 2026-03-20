@@ -14,6 +14,7 @@
 		74A04060B1C5735005FD1798 /* TeamsLinkExtractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A24846AE64A366A626DD6AE0 /* TeamsLinkExtractorTests.swift */; };
 		813A5A98097E69CF7292D3AC /* MeetingReminderApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76AF22A3216A7921BE6D9112 /* MeetingReminderApp.swift */; };
 		9C5D948EB3B5FA7EE067841C /* OverlayPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BB8BECDFC482366A222006 /* OverlayPanel.swift */; };
+		B22631FA43C46774AF030149 /* CalendarServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E25D0DDFA6A8550C9ED41AC /* CalendarServiceTests.swift */; };
 		C5277CEE898C06A06613B0A7 /* OverlayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDCF1F38E524116C3A58EA80 /* OverlayController.swift */; };
 		D20D6A3A16086798BFF425E6 /* MeetingReminderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9665CAA217FD324C6ABAA2BB /* MeetingReminderTests.swift */; };
 		F0ED9EC86528175126324A38 /* MeetingEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93147E8A995A8BD44525BF3A /* MeetingEventTests.swift */; };
@@ -33,6 +34,7 @@
 		4C22ED66BAE066E03E8CA64E /* Meeting ReminderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Meeting ReminderTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		76AF22A3216A7921BE6D9112 /* MeetingReminderApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingReminderApp.swift; sourceTree = "<group>"; };
 		79C39DF8ADE69A198C42ABAF /* Meeting Reminder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Meeting Reminder.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8E25D0DDFA6A8550C9ED41AC /* CalendarServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarServiceTests.swift; sourceTree = "<group>"; };
 		93147E8A995A8BD44525BF3A /* MeetingEventTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingEventTests.swift; sourceTree = "<group>"; };
 		9665CAA217FD324C6ABAA2BB /* MeetingReminderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingReminderTests.swift; sourceTree = "<group>"; };
 		97BB8BECDFC482366A222006 /* OverlayPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayPanel.swift; sourceTree = "<group>"; };
@@ -57,6 +59,7 @@
 		3016902851B2D65105C2BB7E /* Meeting ReminderTests */ = {
 			isa = PBXGroup;
 			children = (
+				8E25D0DDFA6A8550C9ED41AC /* CalendarServiceTests.swift */,
 				93147E8A995A8BD44525BF3A /* MeetingEventTests.swift */,
 				9665CAA217FD324C6ABAA2BB /* MeetingReminderTests.swift */,
 				A24846AE64A366A626DD6AE0 /* TeamsLinkExtractorTests.swift */,
@@ -197,6 +200,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B22631FA43C46774AF030149 /* CalendarServiceTests.swift in Sources */,
 				F0ED9EC86528175126324A38 /* MeetingEventTests.swift in Sources */,
 				D20D6A3A16086798BFF425E6 /* MeetingReminderTests.swift in Sources */,
 				74A04060B1C5735005FD1798 /* TeamsLinkExtractorTests.swift in Sources */,
