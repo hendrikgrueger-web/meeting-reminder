@@ -28,7 +28,5 @@
 	<string>Meeting Reminder benötigt Zugriff auf deine Kalender, um dich an anstehende Events zu erinnern.</string>
 	<key>NSNotificationCenterUsageDescription</key>
 	<string>Meeting Reminder sendet dir Benachrichtigungen für bevorstehende Events.</string>
-	<key>NSPrincipalClass</key>
-	<string>NSApplication</string>
 </dict>
 </plist>

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		813A5A98097E69CF7292D3AC /* MeetingReminderApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76AF22A3216A7921BE6D9112 /* MeetingReminderApp.swift */; };
+		D20D6A3A16086798BFF425E6 /* MeetingReminderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9665CAA217FD324C6ABAA2BB /* MeetingReminderTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -24,12 +25,14 @@
 		76AF22A3216A7921BE6D9112 /* MeetingReminderApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingReminderApp.swift; sourceTree = "<group>"; };
 		79C39DF8ADE69A198C42ABAF /* Meeting Reminder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Meeting Reminder.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BC650FE1BE4CA2E2EDECEB2 /* Meeting ReminderTests.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Meeting ReminderTests.bundle"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9665CAA217FD324C6ABAA2BB /* MeetingReminderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingReminderTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
 		3016902851B2D65105C2BB7E /* Meeting ReminderTests */ = {
 			isa = PBXGroup;
 			children = (
+				9665CAA217FD324C6ABAA2BB /* MeetingReminderTests.swift */,
 			);
 			path = "Meeting ReminderTests";
 			sourceTree = "<group>";
@@ -84,6 +87,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5D8FF182CD62CE63EA9B1C4B /* Build configuration list for PBXNativeTarget "Meeting ReminderTests" */;
 			buildPhases = (
+				B94DCA4F37CF9F8F6DC5AE6D /* Sources */,
 			);
 			buildRules = (
 			);
@@ -132,6 +136,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				813A5A98097E69CF7292D3AC /* MeetingReminderApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B94DCA4F37CF9F8F6DC5AE6D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D20D6A3A16086798BFF425E6 /* MeetingReminderTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
