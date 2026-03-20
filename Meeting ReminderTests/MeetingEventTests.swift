@@ -1,9 +1,8 @@
-import Testing
+import XCTest
 import SwiftUI
 @testable import Meeting_Reminder
 
-@Suite
-struct MeetingEventTests {
+final class MeetingEventTests: XCTestCase {
 
     // MARK: - Test Fixtures
 
@@ -33,7 +32,6 @@ struct MeetingEventTests {
 
     // MARK: - Tests: Composite ID Key (eventIdentifier + startDate)
 
-    @Test("ID enthält eventIdentifier und startDate")
     func testIdContainsEventIdentifierAndStartDate() {
         let eventId = "meeting-001"
         let startDate = Date(timeIntervalSince1970: 1234567890)
@@ -43,10 +41,9 @@ struct MeetingEventTests {
         )
 
         let expectedId = "\(eventId)_\(startDate.timeIntervalSince1970)"
-        #expect(event.id == expectedId)
+        XCTAssertEqual(event.id, expectedId)
     }
 
-    @Test("Zwei Events mit gleicher ID aber verschiedener startDate haben verschiedene Keys")
     func testRecurringEventsWithDifferentStartDatesHaveDifferentKeys() {
         let eventId = "recurring-meeting-001"
         let firstDate = Date(timeIntervalSince1970: 1000000)
@@ -61,68 +58,62 @@ struct MeetingEventTests {
             startDate: secondDate
         )
 
-        #expect(event1.id != event2.id)
-        #expect(event1.id == "\(eventId)_\(firstDate.timeIntervalSince1970)")
-        #expect(event2.id == "\(eventId)_\(secondDate.timeIntervalSince1970)")
+        XCTAssertNotEqual(event1.id, event2.id)
+        XCTAssertEqual(event1.id, "\(eventId)_\(firstDate.timeIntervalSince1970)")
+        XCTAssertEqual(event2.id, "\(eventId)_\(secondDate.timeIntervalSince1970)")
     }
 
-    @Test("Zwei Events mit gleicher ID und gleicher startDate haben denselben Key")
     func testEventsWithSameIdAndStartDateHaveSameKey() {
         let eventId = "meeting-001"
         let startDate = Date(timeIntervalSince1970: 1500000)
 
         let event1 = createTestEvent(
             eventIdentifier: eventId,
-            startDate: startDate,
-            title: "Original Title"
+            title: "Original Title",
+            startDate: startDate
         )
         let event2 = createTestEvent(
             eventIdentifier: eventId,
-            startDate: startDate,
-            title: "Different Title"
+            title: "Different Title",
+            startDate: startDate
         )
 
-        #expect(event1.id == event2.id)
+        XCTAssertEqual(event1.id, event2.id)
     }
 
     // MARK: - Tests: Teams URL
 
-    @Test("hasTeamsLink ist true wenn teamsURL gesetzt")
     func testHasTeamsLinkTrue() {
         let teamsURL = URL(string: "https://teams.microsoft.com/l/meetup-join/12345")!
         let event = createTestEvent(teamsURL: teamsURL)
 
-        #expect(event.hasTeamsLink == true)
+        XCTAssertTrue(event.hasTeamsLink)
     }
 
-    @Test("hasTeamsLink ist false wenn teamsURL nil")
     func testHasTeamsLinkFalse() {
         let event = createTestEvent(teamsURL: nil)
 
-        #expect(event.hasTeamsLink == false)
+        XCTAssertFalse(event.hasTeamsLink)
     }
 
     // MARK: - Tests: Property Storage
 
-    @Test("isAllDay wird korrekt gespeichert")
     func testIsAllDayPropertyStorage() {
         let allDayEvent = createTestEvent(isAllDay: true)
         let timedEvent = createTestEvent(isAllDay: false)
 
-        #expect(allDayEvent.isAllDay == true)
-        #expect(timedEvent.isAllDay == false)
+        XCTAssertTrue(allDayEvent.isAllDay)
+        XCTAssertFalse(timedEvent.isAllDay)
     }
 
-    @Test("location kann nil sein")
     func testLocationCanBeNil() {
         let eventWithLocation = createTestEvent(location: "Room 123")
         let eventWithoutLocation = createTestEvent(location: nil)
 
-        #expect(eventWithLocation.location == "Room 123")
-        #expect(eventWithoutLocation.location == nil)
+        XCTAssertEqual(eventWithLocation.location, "Room 123")
+        XCTAssertNil(eventWithoutLocation.location)
     }
 
-    @Test("Alle Properties werden korrekt gespeichert")
     func testAllPropertiesStoredCorrectly() {
         let eventId = "event-12345"
         let title = "Q4 Planning"
@@ -146,19 +137,18 @@ struct MeetingEventTests {
             isAllDay: isAllDay
         )
 
-        #expect(event.eventIdentifier == eventId)
-        #expect(event.title == title)
-        #expect(event.startDate == startDate)
-        #expect(event.endDate == endDate)
-        #expect(event.location == location)
-        #expect(event.calendarTitle == calendarTitle)
-        #expect(event.teamsURL == teamsURL)
-        #expect(event.isAllDay == isAllDay)
+        XCTAssertEqual(event.eventIdentifier, eventId)
+        XCTAssertEqual(event.title, title)
+        XCTAssertEqual(event.startDate, startDate)
+        XCTAssertEqual(event.endDate, endDate)
+        XCTAssertEqual(event.location, location)
+        XCTAssertEqual(event.calendarTitle, calendarTitle)
+        XCTAssertEqual(event.teamsURL, teamsURL)
+        XCTAssertEqual(event.isAllDay, isAllDay)
     }
 
     // MARK: - Tests: ID Stability
 
-    @Test("ID ist stabil (mehrfacher Aufruf gibt denselben Wert)")
     func testIdStability() {
         let event = createTestEvent()
 
@@ -166,39 +156,35 @@ struct MeetingEventTests {
         let secondId = event.id
         let thirdId = event.id
 
-        #expect(firstId == secondId)
-        #expect(secondId == thirdId)
+        XCTAssertEqual(firstId, secondId)
+        XCTAssertEqual(secondId, thirdId)
     }
 
     // MARK: - Tests: Edge Cases
 
-    @Test("Event mit leerem String als eventIdentifier funktioniert trotzdem")
     func testEventWithEmptyEventIdentifier() {
         let event = createTestEvent(eventIdentifier: "")
 
         let expectedId = "_\(event.startDate.timeIntervalSince1970)"
-        #expect(event.id == expectedId)
-        #expect(!event.id.isEmpty)
+        XCTAssertEqual(event.id, expectedId)
+        XCTAssertFalse(event.id.isEmpty)
     }
 
-    @Test("Event mit sehr großem Titel wird gespeichert")
     func testEventWithLargeTitle() {
         let largeTitle = String(repeating: "A", count: 1000)
         let event = createTestEvent(title: largeTitle)
 
-        #expect(event.title == largeTitle)
-        #expect(event.title.count == 1000)
+        XCTAssertEqual(event.title, largeTitle)
+        XCTAssertEqual(event.title.count, 1000)
     }
 
-    @Test("Event mit Sonderzeichen in Location wird gespeichert")
     func testEventWithSpecialCharactersInLocation() {
         let location = "Büro München, Straße 123 (4. OG) - Raum Ü-42"
         let event = createTestEvent(location: location)
 
-        #expect(event.location == location)
+        XCTAssertEqual(event.location, location)
     }
 
-    @Test("Zwei Events sind Identifiable und haben unterschiedliche IDs bei verschiedenen Zeiten")
     func testIdentifiable() {
         let date1 = Date(timeIntervalSince1970: 1000000)
         let date2 = Date(timeIntervalSince1970: 1000001)
@@ -206,41 +192,38 @@ struct MeetingEventTests {
         let event1 = createTestEvent(startDate: date1)
         let event2 = createTestEvent(startDate: date2)
 
-        #expect(event1.id != event2.id)
+        XCTAssertNotEqual(event1.id, event2.id)
     }
 
-    @Test("Event mit verschiedenen Kalenderfarben wird gespeichert")
     func testEventWithDifferentCalendarColors() {
         let redEvent = createTestEvent(calendarColor: .red)
         let blueEvent = createTestEvent(calendarColor: .blue)
         let greenEvent = createTestEvent(calendarColor: .green)
 
-        #expect(redEvent.calendarColor == .red)
-        #expect(blueEvent.calendarColor == .blue)
-        #expect(greenEvent.calendarColor == .green)
+        XCTAssertEqual(redEvent.calendarColor, .red)
+        XCTAssertEqual(blueEvent.calendarColor, .blue)
+        XCTAssertEqual(greenEvent.calendarColor, .green)
     }
 
-    @Test("Event mit verschiedenen Kalendertiteln wird gespeichert")
     func testEventWithDifferentCalendarTitles() {
         let workEvent = createTestEvent(calendarTitle: "Work")
         let personalEvent = createTestEvent(calendarTitle: "Personal")
         let teamEvent = createTestEvent(calendarTitle: "Team A")
 
-        #expect(workEvent.calendarTitle == "Work")
-        #expect(personalEvent.calendarTitle == "Personal")
-        #expect(teamEvent.calendarTitle == "Team A")
+        XCTAssertEqual(workEvent.calendarTitle, "Work")
+        XCTAssertEqual(personalEvent.calendarTitle, "Personal")
+        XCTAssertEqual(teamEvent.calendarTitle, "Team A")
     }
 
-    @Test("Event mit endDate vor startDate wird trotzdem erstellt")
     func testEventWithEndDateBeforeStartDate() {
         let startDate = Date(timeIntervalSince1970: 2000000)
-        let endDate = Date(timeIntervalSince1970: 1000000) // Earlier than startDate
+        let endDate = Date(timeIntervalSince1970: 1000000)
 
         let event = createTestEvent(
             startDate: startDate,
             endDate: endDate
         )
 
-        #expect(event.startDate > event.endDate)
+        XCTAssertGreaterThan(event.startDate, event.endDate)
     }
 }

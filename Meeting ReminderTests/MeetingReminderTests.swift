@@ -1,10 +1,8 @@
-import Testing
+import XCTest
 
-@Suite("Meeting Reminder Tests")
-struct MeetingReminderTests {
+final class MeetingReminderTests: XCTestCase {
 
-    @Test("Projekt kompiliert")
-    func projectCompiles() {
-        #expect(true)
+    func testProjectCompiles() {
+        XCTAssertTrue(true)
     }
 }

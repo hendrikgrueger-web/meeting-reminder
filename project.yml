@@ -5,6 +5,18 @@ settings:
   MARKETING_VERSION: 1.0.0
   CURRENT_PROJECT_VERSION: 1
 
+schemes:
+  Meeting Reminder:
+    build:
+      targets:
+        Meeting Reminder: all
+    test:
+      targets:
+        - Meeting ReminderTests
+      gatherCoverageData: true
+    run:
+      askForUserToEnableDebugger: true
+      consoleLogsInDebugConsole: true
 
 targets:
   Meeting Reminder:
@@ -41,7 +53,7 @@ targets:
       - ServiceManagement
 
   Meeting ReminderTests:
-    type: bundle
+    type: bundle.unit-test
     platform: macOS
     deploymentTarget: "15.0"
     sources:
@@ -50,3 +62,5 @@ targets:
           - "**/*.swift"
     dependencies:
       - target: Meeting Reminder
+    settings:
+      GENERATE_INFOPLIST_FILE: true
