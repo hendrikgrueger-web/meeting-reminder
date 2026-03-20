@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meeting Reminder — Design Spec</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --bg: #0c0c0e;
+    --surface: #161618;
+    --surface-hover: #1e1e22;
+    --border: #2a2a2e;
+    --border-subtle: #1f1f23;
+    --text: #e8e8ec;
+    --text-secondary: #8e8e96;
+    --text-muted: #5a5a62;
+    --accent: #4a9eff;
+    --accent-dim: #4a9eff18;
+    --teams: #6264a7;
+    --teams-dim: #6264a714;
+    --green: #34c759;
+    --green-dim: #34c75914;
+    --orange: #ff9f0a;
+    --orange-dim: #ff9f0a14;
+    --red: #ff453a;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'DM Sans', -apple-system, sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html {
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* --- NAV --- */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 260px;
+    height: 100vh;
+    background: var(--surface);
+    border-right: 1px solid var(--border-subtle);
+    padding: 32px 0;
+    overflow-y: auto;
+    z-index: 100;
+  }
+
+  nav .logo {
+    padding: 0 24px 28px;
+    border-bottom: 1px solid var(--border-subtle);
+    margin-bottom: 16px;
+  }
+
+  nav .logo h2 {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--text);
+  }
+
+  nav .logo span {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 400;
+    display: block;
+    margin-top: 4px;
+    font-family: var(--mono);
+  }
+
+  nav a {
+    display: block;
+    padding: 8px 24px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 400;
+    transition: all 0.15s;
+    border-left: 2px solid transparent;
+  }
+
+  nav a:hover {
+    color: var(--text);
+    background: var(--surface-hover);
+  }
+
+  nav a.active {
+    color: var(--accent);
+    border-left-color: var(--accent);
+    background: var(--accent-dim);
+  }
+
+  nav .section-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    padding: 20px 24px 6px;
+  }
+
+  /* --- MAIN --- */
+  main {
+    margin-left: 260px;
+    max-width: 780px;
+    padding: 60px 56px 120px;
+  }
+
+  /* --- HERO --- */
+  .hero {
+    margin-bottom: 64px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .hero .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-family: var(--mono);
+    font-weight: 500;
+    color: var(--accent);
+    background: var(--accent-dim);
+    border: 1px solid #4a9eff22;
+    padding: 4px 12px;
+    border-radius: 100px;
+    margin-bottom: 20px;
+  }
+
+  .hero h1 {
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    margin-bottom: 16px;
+  }
+
+  .hero p {
+    font-size: 17px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    max-width: 600px;
+  }
+
+  /* --- SECTIONS --- */
+  section {
+    margin-bottom: 56px;
+  }
+
+  h2 {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+    padding-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  h2 .icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+
+  h3 {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    margin-top: 28px;
+    color: var(--text);
+  }
+
+  p {
+    margin-bottom: 14px;
+    color: var(--text-secondary);
+  }
+
+  /* --- FEATURE LIST --- */
+  .features {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 20px 0;
+  }
+
+  .feature {
+    background: var(--surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+    padding: 16px 18px;
+    transition: border-color 0.2s;
+  }
+
+  .feature:hover {
+    border-color: var(--border);
+  }
+
+  .feature .label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .feature .desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  /* --- SCOPE LIST --- */
+  .scope-list {
+    list-style: none;
+    margin: 12px 0;
+  }
+
+  .scope-list li {
+    padding: 8px 0;
+    font-size: 14px;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .scope-list li:last-child { border-bottom: none; }
+
+  .scope-list .check {
+    width: 18px;
+    height: 18px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .scope-list .check.yes {
+    background: var(--green-dim);
+    color: var(--green);
+    border: 1px solid #34c75922;
+  }
+
+  .scope-list .check.no {
+    background: #ff453a10;
+    color: #ff453a60;
+    border: 1px solid #ff453a15;
+  }
+
+  /* --- TABLE --- */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 13px;
+  }
+
+  thead th {
+    text-align: left;
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    padding: 0 12px 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  tbody td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border-subtle);
+    color: var(--text-secondary);
+    vertical-align: top;
+  }
+
+  tbody tr:hover {
+    background: var(--surface);
+  }
+
+  tbody td:first-child {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  /* --- CODE --- */
+  code {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    background: var(--surface);
+    border: 1px solid var(--border-subtle);
+    padding: 2px 7px;
+    border-radius: 5px;
+    color: var(--accent);
+  }
+
+  pre {
+    background: var(--surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin: 16px 0;
+    overflow-x: auto;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+  }
+
+  /* --- FLOW DIAGRAM --- */
+  .flow {
+    background: var(--surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin: 20px 0;
+  }
+
+  .flow-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 0;
+    position: relative;
+  }
+
+  .flow-step + .flow-step {
+    margin-top: 0;
+  }
+
+  .flow-dot-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 20px;
+    flex-shrink: 0;
+  }
+
+  .flow-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+    box-shadow: 0 0 0 2px var(--accent);
+    flex-shrink: 0;
+    margin-top: 5px;
+  }
+
+  .flow-line {
+    width: 2px;
+    height: 28px;
+    background: var(--border);
+    flex-shrink: 0;
+  }
+
+  .flow-content {
+    padding-bottom: 20px;
+  }
+
+  .flow-content .title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+
+  .flow-content .detail {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  /* --- OVERLAY MOCKUP --- */
+  .mockup-container {
+    background: linear-gradient(135deg, #1a1418 0%, #1c1520 50%, #18141c 100%);
+    border: 1px solid var(--border-subtle);
+    border-radius: 14px;
+    padding: 40px;
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+  }
+
+  .mockup {
+    width: 420px;
+    text-align: center;
+    position: relative;
+  }
+
+  .mockup .time-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--text-muted);
+    opacity: 0.7;
+  }
+
+  .mockup .cal-dot {
+    width: 4px;
+    height: 22px;
+    border-radius: 2px;
+    background: var(--accent);
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 8px;
+  }
+
+  .mockup .meeting-title {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .mockup .meeting-time {
+    font-size: 15px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+  }
+
+  .mockup .countdown {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+  }
+
+  .mockup .location {
+    font-size: 15px;
+    color: var(--text-secondary);
+    margin-bottom: 28px;
+    font-weight: 500;
+  }
+
+  .mockup .btn-join {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--teams);
+    color: white;
+    border: none;
+    padding: 12px 48px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: var(--sans);
+    cursor: pointer;
+    margin-bottom: 10px;
+    transition: all 0.15s;
+    width: 240px;
+    justify-content: center;
+  }
+
+  .mockup .btn-join:hover { filter: brightness(1.15); }
+
+  .mockup .btn-dismiss {
+    display: block;
+    margin: 0 auto 24px;
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+    padding: 10px 48px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: var(--sans);
+    cursor: pointer;
+    width: 240px;
+    transition: all 0.15s;
+  }
+
+  .mockup .btn-dismiss:hover {
+    border-color: var(--text-muted);
+    color: var(--text);
+  }
+
+  .mockup .snooze-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+
+  .mockup .snooze-btn {
+    display: inline-block;
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--border-subtle);
+    padding: 6px 20px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-family: var(--sans);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .mockup .snooze-btn:hover {
+    border-color: var(--border);
+    color: var(--text-secondary);
+  }
+
+  /* --- CALLOUT --- */
+  .callout {
+    background: var(--surface);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 14px 18px;
+    margin: 16px 0;
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+
+  .callout.warn {
+    border-left-color: var(--orange);
+  }
+
+  .callout strong {
+    color: var(--text);
+  }
+
+  /* --- TAGS --- */
+  .tag {
+    display: inline-block;
+    font-size: 11px;
+    font-family: var(--mono);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 500;
+  }
+
+  .tag.swift { background: #ff620014; color: #ff6200; border: 1px solid #ff620020; }
+  .tag.eventkit { background: var(--green-dim); color: var(--green); border: 1px solid #34c75920; }
+  .tag.swiftui { background: var(--accent-dim); color: var(--accent); border: 1px solid #4a9eff20; }
+  .tag.teams { background: var(--teams-dim); color: var(--teams); border: 1px solid #6264a720; }
+
+  /* --- SETTINGS MOCKUP --- */
+  .settings-mock {
+    background: var(--surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin: 16px 0;
+    max-width: 340px;
+  }
+
+  .setting-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border-subtle);
+    font-size: 13px;
+  }
+
+  .setting-row:last-child { border-bottom: none; }
+
+  .setting-row .label { color: var(--text); }
+  .setting-row .value {
+    color: var(--text-muted);
+    font-family: var(--mono);
+    font-size: 12px;
+  }
+
+  .toggle {
+    width: 36px;
+    height: 20px;
+    border-radius: 10px;
+    background: var(--border);
+    position: relative;
+    display: inline-block;
+  }
+
+  .toggle.on { background: var(--green); }
+
+  .toggle::after {
+    content: '';
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: white;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    transition: transform 0.15s;
+  }
+
+  .toggle.on::after { transform: translateX(16px); }
+
+  /* --- FILE TREE --- */
+  .file-tree {
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.9;
+  }
+
+  .file-tree .folder { color: var(--accent); }
+  .file-tree .file { color: var(--text-secondary); }
+  .file-tree .comment { color: var(--text-muted); font-style: italic; }
+
+  /* --- METRICS --- */
+  .metrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 20px 0;
+  }
+
+  .metric {
+    background: var(--surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+    padding: 18px;
+    text-align: center;
+  }
+
+  .metric .value {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--text);
+    font-family: var(--mono);
+  }
+
+  .metric .unit {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  /* --- RESPONSIVE --- */
+  @media (max-width: 900px) {
+    nav { display: none; }
+    main { margin-left: 0; padding: 40px 24px; }
+    .features { grid-template-columns: 1fr; }
+    .metrics { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">
+    <h2>Meeting Reminder</h2>
+    <span>macOS · Design Spec</span>
+  </div>
+  <div class="section-label">Überblick</div>
+  <a href="#summary">Zusammenfassung</a>
+  <a href="#scope">Scope</a>
+  <a href="#tech">Technologie</a>
+  <div class="section-label">Architektur</div>
+  <a href="#permissions">Berechtigungen</a>
+  <a href="#scheduling">Scheduling</a>
+  <a href="#teams">Teams-Erkennung</a>
+  <a href="#files">Dateistruktur</a>
+  <div class="section-label">Interface</div>
+  <a href="#overlay">Vollbild-Overlay</a>
+  <a href="#settings">Einstellungen</a>
+  <div class="section-label">Verhalten</div>
+  <a href="#flow">Ablauf</a>
+  <a href="#snooze">Snooze</a>
+  <a href="#concurrent">Gleichzeitige Events</a>
+  <a href="#nfr">Performance</a>
+</nav>
+
+<main>
+
+  <!-- HERO -->
+  <div class="hero" id="summary">
+    <div class="badge">Draft · 2026-03-20</div>
+    <h1>Meeting Reminder</h1>
+    <p>Schlanke macOS-Menüleisten-App. Vollbild-Overlay vor Kalender-Events. Ein-Klick-Beitritt zu MS Teams. Null CPU-Last zwischen Meetings.</p>
+  </div>
+
+  <!-- SCOPE -->
+  <section id="scope">
+    <h2><span class="icon" style="background: var(--green-dim); color: var(--green);">&#10003;</span> Scope</h2>
+
+    <h3>Must-Have</h3>
+    <ul class="scope-list">
+      <li><span class="check yes">&#10003;</span> Vollbild-Overlay-Alert vor Kalender-Events</li>
+      <li><span class="check yes">&#10003;</span> MS Teams Join-Link erkennen und per Klick öffnen</li>
+      <li><span class="check yes">&#10003;</span> Kalender-Auswahl (welche Kalender überwacht werden)</li>
+      <li><span class="check yes">&#10003;</span> Konfigurierbare Vorlaufzeit (Standard: 1 Minute)</li>
+      <li><span class="check yes">&#10003;</span> Snooze-Funktion (1 Minute)</li>
+      <li><span class="check yes">&#10003;</span> Menüleisten-App (kein Dock-Icon)</li>
+      <li><span class="check yes">&#10003;</span> Events ohne Teams-Link: Ort anzeigen, Hinweis "Kein Einwahllink"</li>
+      <li><span class="check yes">&#10003;</span> Option "Nur Online-Meetings"</li>
+      <li><span class="check yes">&#10003;</span> Sound konfigurierbar (Standard: aus)</li>
+    </ul>
+
+    <h3>Nicht im Scope</h3>
+    <ul class="scope-list">
+      <li><span class="check no">&times;</span> Andere Dienste (Zoom, Google Meet, WebEx)</li>
+      <li><span class="check no">&times;</span> iOS / watchOS / iPad</li>
+      <li><span class="check no">&times;</span> Eigene Kalender-Verwaltung</li>
+      <li><span class="check no">&times;</span> Cloud-Sync</li>
+    </ul>
+  </section>
+
+  <!-- TECH -->
+  <section id="tech">
+    <h2><span class="icon" style="background: #ff620014; color: #ff6200;">&#9881;</span> Technologie</h2>
+
+    <div class="features">
+      <div class="feature">
+        <div class="label">Sprache &amp; UI</div>
+        <div class="desc"><span class="tag swift">Swift 6</span> <span class="tag swiftui">SwiftUI</span></div>
+      </div>
+      <div class="feature">
+        <div class="label">Kalender</div>
+        <div class="desc"><span class="tag eventkit">EventKit</span> EKEventStore</div>
+      </div>
+      <div class="feature">
+        <div class="label">Teams</div>
+        <div class="desc"><span class="tag teams">NSWorkspace.open()</span></div>
+      </div>
+      <div class="feature">
+        <div class="label">Persistenz</div>
+        <div class="desc">UserDefaults — kein Datenmodell</div>
+      </div>
+      <div class="feature">
+        <div class="label">Sound</div>
+        <div class="desc">NSSound — Systemtöne</div>
+      </div>
+      <div class="feature">
+        <div class="label">Autostart</div>
+        <div class="desc">SMAppService — Login Item</div>
+      </div>
+      <div class="feature">
+        <div class="label">Minimum</div>
+        <div class="desc">macOS 26+ (Tahoe)</div>
+      </div>
+      <div class="feature">
+        <div class="label">Scheduling</div>
+        <div class="desc">1 gezielter Timer + Notification</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PERMISSIONS -->
+  <section id="permissions">
+    <h2><span class="icon" style="background: #ff453a14; color: var(--red);">&#128274;</span> Berechtigungen</h2>
+
+    <table>
+      <thead><tr><th>Berechtigung</th><th>Entitlement</th><th>Zweck</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Kalender lesen</td>
+          <td><code>com.apple.security.personal-information.calendars</code></td>
+          <td>Events + Links lesen</td>
+        </tr>
+        <tr>
+          <td>App Sandbox</td>
+          <td><code>com.apple.security.app-sandbox</code></td>
+          <td>Sandboxed App</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      <strong>Kein Netzwerkzugriff</strong> nötig. <code>NSWorkspace.open()</code> funktioniert aus der Sandbox. Kein Accessibility-Zugriff. Keine weiteren Entitlements.
+    </div>
+  </section>
+
+  <!-- SCHEDULING -->
+  <section id="scheduling">
+    <h2><span class="icon" style="background: var(--orange-dim); color: var(--orange);">&#9201;</span> Scheduling</h2>
+
+    <p>Kein Polling. Die App setzt genau <strong>einen Timer</strong> auf den nächsten Alert-Zeitpunkt und schläft dazwischen komplett.</p>
+
+    <div class="flow">
+      <div class="flow-step">
+        <div class="flow-dot-col"><div class="flow-dot"></div><div class="flow-line"></div></div>
+        <div class="flow-content">
+          <div class="title">App-Start</div>
+          <div class="detail">Kalender-Berechtigung anfragen, Events laden</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-dot-col"><div class="flow-dot"></div><div class="flow-line"></div></div>
+        <div class="flow-content">
+          <div class="title">Nächstes Event berechnen</div>
+          <div class="detail">Relevante Events filtern, frühestes finden</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-dot-col"><div class="flow-dot"></div><div class="flow-line"></div></div>
+        <div class="flow-content">
+          <div class="title">Timer setzen</div>
+          <div class="detail">EventStart − Vorlaufzeit → App schläft</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-dot-col"><div class="flow-dot"></div><div class="flow-line"></div></div>
+        <div class="flow-content">
+          <div class="title">Timer feuert</div>
+          <div class="detail">Vollbild-Overlay anzeigen</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-dot-col"><div class="flow-dot"></div></div>
+        <div class="flow-content">
+          <div class="title">Nächsten Timer berechnen</div>
+          <div class="detail">Cycle wiederholt sich</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Kalender-Änderungen</h3>
+    <p><code>EKEventStoreChangedNotification</code> abonnieren. Feuert bei neuen, geänderten oder gelöschten Events. Bei Notification: Events neu laden, Timer neu berechnen.</p>
+
+    <div class="callout">
+      <strong>Spontane Meetings?</strong> Werden sofort erkannt. Exchange/iCloud synct → EventKit feuert Notification → Timer wird neu berechnet.
+    </div>
+  </section>
+
+  <!-- TEAMS -->
+  <section id="teams">
+    <h2><span class="icon" style="background: var(--teams-dim); color: var(--teams);">&#128279;</span> Teams-Erkennung</h2>
+
+    <p>Regex auf drei Event-Felder. Priorität: <code>url</code> → <code>location</code> → <code>notes</code>.</p>
+
+    <pre><code>https://teams\.microsoft\.com/l/meetup-join/[^\s"&lt;&gt;]+</code></pre>
+
+    <p>Erster Treffer wird verwendet. Events ohne Treffer werden als "Kein Einwahllink" markiert.</p>
+  </section>
+
+  <!-- FILES -->
+  <section id="files">
+    <h2><span class="icon" style="background: var(--accent-dim); color: var(--accent);">&#128193;</span> Dateistruktur</h2>
+
+    <div class="file-tree">
+      <span class="folder">Meeting Reminder/</span><br>
+      &nbsp;&nbsp;<span class="file">MeetingReminderApp.swift</span> <span class="comment"># @main, MenuBarExtra</span><br>
+      &nbsp;&nbsp;<span class="folder">Services/</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">CalendarService.swift</span> <span class="comment"># EventKit, Timer, Link-Erkennung</span><br>
+      &nbsp;&nbsp;<span class="folder">Views/</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">AlertOverlayView.swift</span> <span class="comment"># Vollbild-Overlay</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="file">SettingsView.swift</span> <span class="comment"># Menüleisten-Popover</span><br>
+      &nbsp;&nbsp;<span class="file">Info.plist</span> <span class="comment"># LSUIElement, Kalender-Usage</span>
+    </div>
+
+    <div class="callout">
+      <strong>Info.plist Pflicht:</strong> <code>LSUIElement = true</code> (kein Dock-Icon) + <code>NSCalendarsUsageDescription</code>
+    </div>
+  </section>
+
+  <!-- OVERLAY -->
+  <section id="overlay">
+    <h2><span class="icon" style="background: var(--teams-dim); color: var(--teams);">&#128421;</span> Vollbild-Overlay</h2>
+
+    <p><code>NSPanel</code> über allen Fenstern und Spaces. Dimmed/Blurred Hintergrund. Blockiert NICHT Tastatur/Maus.</p>
+
+    <div class="mockup-container">
+      <div class="mockup">
+        <div class="time-badge">14:59:03</div>
+        <div style="margin-bottom: 6px;">
+          <span class="cal-dot"></span><span class="meeting-title">Vorstandssitzung</span>
+        </div>
+        <div class="meeting-time">15:00 – 16:00</div>
+        <div class="countdown">Das Ereignis beginnt in 50 Sekunden</div>
+        <div class="location">Conference Room A</div>
+        <button class="btn-join">&#9654; Beitreten</button><br>
+        <button class="btn-dismiss">Schließen</button>
+        <div class="snooze-label">Später erinnern</div>
+        <button class="snooze-btn">1 Minute</button>
+      </div>
+    </div>
+
+    <h3>Verhalten</h3>
+    <ul class="scope-list">
+      <li><span class="check yes">&#10003;</span> Erscheint über allen Fenstern und Spaces</li>
+      <li><span class="check yes">&#10003;</span> Kalenderfarbe als Akzent am Titel</li>
+      <li><span class="check yes">&#10003;</span> Countdown aktualisiert sich jede Sekunde</li>
+      <li><span class="check yes">&#10003;</span> "Meeting läuft seit X Min" wenn bereits begonnen</li>
+      <li><span class="check yes">&#10003;</span> "Kein Einwahllink" wenn kein Teams-Link</li>
+    </ul>
+  </section>
+
+  <!-- SETTINGS -->
+  <section id="settings">
+    <h2><span class="icon" style="background: var(--surface); color: var(--text-muted);">&#9881;</span> Einstellungen</h2>
+
+    <p>Popover beim Klick auf das Menüleisten-Icon. SF Symbol <code>calendar.badge.clock</code>.</p>
+
+    <div class="settings-mock">
+      <div class="setting-row">
+        <span class="label">Arbeit (Exchange)</span>
+        <span class="toggle on"></span>
+      </div>
+      <div class="setting-row">
+        <span class="label">Familie (iCloud)</span>
+        <span class="toggle"></span>
+      </div>
+      <div class="setting-row">
+        <span class="label">Vorlaufzeit</span>
+        <span class="value">1 Min</span>
+      </div>
+      <div class="setting-row">
+        <span class="label">Nur Online-Meetings</span>
+        <span class="toggle"></span>
+      </div>
+      <div class="setting-row">
+        <span class="label">Sound</span>
+        <span class="toggle"></span>
+      </div>
+      <div class="setting-row">
+        <span class="label">Bei Anmeldung starten</span>
+        <span class="toggle"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- FLOW -->
+  <section id="flow">
+    <h2><span class="icon" style="background: var(--accent-dim); color: var(--accent);">&#8634;</span> Ablauf</h2>
+
+    <h3>App-Start</h3>
+    <div class="flow">
+      <div class="flow-step">
+        <div class="flow-dot-col"><div class="flow-dot"></div><div class="flow-line"></div></div>
+        <div class="flow-content">
+          <div class="title">Berechtigung anfragen</div>
+          <div class="detail"><code>EKEventStore.requestFullAccessToEvents()</code></div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-dot-col"><div class="flow-dot"></div><div class="flow-line"></div></div>
+        <div class="flow-content">
+          <div class="title">Kalender laden</div>
+          <div class="detail">Gespeicherte Auswahl aus UserDefaults anwenden</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-dot-col"><div class="flow-dot"></div><div class="flow-line"></div></div>
+        <div class="flow-content">
+          <div class="title">Notification abonnieren</div>
+          <div class="detail"><code>EKEventStoreChangedNotification</code></div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-dot-col"><div class="flow-dot"></div></div>
+        <div class="flow-content">
+          <div class="title">Timer setzen</div>
+          <div class="detail">Nächstes relevantes Event berechnen</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Event ist "relevant" wenn</h3>
+    <ul class="scope-list">
+      <li><span class="check yes">&#10003;</span> In einem aktivierten Kalender</li>
+      <li><span class="check yes">&#10003;</span> In der Zukunft oder max 5 Min nach Start</li>
+      <li><span class="check yes">&#10003;</span> Bei "Nur Online": hat Teams-Link</li>
+      <li><span class="check yes">&#10003;</span> Nicht bereits dismissed</li>
+    </ul>
+
+    <div class="callout">
+      <strong>Dismissed-Set:</strong> In-Memory <code>Set&lt;String&gt;</code>. Wird NICHT persistiert. Nach App-Neustart werden laufende Events erneut angezeigt — damit man nach einem Reboot kein Meeting verpasst.
+    </div>
+  </section>
+
+  <!-- SNOOZE -->
+  <section id="snooze">
+    <h2><span class="icon" style="background: var(--orange-dim); color: var(--orange);">&#128276;</span> Snooze</h2>
+
+    <ul class="scope-list">
+      <li><span class="check yes">&#10003;</span> "Später erinnern" → neuer Timer in 1 Minute</li>
+      <li><span class="check yes">&#10003;</span> Verfügbar solange Event noch relevant (max 5 Min nach Start)</li>
+      <li><span class="check yes">&#10003;</span> Event > 5 Min: kein erneuter Alert, auto-dismissed</li>
+      <li><span class="check yes">&#10003;</span> Max Snooze-Kette: implizit durch 5-Min-Fenster begrenzt</li>
+    </ul>
+  </section>
+
+  <!-- CONCURRENT -->
+  <section id="concurrent">
+    <h2><span class="icon" style="background: var(--teams-dim); color: var(--teams);">&#8644;</span> Gleichzeitige Events</h2>
+
+    <div class="flow">
+      <div class="flow-step">
+        <div class="flow-dot-col"><div class="flow-dot"></div><div class="flow-line"></div></div>
+        <div class="flow-content">
+          <div class="title">Alle Events für Zeitpunkt sammeln</div>
+          <div class="detail">Mehrere Meetings gleichzeitig? Werden nacheinander gezeigt.</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-dot-col"><div class="flow-dot"></div><div class="flow-line"></div></div>
+        <div class="flow-content">
+          <div class="title">Erstes Overlay anzeigen</div>
+          <div class="detail">Events mit Teams-Link haben Priorität</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-dot-col"><div class="flow-dot"></div></div>
+        <div class="flow-content">
+          <div class="title">Nach Dismiss → nächstes Event</div>
+          <div class="detail">Bis alle gleichzeitigen Events behandelt sind</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NFR -->
+  <section id="nfr">
+    <h2><span class="icon" style="background: var(--green-dim); color: var(--green);">&#9889;</span> Performance</h2>
+
+    <div class="metrics">
+      <div class="metric">
+        <div class="value">&lt;20</div>
+        <div class="unit">MB RAM (Ruhezustand)</div>
+      </div>
+      <div class="metric">
+        <div class="value">0%</div>
+        <div class="unit">CPU zwischen Events</div>
+      </div>
+      <div class="metric">
+        <div class="value">&lt;1s</div>
+        <div class="unit">Startzeit</div>
+      </div>
+    </div>
+
+    <div class="callout warn">
+      <strong>Kalender-Zugriff verweigert?</strong> Menüleisten-Popover zeigt "Kalender-Zugriff benötigt" mit Button zu den Systemeinstellungen. Kein Crash, keine stille Fehlfunktion.
+    </div>
+  </section>
+
+</main>
+
+<script>
+  // Active nav highlight on scroll
+  const sections = document.querySelectorAll('section, .hero');
+  const navLinks = document.querySelectorAll('nav a');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(link => link.classList.remove('active'));
+        const id = entry.target.id;
+        const activeLink = document.querySelector(`nav a[href="#${id}"]`);
+        if (activeLink) activeLink.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  sections.forEach(s => { if (s.id) observer.observe(s); });
+</script>
+
+</body>
+</html>
