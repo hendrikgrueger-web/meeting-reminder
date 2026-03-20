@@ -6,6 +6,8 @@ import Combine
 @MainActor
 final class CalendarService: ObservableObject {
 
+    static let shared = CalendarService()
+
     // MARK: - Published State
 
     @Published var accessGranted = false

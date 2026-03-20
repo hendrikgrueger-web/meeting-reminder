@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct MeetingEvent: Identifiable, Sendable {
+struct MeetingEvent: Identifiable, Sendable, Equatable {
     let eventIdentifier: String
     let title: String
     let startDate: Date

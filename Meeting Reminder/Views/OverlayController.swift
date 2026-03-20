@@ -4,6 +4,8 @@ import SwiftUI
 @MainActor
 final class OverlayController: ObservableObject {
 
+    static let shared = OverlayController()
+
     private(set) var panel: OverlayPanel?
     @Published var isVisible = false
 
