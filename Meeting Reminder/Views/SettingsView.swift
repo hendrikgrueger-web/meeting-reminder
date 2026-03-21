@@ -1,6 +1,7 @@
 // Meeting Reminder/Views/SettingsView.swift
 import SwiftUI
 import ServiceManagement
+import EventKit
 
 struct SettingsView: View {
     @ObservedObject var calendarService: CalendarService
@@ -14,16 +15,21 @@ struct SettingsView: View {
             Divider().padding(.vertical, 8)
 
             ScrollView {
-                settingsSection
+                VStack(alignment: .leading, spacing: 0) {
+                    calendarSection
+                    providerSection
+                    generalSection
+                }
             }
-            .frame(maxHeight: 400)
+            .frame(maxHeight: 420)
+
+            Divider().padding(.vertical, 8)
+
+            aboutSection
 
             Divider().padding(.vertical, 8)
 
             HStack {
-                Text("Meeting Reminder")
-                    .font(.caption)
-                    .foregroundStyle(.tertiary)
                 Spacer()
                 Button("Beenden") {
                     NSApplication.shared.terminate(nil)
@@ -83,20 +89,28 @@ struct SettingsView: View {
         .padding(.vertical, 8)
     }
 
-    // MARK: - Settings
+    // MARK: - Kalender-Sektion (nach Account gruppiert)
 
     @ViewBuilder
-    private var settingsSection: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            // Kalender-Auswahl
-            if !calendarService.calendars.isEmpty {
-                Text("Kalender")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .padding(.horizontal, 16)
-                    .padding(.bottom, 6)
+    private var calendarSection: some View {
+        if !calendarService.calendars.isEmpty {
+            sectionHeader(icon: "calendar.badge.clock", title: "Kalender")
 
-                ForEach(calendarService.calendars, id: \.calendarIdentifier) { calendar in
+            // Kalender nach Account (Source) gruppieren
+            let grouped = groupedCalendars()
+            ForEach(grouped, id: \.accountName) { group in
+                // Account-Sub-Header (nur wenn mehrere Accounts vorhanden)
+                if grouped.count > 1 {
+                    Text(group.accountName)
+                        .font(.caption2)
+                        .foregroundStyle(.tertiary)
+                        .textCase(.uppercase)
+                        .padding(.horizontal, 16)
+                        .padding(.top, 6)
+                        .padding(.bottom, 2)
+                }
+
+                ForEach(group.calendars, id: \.calendarIdentifier) { calendar in
                     let isEnabled = calendarService.enabledCalendarIDs.contains(calendar.calendarIdentifier)
                     calendarRow(
                         title: calendar.title,
@@ -113,60 +127,170 @@ struct SettingsView: View {
             }
 
             Divider().padding(.vertical, 8)
+        }
+    }
 
-            // Vorlaufzeit
-            settingRow(
-                "Vorlaufzeit",
-                help: "Wie viele Minuten vor dem Meeting soll die Erinnerung erscheinen?"
-            ) {
-                Picker("", selection: $calendarService.leadTimeMinutes) {
-                    Text("1 Min").tag(1)
-                    Text("2 Min").tag(2)
-                    Text("3 Min").tag(3)
-                    Text("5 Min").tag(5)
-                }
+    // MARK: - Meeting-Provider-Sektion
+
+    @ViewBuilder
+    private var providerSection: some View {
+        sectionHeader(icon: "video.fill", title: "Meeting-Provider")
+
+        ForEach(MeetingProvider.allCases, id: \.rawValue) { provider in
+            let isEnabled = calendarService.enabledProviders.contains(provider.rawValue)
+            HStack {
+                Image(systemName: provider.iconName)
+                    .foregroundStyle(.secondary)
+                    .frame(width: 16)
+                Text(provider.rawValue)
+                    .font(.subheadline)
+                Spacer()
+                Toggle("", isOn: Binding(
+                    get: { isEnabled },
+                    set: { enabled in
+                        var providers = calendarService.enabledProviders
+                        if enabled { providers.insert(provider.rawValue) }
+                        else { providers.remove(provider.rawValue) }
+                        calendarService.enabledProviders = providers
+                    }
+                ))
                 .labelsHidden()
-                .pickerStyle(.menu)
-                .frame(width: 80)
+                .toggleStyle(.switch)
+                .controlSize(.small)
             }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 3)
+            .help("Meetings von \(provider.rawValue) einbeziehen")
+        }
 
-            settingToggle(
-                "Nur Online-Meetings",
-                help: "Nur an Meetings mit Einwahllink erinnern (Teams, Zoom, Google Meet, WebEx, etc.). Termine ohne Link werden ignoriert.",
-                isOn: $calendarService.onlyOnlineMeetings
-            )
-            settingToggle(
-                "Bildschirmfreigabe: Notification",
-                help: "Bei aktiver Bildschirmfreigabe statt Vollbild-Overlay eine dezente Benachrichtigung anzeigen.",
-                isOn: $calendarService.silentWhenScreenSharing
-            )
-            settingToggle(
-                "Sound",
-                help: "Einen kurzen Signalton abspielen, wenn die Erinnerung erscheint.",
-                isOn: $calendarService.soundEnabled
-            )
-            settingToggle(
-                "Bei Anmeldung starten",
-                help: "Meeting Reminder automatisch starten, wenn du dich am Mac anmeldest.",
-                isOn: $launchAtLogin
-            )
-            .onChange(of: launchAtLogin) { _, newValue in
-                do {
-                    if newValue { try SMAppService.mainApp.register() }
-                    else { try SMAppService.mainApp.unregister() }
-                } catch {
-                    launchAtLogin = SMAppService.mainApp.status == .enabled
-                }
-            }
+        Divider().padding(.vertical, 8)
+    }
 
-            if SMAppService.mainApp.status == .requiresApproval {
-                Label("In Systemeinstellungen aktivieren", systemImage: "exclamationmark.triangle")
-                    .font(.caption)
-                    .foregroundStyle(.orange)
-                    .padding(.horizontal, 16)
-                    .padding(.top, 4)
+    // MARK: - Allgemeine Einstellungen
+
+    @ViewBuilder
+    private var generalSection: some View {
+        sectionHeader(icon: "gearshape.fill", title: "Einstellungen")
+
+        // Vorlaufzeit als Stepper
+        settingRow(
+            "Vorlaufzeit",
+            help: "Wie viele Minuten vor dem Meeting soll die Erinnerung erscheinen?"
+        ) {
+            HStack(spacing: 4) {
+                Text("\(calendarService.leadTimeMinutes) Min")
+                    .font(.subheadline)
+                    .monospacedDigit()
+                    .foregroundStyle(.secondary)
+                    .frame(minWidth: 40, alignment: .trailing)
+                Stepper(
+                    "",
+                    value: $calendarService.leadTimeMinutes,
+                    in: 1...10
+                )
+                .labelsHidden()
+                .controlSize(.small)
             }
         }
+
+        settingToggle(
+            "Nur Online-Meetings",
+            help: "Nur an Meetings mit Einwahllink erinnern (Teams, Zoom, Google Meet, WebEx, etc.). Termine ohne Link werden ignoriert.",
+            isOn: $calendarService.onlyOnlineMeetings
+        )
+        settingToggle(
+            "Bildschirmfreigabe: Notification",
+            help: "Bei aktiver Bildschirmfreigabe statt Vollbild-Overlay eine dezente Benachrichtigung anzeigen.",
+            isOn: $calendarService.silentWhenScreenSharing
+        )
+        settingToggle(
+            "Sound",
+            help: "Einen kurzen Signalton abspielen, wenn die Erinnerung erscheint.",
+            isOn: $calendarService.soundEnabled
+        )
+        settingToggle(
+            "Bei Anmeldung starten",
+            help: "Meeting Reminder automatisch starten, wenn du dich am Mac anmeldest.",
+            isOn: $launchAtLogin
+        )
+        .onChange(of: launchAtLogin) { _, newValue in
+            do {
+                if newValue { try SMAppService.mainApp.register() }
+                else { try SMAppService.mainApp.unregister() }
+            } catch {
+                launchAtLogin = SMAppService.mainApp.status == .enabled
+            }
+        }
+
+        if SMAppService.mainApp.status == .requiresApproval {
+            Label("In Systemeinstellungen aktivieren", systemImage: "exclamationmark.triangle")
+                .font(.caption)
+                .foregroundStyle(.orange)
+                .padding(.horizontal, 16)
+                .padding(.top, 4)
+        }
+    }
+
+    // MARK: - Über-Sektion
+
+    @ViewBuilder
+    private var aboutSection: some View {
+        let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "–"
+        let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "–"
+
+        VStack(alignment: .leading, spacing: 2) {
+            HStack {
+                Text("Meeting Reminder")
+                    .font(.caption)
+                    .fontWeight(.medium)
+                    .foregroundStyle(.secondary)
+                Spacer()
+                Text("Version \(version) (\(build))")
+                    .font(.caption)
+                    .foregroundStyle(.tertiary)
+            }
+            Text("© 2026 Grüpi GmbH")
+                .font(.caption2)
+                .foregroundStyle(.quaternary)
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 4)
+    }
+
+    // MARK: - Helper: Sektions-Header
+
+    private func sectionHeader(icon: String, title: String) -> some View {
+        Label(title, systemImage: icon)
+            .font(.caption)
+            .fontWeight(.semibold)
+            .foregroundStyle(.secondary)
+            .padding(.horizontal, 16)
+            .padding(.top, 4)
+            .padding(.bottom, 6)
+    }
+
+    // MARK: - Helper: Kalender nach Account gruppieren
+
+    private struct CalendarGroup {
+        let accountName: String
+        let calendars: [EKCalendar]
+    }
+
+    private func groupedCalendars() -> [CalendarGroup] {
+        // Kalender nach Source-Titel gruppieren
+        var dict: [String: [EKCalendar]] = [:]
+        for cal in calendarService.calendars {
+            let account = cal.source?.title ?? "Lokal"
+            dict[account, default: []].append(cal)
+        }
+        // Alphabetisch nach Account-Name sortieren, lokale Kalender zuletzt
+        return dict
+            .sorted { a, b in
+                if a.key == "Lokal" { return false }
+                if b.key == "Lokal" { return true }
+                return a.key < b.key
+            }
+            .map { CalendarGroup(accountName: $0.key, calendars: $0.value.sorted { $0.title < $1.title }) }
     }
 
     // MARK: - Reusable Rows

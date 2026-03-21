@@ -15,6 +15,9 @@ final class CalendarService: ObservableObject {
     @Published var nextEvent: MeetingEvent?
     @Published var pendingEvents: [MeetingEvent] = []
 
+    /// Anzahl der relevanten Events in den nächsten 60 Minuten (für Menüleisten-Zähler)
+    @Published var upcomingEventsCount: Int = 0
+
     // MARK: - Settings (UserDefaults-backed, mit onChange-Reaktivität)
 
     @AppStorage("enabledCalendarIDs") private var enabledCalendarIDsData: Data = Data()
@@ -36,6 +39,23 @@ final class CalendarService: ObservableObject {
     @Published var onlyOnlineMeetings: Bool = UserDefaults.standard.bool(forKey: "onlyOnlineMeetings") {
         didSet {
             UserDefaults.standard.set(onlyOnlineMeetings, forKey: "onlyOnlineMeetings")
+            reloadAndReschedule()
+        }
+    }
+
+    /// Aktivierte Meeting-Provider als Set der rawValues (z.B. "Microsoft Teams", "Zoom").
+    /// Standard: alle Provider aktiviert.
+    @Published var enabledProviders: Set<String> = {
+        guard let data = UserDefaults.standard.data(forKey: "enabledProviders"),
+              let decoded = try? JSONDecoder().decode(Set<String>.self, from: data) else {
+            // Standard: alle Provider aktiviert
+            return Set(MeetingProvider.allCases.map(\.rawValue))
+        }
+        return decoded
+    }() {
+        didSet {
+            let data = (try? JSONEncoder().encode(enabledProviders)) ?? Data()
+            UserDefaults.standard.set(data, forKey: "enabledProviders")
             reloadAndReschedule()
         }
     }
@@ -165,6 +185,10 @@ final class CalendarService: ObservableObject {
         // Nächstes Event für Status-Anzeige
         nextEvent = events.first
 
+        // Anzahl der Events in den nächsten 60 Minuten (für Menüleisten-Zähler)
+        let oneHourFromNow = now.addingTimeInterval(60 * 60)
+        upcomingEventsCount = events.filter { $0.startDate > now && $0.startDate <= oneHourFromNow }.count
+
         // Prüfen ob ein Meeting JETZT läuft (nach Wake)
         let runningEvents = events.filter { $0.startDate <= now && !dismissedEvents.contains($0.id) }
         if !runningEvents.isEmpty {
@@ -278,6 +302,13 @@ final class CalendarService: ObservableObject {
     private func isRelevant(_ event: MeetingEvent, now: Date) -> Bool {
         // Snoozed Events sind temporär ausgeblendet
         guard !snoozedEvents.contains(event.id) else { return false }
+
+        // Provider-Filter: wenn ein Meeting-Link vorhanden, muss der Provider aktiviert sein
+        if let provider = event.meetingProvider,
+           !enabledProviders.contains(provider.rawValue) {
+            return false
+        }
+
         return CalendarService.isEventRelevant(
             event,
             now: now,

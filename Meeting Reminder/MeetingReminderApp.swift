@@ -24,21 +24,67 @@ struct MeetingReminderApp: App {
         MenuBarExtra {
             SettingsView(calendarService: calendarService)
         } label: {
-            Image(systemName: menuBarIcon)
+            menuBarLabel
+                .help(menuBarTooltip)
         }
         .menuBarExtraStyle(.window)
     }
 
+    // MARK: - Menu Bar Label
+
+    /// HStack mit Icon und optionalem Zähler für anstehende Meetings
+    @ViewBuilder
+    private var menuBarLabel: some View {
+        HStack(spacing: 3) {
+            Image(systemName: menuBarIcon)
+
+            // Zähler: nur anzeigen wenn > 0 Meetings in den nächsten 60 Min
+            if calendarService.upcomingEventsCount > 0 {
+                Text("\(calendarService.upcomingEventsCount)")
+                    .font(.system(size: 11, weight: .semibold, design: .rounded))
+            }
+        }
+    }
+
     // MARK: - Menu Bar Icon
 
+    /// Dynamisches Icon je nach Zeit bis zum nächsten Meeting und Zugriffsstand
     private var menuBarIcon: String {
-        if !calendarService.accessGranted {
+        guard calendarService.accessGranted else {
             return "bell.slash"
-        } else if let next = calendarService.nextEvent,
-                  next.startDate.timeIntervalSinceNow < 15 * 60 {
+        }
+        guard let next = calendarService.nextEvent else {
+            return "bell"
+        }
+        let minUntilStart = next.startDate.timeIntervalSinceNow / 60
+        if minUntilStart < 5 {
+            // Meeting beginnt gleich (< 5 Min): gefülltes Badge — höchste Dringlichkeit
+            return "bell.badge.fill"
+        } else if minUntilStart < 15 {
+            // Meeting kommt bald (< 15 Min): normales Badge
             return "bell.badge"
         } else {
             return "bell"
+        }
+    }
+
+    // MARK: - Tooltip
+
+    /// Tooltip-Text beim Hover auf das Menüleisten-Icon
+    private var menuBarTooltip: String {
+        guard calendarService.accessGranted else {
+            return "Kein Kalenderzugriff – Einstellungen öffnen"
+        }
+        guard let next = calendarService.nextEvent else {
+            return "Keine anstehenden Meetings"
+        }
+        let minutes = Int(next.startDate.timeIntervalSinceNow / 60)
+        if minutes <= 0 {
+            return "Meeting läuft: \(next.title)"
+        } else if minutes == 1 {
+            return "Nächstes Meeting: \(next.title) in 1 Min"
+        } else {
+            return "Nächstes Meeting: \(next.title) in \(minutes) Min"
         }
     }
 }
