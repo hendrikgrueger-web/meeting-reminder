@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meeting Reminder — Nie wieder ein Meeting verpassen</title>
+<meta name="description" content="Schlanke macOS-App. Vollbild-Erinnerung. Ein Klick in Teams. Null CPU im Ruhezustand.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #050507;
+    --surface: #0d0d11;
+    --card: #111116;
+    --border: #1a1a22;
+    --text: #f0f0f4;
+    --text-dim: #7a7a88;
+    --text-muted: #44444e;
+    --accent: #c8a04a;
+    --accent-glow: #c8a04a30;
+    --accent-bright: #e8c45a;
+    --indigo: #6c63ff;
+    --indigo-glow: #6c63ff20;
+    --green: #34d399;
+    --font: 'Outfit', -apple-system, sans-serif;
+    --mono: 'Fira Code', monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: var(--bg);
+  }
+
+  /* --- GRAIN OVERLAY --- */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* --- NAV --- */
+  nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to bottom, var(--bg), transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  nav .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: -0.01em;
+  }
+
+  nav .brand .icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 7px;
+    background: linear-gradient(135deg, var(--accent), #a07830);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+  }
+
+  nav a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 400;
+    transition: color 0.2s;
+    padding: 6px 14px;
+    border-radius: 8px;
+  }
+
+  nav a:hover { color: var(--text); }
+
+  nav .cta {
+    background: var(--accent);
+    color: var(--bg);
+    font-weight: 600;
+    font-size: 13px;
+    padding: 8px 18px;
+    border-radius: 8px;
+    transition: all 0.2s;
+  }
+
+  nav .cta:hover {
+    background: var(--accent-bright);
+    transform: translateY(-1px);
+  }
+
+  /* --- HERO --- */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 120px 24px 80px;
+    position: relative;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -200px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle, var(--accent-glow) 0%, transparent 60%);
+    pointer-events: none;
+    opacity: 0.6;
+  }
+
+  .hero .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-family: var(--mono);
+    font-weight: 500;
+    color: var(--accent);
+    background: var(--accent-glow);
+    border: 1px solid #c8a04a18;
+    padding: 6px 16px;
+    border-radius: 100px;
+    margin-bottom: 32px;
+    animation: fadeUp 0.8s ease both;
+  }
+
+  .hero h1 {
+    font-size: clamp(48px, 8vw, 88px);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1.0;
+    margin-bottom: 24px;
+    animation: fadeUp 0.8s ease 0.1s both;
+    max-width: 900px;
+  }
+
+  .hero h1 .highlight {
+    background: linear-gradient(135deg, var(--accent), var(--accent-bright));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero p {
+    font-size: clamp(17px, 2.2vw, 21px);
+    color: var(--text-dim);
+    max-width: 560px;
+    line-height: 1.7;
+    margin-bottom: 40px;
+    animation: fadeUp 0.8s ease 0.2s both;
+    font-weight: 300;
+  }
+
+  .hero .buttons {
+    display: flex;
+    gap: 14px;
+    animation: fadeUp 0.8s ease 0.3s both;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--accent);
+    color: var(--bg);
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.25s;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font);
+  }
+
+  .btn-primary:hover {
+    background: var(--accent-bright);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px var(--accent-glow);
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    color: var(--text-dim);
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.25s;
+    border: 1px solid var(--border);
+    font-family: var(--font);
+  }
+
+  .btn-secondary:hover {
+    color: var(--text);
+    border-color: #333;
+    background: var(--surface);
+  }
+
+  /* --- MOCKUP --- */
+  .mockup-section {
+    padding: 0 24px 120px;
+    display: flex;
+    justify-content: center;
+    animation: fadeUp 1s ease 0.5s both;
+  }
+
+  .mockup-frame {
+    width: 100%;
+    max-width: 720px;
+    background: var(--card);
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.03) inset;
+  }
+
+  .mockup-titlebar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 18px;
+    background: #0a0a0e;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .mockup-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+  }
+
+  .mockup-dot.r { background: #ff5f56; }
+  .mockup-dot.y { background: #ffbd2e; }
+  .mockup-dot.g { background: #27c93f; }
+
+  .mockup-content {
+    padding: 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    min-height: 380px;
+    background: linear-gradient(180deg, #0a0a12 0%, #12101a 100%);
+    position: relative;
+  }
+
+  .mockup-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, var(--indigo-glow), transparent 70%);
+    pointer-events: none;
+  }
+
+  .mockup-time {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--text-muted);
+    position: absolute;
+    top: 20px;
+    right: 28px;
+  }
+
+  .mockup-color-bar {
+    width: 4px;
+    height: 26px;
+    background: var(--indigo);
+    border-radius: 2px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 10px;
+  }
+
+  .mockup-title {
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    letter-spacing: -0.02em;
+    position: relative;
+  }
+
+  .mockup-subtitle {
+    font-size: 14px;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+  }
+
+  .mockup-countdown {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #34d399;
+    background: #34d39912;
+    padding: 4px 12px;
+    border-radius: 100px;
+    margin-bottom: 32px;
+  }
+
+  .mockup-countdown .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #34d399;
+    animation: pulse 2s infinite;
+  }
+
+  .mockup-btn-join {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 280px;
+    padding: 14px;
+    background: linear-gradient(135deg, #6c63ff, #5548d9);
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 20px #6c63ff30;
+  }
+
+  .mockup-btn-close {
+    width: 280px;
+    padding: 11px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .mockup-snooze {
+    font-size: 11px;
+    color: var(--text-muted);
+    padding: 4px 14px;
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 100px;
+  }
+
+  /* --- FEATURES --- */
+  .features {
+    padding: 80px 24px 120px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .features .section-label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    text-align: center;
+    margin-bottom: 12px;
+  }
+
+  .features h2 {
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    text-align: center;
+    margin-bottom: 56px;
+    line-height: 1.1;
+  }
+
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .feature-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .feature-card:hover {
+    border-color: #2a2a35;
+    transform: translateY(-4px);
+    box-shadow: 0 16px 48px rgba(0,0,0,0.3);
+  }
+
+  .feature-card .icon-wrap {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    margin-bottom: 16px;
+  }
+
+  .feature-card h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+
+  .feature-card p {
+    font-size: 13.5px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  /* --- HOW IT WORKS --- */
+  .how {
+    padding: 80px 24px 120px;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .how .section-label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    text-align: center;
+    margin-bottom: 12px;
+  }
+
+  .how h2 {
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    text-align: center;
+    margin-bottom: 56px;
+  }
+
+  .step {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 40px;
+    align-items: flex-start;
+  }
+
+  .step-num {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: var(--accent-glow);
+    border: 1px solid #c8a04a20;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .step-content h3 {
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .step-content p {
+    font-size: 14px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  /* --- STATS --- */
+  .stats {
+    padding: 60px 24px;
+    max-width: 800px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    text-align: center;
+  }
+
+  .stat-val {
+    font-size: 36px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    font-family: var(--mono);
+    background: linear-gradient(135deg, var(--text), var(--text-dim));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  /* --- CTA --- */
+  .cta-section {
+    padding: 80px 24px 120px;
+    text-align: center;
+    position: relative;
+  }
+
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 400px;
+    background: radial-gradient(circle, var(--accent-glow) 0%, transparent 60%);
+    pointer-events: none;
+    opacity: 0.4;
+  }
+
+  .cta-section h2 {
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin-bottom: 16px;
+    position: relative;
+  }
+
+  .cta-section p {
+    color: var(--text-dim);
+    font-size: 16px;
+    margin-bottom: 32px;
+    position: relative;
+  }
+
+  .cta-section .buttons {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  /* --- FOOTER --- */
+  footer {
+    padding: 40px 24px;
+    text-align: center;
+    border-top: 1px solid var(--border);
+  }
+
+  footer p {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  footer a {
+    color: var(--text-dim);
+    text-decoration: none;
+  }
+
+  footer a:hover { color: var(--accent); }
+
+  /* --- ANIMATIONS --- */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* --- RESPONSIVE --- */
+  @media (max-width: 768px) {
+    nav { padding: 16px 20px; }
+    nav .links { display: none; }
+    .feature-grid { grid-template-columns: 1fr; }
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .mockup-content { padding: 32px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="brand">
+    <div class="icon">&#128276;</div>
+    <span>Meeting Reminder</span>
+  </div>
+  <div style="display: flex; gap: 8px; align-items: center;">
+    <a href="#features">Features</a>
+    <a href="#how">Ablauf</a>
+    <a href="https://github.com/hendrikgrueger-web/meeting-reminder" class="cta">GitHub</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="badge">macOS 26 &middot; Tahoe &middot; Open Source</div>
+  <h1>Nie wieder ein<br><span class="highlight">Meeting verpassen.</span></h1>
+  <p>Vollbild-Erinnerung. Ein Klick in Teams. Null CPU im Ruhezustand. Die schlankste Meeting-App f&uuml;r deinen Mac.</p>
+  <div class="buttons">
+    <a href="https://github.com/hendrikgrueger-web/meeting-reminder/releases" class="btn-primary">
+      &#11015; Download
+    </a>
+    <a href="https://github.com/hendrikgrueger-web/meeting-reminder" class="btn-secondary">
+      Quellcode ansehen
+    </a>
+  </div>
+</section>
+
+<!-- MOCKUP -->
+<section class="mockup-section">
+  <div class="mockup-frame">
+    <div class="mockup-titlebar">
+      <div class="mockup-dot r"></div>
+      <div class="mockup-dot y"></div>
+      <div class="mockup-dot g"></div>
+    </div>
+    <div class="mockup-content">
+      <div class="mockup-time">14:59:03</div>
+      <div style="margin-top: 24px;">
+        <span class="mockup-color-bar"></span><span class="mockup-title">Sprint Planning</span>
+      </div>
+      <div class="mockup-subtitle">15:00 &ndash; 16:00</div>
+      <div class="mockup-countdown">
+        <span class="dot"></span>
+        beginnt in 57 Sek.
+      </div>
+      <div class="mockup-btn-join">&#9654; Beitreten</div>
+      <div class="mockup-btn-close">Schlie&szlig;en</div>
+      <div class="mockup-snooze">&#128276; 1 Minute</div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats reveal">
+  <div>
+    <div class="stat-val">0%</div>
+    <div class="stat-label">CPU im Ruhezustand</div>
+  </div>
+  <div>
+    <div class="stat-val">&lt;20</div>
+    <div class="stat-label">MB RAM</div>
+  </div>
+  <div>
+    <div class="stat-val">&lt;1s</div>
+    <div class="stat-label">Startzeit</div>
+  </div>
+  <div>
+    <div class="stat-val">5</div>
+    <div class="stat-label">Swift-Dateien</div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features reveal" id="features">
+  <div class="section-label">Features</div>
+  <h2>Alles was du brauchst.<br>Nichts was du nicht brauchst.</h2>
+
+  <div class="feature-grid">
+    <div class="feature-card">
+      <div class="icon-wrap" style="background: #6c63ff18; color: #6c63ff;">&#128249;</div>
+      <h3>Ein-Klick Teams-Beitritt</h3>
+      <p>Erkennt automatisch MS Teams Links in deinen Kalender-Events. Beitreten mit einem Klick oder Enter-Taste.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="icon-wrap" style="background: #c8a04a18; color: var(--accent);">&#128276;</div>
+      <h3>Vollbild-Erinnerung</h3>
+      <p>&Uuml;ber allen Fenstern, Spaces und Vollbild-Apps. Du kannst es nicht &uuml;bersehen &mdash; genau wie es sein soll.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="icon-wrap" style="background: #34d39918; color: #34d399;">&#9889;</div>
+      <h3>Null Ressourcen</h3>
+      <p>Kein Polling. Die App schl&auml;ft komplett und wacht nur auf, wenn es Zeit ist. 0% CPU zwischen Meetings.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="icon-wrap" style="background: #f472b618; color: #f472b6;">&#128274;</div>
+      <h3>Minimale Berechtigungen</h3>
+      <p>Nur Kalender-Lesezugriff. Kein Netzwerk, kein Vollzugriff, keine Cloud. Deine Daten bleiben lokal.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="icon-wrap" style="background: #38bdf818; color: #38bdf8;">&#9000;</div>
+      <h3>Keyboard Shortcuts</h3>
+      <p>Enter = Beitreten. Escape = Schlie&szlig;en. Space = Snooze. Keine Maus n&ouml;tig.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="icon-wrap" style="background: #fb923c18; color: #fb923c;">&#128065;</div>
+      <h3>Screen-Sharing-Schutz</h3>
+      <p>Erkennt Bildschirmfreigabe und zeigt statt des Overlays eine dezente System-Notification.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how reveal" id="how">
+  <div class="section-label">So funktioniert's</div>
+  <h2>Einfacher geht's nicht.</h2>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-content">
+      <h3>App starten</h3>
+      <p>Meeting Reminder erscheint als Glocken-Icon in der Men&uuml;leiste. Kein Dock-Icon, kein Fenster.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-content">
+      <h3>Kalender ausw&auml;hlen</h3>
+      <p>W&auml;hle welche Kalender &uuml;berwacht werden sollen. Exchange, iCloud, Google &mdash; alles was in Apple Kalender sichtbar ist.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-content">
+      <h3>Meeting kommt</h3>
+      <p>1 Minute vor dem Meeting erscheint das Vollbild-Overlay mit Titel, Countdown und Beitreten-Button.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">4</div>
+    <div class="step-content">
+      <h3>Beitreten oder Snooze</h3>
+      <p>Ein Klick &ouml;ffnet Teams. Oder dr&uuml;cke Space f&uuml;r 1 Minute Snooze. Escape schlie&szlig;t das Overlay.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section reveal">
+  <h2>Open Source. Kostenlos. F&uuml;r immer.</h2>
+  <p>Gebaut mit Swift 6, SwiftUI und Liquid Glass. Keine Abos, keine Werbung, kein Tracking.</p>
+  <div class="buttons">
+    <a href="https://github.com/hendrikgrueger-web/meeting-reminder" class="btn-primary">
+      Zum Repository
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>Meeting Reminder &middot; von <a href="https://github.com/hendrikgrueger-web">Hendrik Gr&uuml;ger</a> &middot; macOS 26+</p>
+</footer>
+
+<!-- SCROLL REVEAL -->
+<script>
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
