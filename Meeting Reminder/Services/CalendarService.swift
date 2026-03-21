@@ -96,6 +96,8 @@ final class CalendarService: ObservableObject {
         print("[CalendarService] Start...")
         // 1. Berechtigung anfragen
         do {
+            // Nur requestFullAccessToEvents() ermöglicht Lese-Zugriff.
+            // Die App schreibt NIEMALS in den Kalender.
             accessGranted = try await eventStore.requestFullAccessToEvents()
             print("[CalendarService] Zugriff: \(accessGranted)")
         } catch {

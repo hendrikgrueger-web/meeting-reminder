@@ -25,7 +25,7 @@
 	<key>LSUIElement</key>
 	<true/>
 	<key>NSCalendarsUsageDescription</key>
-	<string>QuickJoin benötigt Zugriff auf deine Kalender, um dich an anstehende Meetings zu erinnern.</string>
+	<string>QuickJoin liest deine Kalender-Events (nur lesend), um dich rechtzeitig an Meetings zu erinnern und Beitreten-Links zu erkennen. Keine Daten verlassen dein Gerät.</string>
 	<key>NSNotificationCenterUsageDescription</key>
 	<string>QuickJoin sendet dir Benachrichtigungen für bevorstehende Events.</string>
 </dict>
