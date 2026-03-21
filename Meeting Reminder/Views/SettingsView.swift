@@ -132,7 +132,7 @@ struct SettingsView: View {
 
             settingToggle(
                 "Nur Online-Meetings",
-                help: "Nur an Meetings mit Teams-Einwahllink erinnern. Termine ohne Link werden ignoriert.",
+                help: "Nur an Meetings mit Einwahllink erinnern (Teams, Zoom, Google Meet, WebEx, etc.). Termine ohne Link werden ignoriert.",
                 isOn: $calendarService.onlyOnlineMeetings
             )
             settingToggle(

@@ -202,7 +202,7 @@ final class CalendarService: ObservableObject {
     private func mapToMeetingEvent(_ event: EKEvent) -> MeetingEvent? {
         guard !event.isAllDay else { return nil }
 
-        let teamsURL = TeamsLinkExtractor.extractURL(
+        let meetingLink = MeetingLinkExtractor.extractMeetingLink(
             location: event.location,
             notes: event.notes,
             url: event.url
@@ -216,7 +216,7 @@ final class CalendarService: ObservableObject {
             location: event.location,
             calendarColor: Color(cgColor: event.calendar.cgColor),
             calendarTitle: event.calendar.title,
-            teamsURL: teamsURL,
+            meetingLink: meetingLink,
             isAllDay: event.isAllDay
         )
     }
@@ -234,7 +234,7 @@ final class CalendarService: ObservableObject {
         guard !event.isAllDay else { return false }
 
         // Nur Online-Meetings?
-        if onlyOnlineMeetings && !event.hasTeamsLink { return false }
+        if onlyOnlineMeetings && !event.hasMeetingLink { return false }
 
         // Bereits dismissed?
         if dismissedEvents.contains(event.id) { return false }
@@ -246,10 +246,10 @@ final class CalendarService: ObservableObject {
         return true
     }
 
-    /// Vergleicht zwei Events für Sortierung: gleiche Startzeit → Teams-Link zuerst, dann Kalender
+    /// Vergleicht zwei Events für Sortierung: gleiche Startzeit → Meeting-Link zuerst, dann Kalender
     nonisolated static func compareEvents(_ a: MeetingEvent, _ b: MeetingEvent) -> Bool {
         if a.startDate == b.startDate {
-            if a.hasTeamsLink != b.hasTeamsLink { return a.hasTeamsLink }
+            if a.hasMeetingLink != b.hasMeetingLink { return a.hasMeetingLink }
             return a.calendarTitle < b.calendarTitle
         }
         return a.startDate < b.startDate

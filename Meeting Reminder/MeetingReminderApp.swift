@@ -14,8 +14,6 @@ struct MeetingReminderApp: App {
     @ObservedObject private var overlayController: OverlayController
 
     init() {
-        // NSApplicationDelegateAdaptor ist zu diesem Zeitpunkt noch nicht verfügbar,
-        // daher nutzen wir shared Instances
         let service = CalendarService.shared
         let overlay = OverlayController.shared
         _calendarService = ObservedObject(wrappedValue: service)
@@ -113,8 +111,8 @@ final class MeetingAppDelegate: NSObject, NSApplicationDelegate {
         let overlayView = AlertOverlayView(
             event: event,
             onJoin: {
-                if let url = event.teamsURL {
-                    Self.openTeamsDirectly(url)
+                if let meetingLink = event.meetingLink {
+                    Self.openMeetingDirectly(meetingLink)
                 }
                 overlayController.dismiss()
                 calendarService.dismissEvent(event)
@@ -137,32 +135,18 @@ final class MeetingAppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
-    // MARK: - Teams direkt öffnen (ohne Browser-Umweg)
+    // MARK: - Meeting direkt öffnen (Deep-Link mit Fallback)
 
-    private static func openTeamsDirectly(_ url: URL) {
-        // msteams:// URL-Scheme: öffnet Teams direkt ohne Browser
-        let urlString = url.absoluteString
-        let teamsDeepLink: String
+    private static func openMeetingDirectly(_ meetingLink: MeetingLink) {
+        let deepURL = MeetingLinkExtractor.deepLinkURL(for: meetingLink)
 
-        if urlString.contains("teams.microsoft.com/l/meetup-join/") {
-            // https://teams.microsoft.com/l/meetup-join/... → msteams://l/meetup-join/...
-            teamsDeepLink = urlString.replacingOccurrences(
-                of: "https://teams.microsoft.com",
-                with: "msteams:"
-            )
-        } else if urlString.contains("teams.microsoft.com/meet/") {
-            // Neues /meet/ Format — hier funktioniert der Deep Link nicht, Browser-Fallback
-            teamsDeepLink = urlString
-        } else {
-            teamsDeepLink = urlString
-        }
-
-        if let deepURL = URL(string: teamsDeepLink),
+        // Deep-Link versuchen (prüfen ob App installiert ist)
+        if deepURL != meetingLink.url,
            NSWorkspace.shared.urlForApplication(toOpen: deepURL) != nil {
             NSWorkspace.shared.open(deepURL)
         } else {
-            // Fallback: normalen HTTPS-Link öffnen
-            NSWorkspace.shared.open(url)
+            // Fallback: normalen HTTPS-Link im Browser öffnen
+            NSWorkspace.shared.open(meetingLink.url)
         }
     }
 
@@ -172,9 +156,13 @@ final class MeetingAppDelegate: NSObject, NSApplicationDelegate {
         guard Bundle.main.bundleIdentifier != nil else { return }
         let content = UNMutableNotificationContent()
         content.title = event.title
-        content.body = event.hasTeamsLink
-            ? "Meeting beginnt gleich — Klicke zum Beitreten"
-            : "Meeting beginnt gleich"
+
+        if let provider = event.meetingProvider {
+            content.body = "Meeting beginnt gleich — Klicke zum Beitreten via \(provider.shortName)"
+        } else {
+            content.body = "Meeting beginnt gleich"
+        }
+
         content.sound = soundEnabled ? .default : nil
         content.categoryIdentifier = "MEETING_ALERT"
 

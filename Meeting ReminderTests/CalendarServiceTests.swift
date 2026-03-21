@@ -19,7 +19,7 @@ struct CalendarServiceTests {
         location: String? = nil,
         calendarColor: Color = .blue,
         calendarTitle: String = "Work",
-        teamsURL: URL? = nil,
+        meetingLink: MeetingLink? = nil,
         isAllDay: Bool = false
     ) -> MeetingEvent {
         MeetingEvent(
@@ -30,7 +30,7 @@ struct CalendarServiceTests {
             location: location,
             calendarColor: calendarColor,
             calendarTitle: calendarTitle,
-            teamsURL: teamsURL,
+            meetingLink: meetingLink,
             isAllDay: isAllDay
         )
     }
@@ -90,7 +90,7 @@ struct CalendarServiceTests {
 
     @Test("Nur Online aktiv + kein Teams-Link ist nicht relevant")
     func onlyOnlineNoTeamsLink() {
-        let event = makeEvent(startDate: Date().addingTimeInterval(3600), teamsURL: nil)
+        let event = makeEvent(startDate: Date().addingTimeInterval(3600), meetingLink: nil)
         let result = CalendarService.isEventRelevant(
             event,
             now: Date(),
@@ -103,7 +103,7 @@ struct CalendarServiceTests {
     @Test("Nur Online aktiv + Teams-Link ist relevant")
     func onlyOnlineWithTeamsLink() {
         let teamsURL = URL(string: "https://teams.microsoft.com/l/meetup-join/test")!
-        let event = makeEvent(startDate: Date().addingTimeInterval(3600), teamsURL: teamsURL)
+        let event = makeEvent(startDate: Date().addingTimeInterval(3600), meetingLink: MeetingLink(url: teamsURL, provider: .teams))
         let result = CalendarService.isEventRelevant(
             event,
             now: Date(),
@@ -176,13 +176,13 @@ struct CalendarServiceTests {
             eventIdentifier: "teams-event",
             title: "Teams Meeting",
             startDate: startDate,
-            teamsURL: teamsURL
+            meetingLink: MeetingLink(url: teamsURL, provider: .teams)
         )
         let eventWithoutTeams = makeEvent(
             eventIdentifier: "no-teams",
             title: "Raum-Meeting",
             startDate: startDate,
-            teamsURL: nil
+            meetingLink: nil
         )
         let result = CalendarService.compareEvents(eventWithTeams, eventWithoutTeams)
         #expect(result == true) // Teams-Event kommt zuerst
@@ -274,13 +274,13 @@ struct CalendarServiceTests {
             eventIdentifier: "a",
             startDate: startDate,
             calendarTitle: "Alpha",
-            teamsURL: nil
+            meetingLink: nil
         )
         let eventB = makeEvent(
             eventIdentifier: "b",
             startDate: startDate,
             calendarTitle: "Beta",
-            teamsURL: nil
+            meetingLink: nil
         )
         let result = CalendarService.compareEvents(eventA, eventB)
         #expect(result == true) // Alpha < Beta

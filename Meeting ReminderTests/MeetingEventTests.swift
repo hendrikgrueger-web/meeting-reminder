@@ -14,7 +14,7 @@ final class MeetingEventTests: XCTestCase {
         location: String? = "Conference Room A",
         calendarColor: Color = .blue,
         calendarTitle: String = "Work",
-        teamsURL: URL? = URL(string: "https://teams.microsoft.com/"),
+        meetingLink: MeetingLink? = MeetingLink(url: URL(string: "https://teams.microsoft.com/")!, provider: .teams),
         isAllDay: Bool = false
     ) -> MeetingEvent {
         MeetingEvent(
@@ -25,7 +25,7 @@ final class MeetingEventTests: XCTestCase {
             location: location,
             calendarColor: calendarColor,
             calendarTitle: calendarTitle,
-            teamsURL: teamsURL,
+            meetingLink: meetingLink,
             isAllDay: isAllDay
         )
     }
@@ -83,17 +83,28 @@ final class MeetingEventTests: XCTestCase {
 
     // MARK: - Tests: Teams URL
 
-    func testHasTeamsLinkTrue() {
-        let teamsURL = URL(string: "https://teams.microsoft.com/l/meetup-join/12345")!
-        let event = createTestEvent(teamsURL: teamsURL)
+    func testHasMeetingLinkTrue() {
+        let link = MeetingLink(url: URL(string: "https://teams.microsoft.com/l/meetup-join/12345")!, provider: .teams)
+        let event = createTestEvent(meetingLink: link)
 
-        XCTAssertTrue(event.hasTeamsLink)
+        XCTAssertTrue(event.hasMeetingLink)
+        XCTAssertEqual(event.meetingProvider, .teams)
     }
 
-    func testHasTeamsLinkFalse() {
-        let event = createTestEvent(teamsURL: nil)
+    func testHasMeetingLinkFalse() {
+        let event = createTestEvent(meetingLink: nil)
 
-        XCTAssertFalse(event.hasTeamsLink)
+        XCTAssertFalse(event.hasMeetingLink)
+        XCTAssertNil(event.meetingProvider)
+    }
+
+    func testMeetingURLProperty() {
+        let url = URL(string: "https://zoom.us/j/123456789")!
+        let link = MeetingLink(url: url, provider: .zoom)
+        let event = createTestEvent(meetingLink: link)
+
+        XCTAssertEqual(event.meetingURL, url)
+        XCTAssertEqual(event.meetingProvider, .zoom)
     }
 
     // MARK: - Tests: Property Storage
@@ -133,7 +144,7 @@ final class MeetingEventTests: XCTestCase {
             location: location,
             calendarColor: calendarColor,
             calendarTitle: calendarTitle,
-            teamsURL: teamsURL,
+            meetingLink: MeetingLink(url: teamsURL, provider: .teams),
             isAllDay: isAllDay
         )
 
@@ -143,7 +154,7 @@ final class MeetingEventTests: XCTestCase {
         XCTAssertEqual(event.endDate, endDate)
         XCTAssertEqual(event.location, location)
         XCTAssertEqual(event.calendarTitle, calendarTitle)
-        XCTAssertEqual(event.teamsURL, teamsURL)
+        XCTAssertEqual(event.meetingURL, teamsURL)
         XCTAssertEqual(event.isAllDay, isAllDay)
     }
 

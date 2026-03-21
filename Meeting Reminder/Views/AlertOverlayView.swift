@@ -32,12 +32,13 @@ struct AlertOverlayView: View {
                 cardContent
                     .scaleEffect(appeared ? 1.0 : 0.92)
                     .opacity(appeared ? 1.0 : 0.0)
+                    .offset(y: appeared ? 0 : -30)
                 Spacer()
             }
         }
         .onReceive(timer) { now = $0 }
         .onReceive(NotificationCenter.default.publisher(for: .overlayDismiss)) { _ in onDismiss() }
-        .onReceive(NotificationCenter.default.publisher(for: .overlayJoin)) { _ in if event.hasTeamsLink { onJoin() } }
+        .onReceive(NotificationCenter.default.publisher(for: .overlayJoin)) { _ in if event.hasMeetingLink { onJoin() } }
         .onReceive(NotificationCenter.default.publisher(for: .overlaySnooze)) { _ in onSnooze() }
         .onAppear {
             if !reduceMotion {
@@ -74,7 +75,13 @@ struct AlertOverlayView: View {
                     .multilineTextAlignment(.center)
                     .accessibilityAddTraits(.isHeader)
             }
-            .padding(.bottom, 8)
+            .padding(.bottom, 4)
+
+            // Kalender-Name
+            Text(event.calendarTitle)
+                .font(.system(size: 12, weight: .medium))
+                .foregroundStyle(.white.opacity(0.35))
+                .padding(.bottom, 8)
 
             // Zeitraum
             Text(timeRange)
@@ -86,8 +93,12 @@ struct AlertOverlayView: View {
             countdownPill
                 .padding(.bottom, 24)
 
-            // Ort (wenn vorhanden und kein Teams-Link)
-            if let location = event.location, !location.isEmpty, !location.lowercased().contains("teams.microsoft") {
+            // Ort (wenn vorhanden und kein Meeting-Link im Location-Feld)
+            if let location = event.location, !location.isEmpty,
+               !location.lowercased().contains("teams.microsoft"),
+               !location.lowercased().contains("zoom.us"),
+               !location.lowercased().contains("meet.google"),
+               !location.lowercased().contains("webex.com") {
                 HStack(spacing: 6) {
                     Image(systemName: "mappin.circle.fill")
                         .font(.system(size: 14))
@@ -100,7 +111,7 @@ struct AlertOverlayView: View {
             }
 
             // Kein Einwahllink Warnung
-            if !event.hasTeamsLink {
+            if !event.hasMeetingLink {
                 HStack(spacing: 6) {
                     Image(systemName: "exclamationmark.triangle.fill")
                         .font(.system(size: 12))
@@ -158,13 +169,13 @@ struct AlertOverlayView: View {
 
     private var actionButtons: some View {
         VStack(spacing: 10) {
-            // Beitreten Button
-            if event.hasTeamsLink {
+            // Beitreten Button — mit Provider-Icon und Label
+            if let meetingLink = event.meetingLink {
                 Button(action: onJoin) {
                     HStack(spacing: 8) {
-                        Image(systemName: "video.fill")
+                        Image(systemName: meetingLink.provider.iconName)
                             .font(.system(size: 14, weight: .semibold))
-                        Text("Beitreten")
+                        Text(meetingLink.provider.joinLabel)
                             .font(.system(size: 16, weight: .semibold))
                     }
                     .frame(maxWidth: .infinity)
@@ -174,7 +185,7 @@ struct AlertOverlayView: View {
                 .tint(.indigo)
                 .controlSize(.large)
                 .glassEffect(.regular.interactive(), in: RoundedRectangle(cornerRadius: 12))
-                .accessibilityLabel("Beitreten via Microsoft Teams")
+                .accessibilityLabel(meetingLink.provider.accessibilityJoinLabel)
             }
 
             // Schließen Button

@@ -8,14 +8,22 @@ struct MeetingEvent: Identifiable, Sendable, Equatable {
     let location: String?
     let calendarColor: Color
     let calendarTitle: String
-    let teamsURL: URL?
+    let meetingLink: MeetingLink?
     let isAllDay: Bool
 
     var id: String {
         "\(eventIdentifier)_\(startDate.timeIntervalSince1970)"
     }
 
-    var hasTeamsLink: Bool {
-        teamsURL != nil
+    var hasMeetingLink: Bool {
+        meetingLink != nil
+    }
+
+    var meetingProvider: MeetingProvider? {
+        meetingLink?.provider
+    }
+
+    var meetingURL: URL? {
+        meetingLink?.url
     }
 }
