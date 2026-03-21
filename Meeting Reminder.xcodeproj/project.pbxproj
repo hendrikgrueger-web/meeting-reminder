@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0C3C3491247BF43FA5A2F4FD /* TodayMeetingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48E7DB18478DFC49E1AF8905 /* TodayMeetingsView.swift */; };
 		0E022DFA4CEF13200AF15596 /* CalendarService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7C5C9B3A91463F1FE8D2C7E /* CalendarService.swift */; };
 		1C0E7335BD1E64F665EB4C1B /* MeetingProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C980BBEF457D0D865398EB2 /* MeetingProvider.swift */; };
 		4ED5239BF8A394A66BD1B05A /* MeetingEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1E58BE3E2CB33DACA45E27 /* MeetingEvent.swift */; };
@@ -33,6 +34,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		48E7DB18478DFC49E1AF8905 /* TodayMeetingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayMeetingsView.swift; sourceTree = "<group>"; };
 		4C22ED66BAE066E03E8CA64E /* Meeting ReminderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Meeting ReminderTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		76AF22A3216A7921BE6D9112 /* MeetingReminderApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingReminderApp.swift; sourceTree = "<group>"; };
 		79C39DF8ADE69A198C42ABAF /* Meeting Reminder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Meeting Reminder.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -116,6 +118,7 @@
 				DDCF1F38E524116C3A58EA80 /* OverlayController.swift */,
 				97BB8BECDFC482366A222006 /* OverlayPanel.swift */,
 				B8370320AAC085ACB6CD7918 /* SettingsView.swift */,
+				48E7DB18478DFC49E1AF8905 /* TodayMeetingsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -201,6 +204,7 @@
 				C5277CEE898C06A06613B0A7 /* OverlayController.swift in Sources */,
 				9C5D948EB3B5FA7EE067841C /* OverlayPanel.swift in Sources */,
 				C18461E6E329400F453FFC7F /* SettingsView.swift in Sources */,
+				0C3C3491247BF43FA5A2F4FD /* TodayMeetingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

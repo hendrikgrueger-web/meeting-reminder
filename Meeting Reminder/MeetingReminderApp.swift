@@ -95,6 +95,8 @@ struct MeetingReminderApp: App {
 final class MeetingAppDelegate: NSObject, NSApplicationDelegate {
 
     private var cancellable: AnyCancellable?
+    private var globalMonitor: Any?
+    private var localMonitor: Any?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         print("[MeetingReminder] App gestartet")
@@ -112,6 +114,9 @@ final class MeetingAppDelegate: NSObject, NSApplicationDelegate {
                 )
             }
 
+        // Globalen Keyboard Shortcut registrieren (Cmd+Shift+J)
+        registerGlobalShortcut()
+
         // CalendarService starten + Notifications
         Task {
             await calendarService.start()
@@ -127,6 +132,43 @@ final class MeetingAppDelegate: NSObject, NSApplicationDelegate {
                 )
             }
         }
+    }
+
+    // MARK: - Globaler Keyboard Shortcut (Cmd+Shift+J)
+
+    /// Registriert globalen und lokalen Monitor für Cmd+Shift+J
+    private func registerGlobalShortcut() {
+        let handler: (NSEvent) -> NSEvent? = { [weak self] event in
+            self?.handleShortcutEvent(event)
+            return event
+        }
+
+        // Globaler Monitor — fängt Tastendruck wenn App nicht im Fokus
+        globalMonitor = NSEvent.addGlobalMonitorForEvents(matching: .keyDown) { [weak self] event in
+            self?.handleShortcutEvent(event)
+        }
+
+        // Lokaler Monitor — fängt Tastendruck wenn App im Fokus
+        localMonitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown, handler: handler)
+    }
+
+    /// Prüft ob das Event Cmd+Shift+J ist und öffnet ggf. das nächste Meeting
+    private func handleShortcutEvent(_ event: NSEvent) {
+        let calendarService = CalendarService.shared
+
+        // Shortcut deaktiviert?
+        guard calendarService.globalShortcutEnabled else { return }
+
+        // Cmd+Shift+J prüfen (keyCode 38 = J)
+        guard event.modifierFlags.contains([.command, .shift]),
+              event.keyCode == 38 else { return }
+
+        // Nächstes Event mit Meeting-Link suchen
+        guard let nextEvent = calendarService.nextEvent,
+              let meetingLink = nextEvent.meetingLink else { return }
+
+        // Meeting direkt öffnen
+        Self.openMeetingDirectly(meetingLink)
     }
 
     // MARK: - Alert Flow

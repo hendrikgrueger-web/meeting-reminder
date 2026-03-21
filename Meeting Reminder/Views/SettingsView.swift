@@ -16,6 +16,11 @@ struct SettingsView: View {
 
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
+                    // Tagesübersicht
+                    todaySection
+
+                    Divider().padding(.vertical, 8)
+
                     calendarSection
                     providerSection
                     generalSection
@@ -87,6 +92,16 @@ struct SettingsView: View {
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 8)
+    }
+
+    // MARK: - Heute-Übersicht
+
+    @ViewBuilder
+    private var todaySection: some View {
+        if calendarService.accessGranted && !calendarService.calendars.isEmpty {
+            sectionHeader(icon: "list.bullet.rectangle", title: "Heute")
+            TodayMeetingsView(calendarService: calendarService)
+        }
     }
 
     // MARK: - Kalender-Sektion (nach Account gruppiert)
@@ -207,6 +222,11 @@ struct SettingsView: View {
             "Sound",
             help: "Einen kurzen Signalton abspielen, wenn die Erinnerung erscheint.",
             isOn: $calendarService.soundEnabled
+        )
+        settingToggle(
+            "Globaler Shortcut (⌘⇧J)",
+            help: "Mit Cmd+Shift+J das nächste Meeting sofort öffnen, ohne das Overlay zu verwenden.",
+            isOn: $calendarService.globalShortcutEnabled
         )
         settingToggle(
             "Bei Anmeldung starten",

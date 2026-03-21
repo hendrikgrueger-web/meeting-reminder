@@ -15,6 +15,9 @@ final class CalendarService: ObservableObject {
     @Published var nextEvent: MeetingEvent?
     @Published var pendingEvents: [MeetingEvent] = []
 
+    /// Alle heutigen Events chronologisch (ohne ganztägige) — für die Tagesübersicht
+    @Published var todayEvents: [MeetingEvent] = []
+
     /// Anzahl der relevanten Events in den nächsten 60 Minuten (für Menüleisten-Zähler)
     @Published var upcomingEventsCount: Int = 0
 
@@ -24,6 +27,7 @@ final class CalendarService: ObservableObject {
     @AppStorage("soundEnabled") var soundEnabled: Bool = false
     @AppStorage("silentWhenScreenSharing") var silentWhenScreenSharing: Bool = true
     @AppStorage("hasLaunchedBefore") var hasLaunchedBefore: Bool = false
+    @AppStorage("globalShortcutEnabled") var globalShortcutEnabled: Bool = true
 
     // Diese Settings lösen reloadAndReschedule() aus wenn sie sich ändern
     @Published var leadTimeMinutes: Int = {
@@ -174,8 +178,11 @@ final class CalendarService: ObservableObject {
         // Dismissed-Set aufräumen
         cleanupDismissed()
 
-        // Events laden (24h-Fenster)
+        // Heutige Events laden (Mitternacht bis Mitternacht) — für Tagesübersicht
         let now = Date()
+        todayEvents = loadTodayEvents(now: now)
+
+        // Events laden (24h-Fenster)
         let events = loadRelevantEvents(from: now)
 
         // Pending Events bereinigen — gelöschte Events entfernen
@@ -243,6 +250,27 @@ final class CalendarService: ObservableObject {
             meetingLink: meetingLink,
             isAllDay: event.isAllDay
         )
+    }
+
+    /// Lädt alle heutigen Events (ohne ganztägige) für die Tagesübersicht
+    private func loadTodayEvents(now: Date) -> [MeetingEvent] {
+        let calendar = Calendar.current
+        let startOfDay = calendar.startOfDay(for: now)
+        guard let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay) else { return [] }
+
+        let enabledIDs = enabledCalendarIDs
+        let selectedCalendars = calendars.filter { enabledIDs.contains($0.calendarIdentifier) }
+        guard !selectedCalendars.isEmpty else { return [] }
+
+        let predicate = eventStore.predicateForEvents(
+            withStart: startOfDay,
+            end: endOfDay,
+            calendars: selectedCalendars
+        )
+
+        return eventStore.events(matching: predicate)
+            .compactMap { mapToMeetingEvent($0) }
+            .sorted { $0.startDate < $1.startDate }
     }
 
     // MARK: - Event Evaluation (nonisolated static für Testbarkeit)

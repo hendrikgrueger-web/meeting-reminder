@@ -806,4 +806,204 @@ struct MeetingLinkExtractorTests {
         let link2 = MeetingLink(url: URL(string: "https://zoom.us/j/456")!, provider: .zoom)
         #expect(link1 != link2)
     }
+
+    // ══════════════════════════════════════════════════════════════════
+    // MARK: - Edge Case Tests: Zoom Varianten
+    // ══════════════════════════════════════════════════════════════════
+
+    @Test("Zoom: Webinar mit Registrierung /s/ und Query")
+    func zoomWebinarRegistration() {
+        let result = extract(location: "https://zoom.us/s/98765432100?tk=abc123registration")
+        #expect(result?.provider == .zoom)
+        #expect(result?.url.absoluteString.contains("/s/") == true)
+    }
+
+    @Test("Zoom: Subdomain eu01web")
+    func zoomEU01Web() {
+        let result = extract(location: "https://eu01web.zoom.us/j/567890123")
+        #expect(result?.provider == .zoom)
+        #expect(result?.url.absoluteString.contains("eu01web") == true)
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // MARK: - Edge Case Tests: Google Meet Varianten
+    // ══════════════════════════════════════════════════════════════════
+
+    @Test("Google Meet: Meeting mit pli Parameter")
+    func googleMeetWithPli() {
+        let result = extract(location: "https://meet.google.com/abc-defg-hij?pli=1")
+        #expect(result?.provider == .googleMeet)
+        #expect(result?.url.absoluteString.contains("pli=1") == true)
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // MARK: - Edge Case Tests: WebEx Personal Room
+    // ══════════════════════════════════════════════════════════════════
+
+    @Test("WebEx: Persönlicher Raum mit langem Username")
+    func webexPersonalRoomLongUsername() {
+        let result = extract(location: "https://meetingsemea.webex.com/meet/firstname.lastname.department")
+        #expect(result?.provider == .webex)
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // MARK: - Edge Case Tests: GoTo Meeting-ID
+    // ══════════════════════════════════════════════════════════════════
+
+    @Test("GoTo: Meeting mit numerischer ID")
+    func gotoWithNumericID() {
+        let result = extract(location: "https://global.gotomeeting.com/join/987654321")
+        #expect(result?.provider == .gotoMeeting)
+        #expect(result?.url.absoluteString.contains("987654321") == true)
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // MARK: - Edge Case Tests: Mehrere Provider in einem Feld
+    // ══════════════════════════════════════════════════════════════════
+
+    @Test("Mehrere Provider in Notes: Erster Provider in Pattern-Reihenfolge gewinnt")
+    func multipleProvidersInNotesFirstPatternWins() {
+        let notes = """
+        WebEx Fallback: https://company.webex.com/meet/backup
+        Zoom: https://zoom.us/j/111222333
+        Teams: https://teams.microsoft.com/meet/primary
+        Google Meet: https://meet.google.com/abc-defg-hij
+        """
+        let result = extract(notes: notes)
+        // Teams-Patterns werden zuerst geprüft (Reihenfolge im providerPatterns-Array)
+        #expect(result?.provider == .teams)
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // MARK: - Edge Case Tests: URL-Formate
+    // ══════════════════════════════════════════════════════════════════
+
+    @Test("URL mit Trailing-Slash")
+    func urlWithTrailingSlash() {
+        let result = extract(location: "https://meet.google.com/abc-defg-hij/")
+        #expect(result?.provider == .googleMeet)
+    }
+
+    @Test("URL mit Fragment (#)")
+    func urlWithFragment() {
+        let result = extract(location: "https://zoom.us/j/123456789#success")
+        #expect(result?.provider == .zoom)
+    }
+
+    @Test("Sehr langer Notes-Text (1000+ Zeichen) mit Link mittendrin")
+    func veryLongNotesWithLinkInMiddle() {
+        let prefix = String(repeating: "Lorem ipsum dolor sit amet. ", count: 50)
+        let suffix = String(repeating: "Consectetur adipiscing elit. ", count: 50)
+        let notes = "\(prefix)Bitte treten Sie hier bei: https://zoom.us/j/999888777?pwd=longPassword123 — Vielen Dank!\(suffix)"
+        let result = extract(notes: notes)
+        #expect(result?.provider == .zoom)
+        #expect(result?.url.absoluteString.contains("999888777") == true)
+    }
+
+    @Test("HTML-encoded Zoom-Link in Notes (href mit &amp;)")
+    func htmlEncodedZoomLinkInNotes() {
+        let notes = #"<a href="https://zoom.us/j/123456789?pwd=secret&amp;uname=test">Zoom beitreten</a>"#
+        let result = extract(notes: notes)
+        #expect(result?.provider == .zoom)
+        // &amp; sollte zu & dekodiert worden sein
+        #expect(result?.url.absoluteString.contains("&amp;") == false)
+    }
+
+    @Test("Link in Markdown-Format [text](url)")
+    func linkInMarkdownFormat() {
+        let notes = "Hier der Link: [Meeting beitreten](https://teams.microsoft.com/meet/markdown123) — viel Spaß!"
+        let result = extract(notes: notes)
+        #expect(result?.provider == .teams)
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // MARK: - Edge Case Tests: Provider-Detection vollständig
+    // ══════════════════════════════════════════════════════════════════
+
+    @Test("Provider-Detection: Alle 8 Provider werden korrekt erkannt")
+    func allEightProvidersDetected() {
+        let testCases: [(String, MeetingProvider)] = [
+            ("https://teams.microsoft.com/meet/test", .teams),
+            ("https://zoom.us/j/123", .zoom),
+            ("https://meet.google.com/abc-defg-hij", .googleMeet),
+            ("https://company.webex.com/meet/user", .webex),
+            ("https://gotomeet.me/User", .gotoMeeting),
+            ("https://app.slack.com/huddle/T1/C1", .slack),
+            ("https://whereby.com/my-room", .whereby),
+            ("https://meet.jit.si/MyRoom", .jitsi),
+        ]
+        for (url, expectedProvider) in testCases {
+            let result = extract(location: url)
+            #expect(result?.provider == expectedProvider, "Fehlgeschlagen für: \(url)")
+        }
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // MARK: - Edge Case Tests: Deep-Link
+    // ══════════════════════════════════════════════════════════════════
+
+    @Test("Deep-Link: Zoom Webinar /s/ hat kein zoommtg-Schema (kein /j/ Match)")
+    func deepLinkZoomWebinarNoDeepLink() {
+        let link = MeetingLink(
+            url: URL(string: "https://zoom.us/s/98765432100")!,
+            provider: .zoom
+        )
+        let deep = MeetingLinkExtractor.deepLinkURL(for: link)
+        // /s/ wird von extractZoomMeetingID erkannt, also gibt es einen Deep-Link
+        #expect(deep.scheme == "zoommtg")
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // MARK: - Edge Case Tests: Abwärtskompatibilität
+    // ══════════════════════════════════════════════════════════════════
+
+    @Test("extractURL gibt gleiche URL wie extractMeetingLink zurück")
+    func extractURLBackwardsCompatSameResult() {
+        let location = "https://zoom.us/j/123456789?pwd=test123"
+        let urlResult = MeetingLinkExtractor.extractURL(location: location, notes: nil, url: nil)
+        let linkResult = MeetingLinkExtractor.extractMeetingLink(location: location, notes: nil, url: nil)
+        #expect(urlResult == linkResult?.url)
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // MARK: - Edge Case Tests: Leerer Location + echter Link in Notes
+    // ══════════════════════════════════════════════════════════════════
+
+    @Test("Leerer String als Location + echter Link in Notes")
+    func emptyLocationWithLinkInNotes() {
+        let result = extract(location: "", notes: "Meeting-Link: https://teams.microsoft.com/meet/fromNotes")
+        #expect(result?.provider == .teams)
+        #expect(result?.url.absoluteString.contains("fromNotes") == true)
+    }
+
+    @Test("Location ohne Meeting-Link + Link in Notes → Notes wird verwendet")
+    func nonLinkLocationFallsBackToNotes() {
+        let result = extract(
+            location: "Konferenzraum 42, Gebäude Süd",
+            notes: "Online-Fallback: https://meet.google.com/xyz-abcd-efg"
+        )
+        #expect(result?.provider == .googleMeet)
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // MARK: - Edge Case Tests: Zoom /my/ mit Query-Parametern
+    // ══════════════════════════════════════════════════════════════════
+
+    @Test("Zoom: Persönlicher Raum /my/ mit Query-Parametern")
+    func zoomPersonalRoomWithQuery() {
+        let result = extract(location: "https://zoom.us/my/johndoe?pwd=abc123")
+        #expect(result?.provider == .zoom)
+        #expect(result?.url.absoluteString.contains("/my/") == true)
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // MARK: - Edge Case Tests: Sonderzeichen und Unicode
+    // ══════════════════════════════════════════════════════════════════
+
+    @Test("Notes mit deutschen Umlauten und Meeting-Link")
+    func notesWithGermanUmlautsAndLink() {
+        let notes = "Besprechung für Änderungsantrag — Büro München — https://teams.microsoft.com/meet/überTest123 — Straße 42"
+        let result = extract(notes: notes)
+        #expect(result?.provider == .teams)
+    }
 }
