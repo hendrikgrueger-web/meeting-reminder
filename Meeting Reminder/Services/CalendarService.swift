@@ -47,6 +47,7 @@ final class CalendarService: ObservableObject {
     private var fallbackTimer: Timer?
     private var debounceTask: Task<Void, Never>?
     private var dismissedEvents: Set<String> = []
+    private var snoozedEvents: Set<String> = []
     private var defaultObservers: [Any] = []
     private var workspaceObservers: [Any] = []
 
@@ -275,7 +276,9 @@ final class CalendarService: ObservableObject {
     }
 
     private func isRelevant(_ event: MeetingEvent, now: Date) -> Bool {
-        CalendarService.isEventRelevant(
+        // Snoozed Events sind temporär ausgeblendet
+        guard !snoozedEvents.contains(event.id) else { return false }
+        return CalendarService.isEventRelevant(
             event,
             now: now,
             onlyOnlineMeetings: onlyOnlineMeetings,
@@ -321,12 +324,16 @@ final class CalendarService: ObservableObject {
     }
 
     func snoozeEvent(_ event: MeetingEvent) {
+        // Event als snoozed markieren — verhindert dass reloadAndReschedule es sofort wieder anzeigt
+        snoozedEvents.insert(event.id)
         pendingEvents.removeAll { $0.id == event.id }
 
         // Snooze-Timer: 1 Minute
         Timer.scheduledTimer(withTimeInterval: 60, repeats: false) { [weak self] _ in
             Task { @MainActor [weak self] in
                 guard let self else { return }
+                // Snooze aufheben
+                self.snoozedEvents.remove(event.id)
                 let now = Date()
                 let timeSinceStart = now.timeIntervalSince(event.startDate)
                 // Nur erneut anzeigen wenn < 5 Min seit Start
