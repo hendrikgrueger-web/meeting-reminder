@@ -1,6 +1,6 @@
 import XCTest
 import SwiftUI
-@testable import Meeting_Reminder
+@testable import QuickJoin
 
 final class MeetingEventTests: XCTestCase {
 

@@ -15,10 +15,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "608C91BCBB08BDF058592C69"
-               BuildableName = "Meeting Reminder.app"
-               BlueprintName = "Meeting Reminder"
-               ReferencedContainer = "container:Meeting Reminder.xcodeproj">
+               BlueprintIdentifier = "EDFD6AF21B11D88B0CC3EB51"
+               BuildableName = "QuickJoin.app"
+               BlueprintName = "QuickJoin"
+               ReferencedContainer = "container:QuickJoin.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,10 +33,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "608C91BCBB08BDF058592C69"
-            BuildableName = "Meeting Reminder.app"
-            BlueprintName = "Meeting Reminder"
-            ReferencedContainer = "container:Meeting Reminder.xcodeproj">
+            BlueprintIdentifier = "EDFD6AF21B11D88B0CC3EB51"
+            BuildableName = "QuickJoin.app"
+            BlueprintName = "QuickJoin"
+            ReferencedContainer = "container:QuickJoin.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <Testables>
@@ -45,10 +45,10 @@
             parallelizable = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "6A3A79153BB23E55C83F460E"
-               BuildableName = "Meeting ReminderTests.xctest"
-               BlueprintName = "Meeting ReminderTests"
-               ReferencedContainer = "container:Meeting Reminder.xcodeproj">
+               BlueprintIdentifier = "3B8BFC613AF83EBFE9F0021D"
+               BuildableName = "QuickJoinTests.xctest"
+               BlueprintName = "QuickJoinTests"
+               ReferencedContainer = "container:QuickJoin.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -69,10 +69,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "608C91BCBB08BDF058592C69"
-            BuildableName = "Meeting Reminder.app"
-            BlueprintName = "Meeting Reminder"
-            ReferencedContainer = "container:Meeting Reminder.xcodeproj">
+            BlueprintIdentifier = "EDFD6AF21B11D88B0CC3EB51"
+            BuildableName = "QuickJoin.app"
+            BlueprintName = "QuickJoin"
+            ReferencedContainer = "container:QuickJoin.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <CommandLineArguments>
@@ -88,10 +88,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "608C91BCBB08BDF058592C69"
-            BuildableName = "Meeting Reminder.app"
-            BlueprintName = "Meeting Reminder"
-            ReferencedContainer = "container:Meeting Reminder.xcodeproj">
+            BlueprintIdentifier = "EDFD6AF21B11D88B0CC3EB51"
+            BuildableName = "QuickJoin.app"
+            BlueprintName = "QuickJoin"
+            ReferencedContainer = "container:QuickJoin.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

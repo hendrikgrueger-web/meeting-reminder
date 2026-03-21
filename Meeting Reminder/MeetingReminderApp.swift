@@ -1,4 +1,4 @@
-// Meeting Reminder/MeetingReminderApp.swift
+// Meeting Reminder/MeetingReminderApp.swift — QuickJoin
 import SwiftUI
 import UserNotifications
 import AppKit
@@ -99,7 +99,7 @@ final class MeetingAppDelegate: NSObject, NSApplicationDelegate {
     private var localMonitor: Any?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
-        print("[MeetingReminder] App gestartet")
+        print("[QuickJoin] App gestartet")
         let calendarService = CalendarService.shared
         let overlayController = OverlayController.shared
 

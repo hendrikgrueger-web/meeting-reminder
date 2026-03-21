@@ -230,7 +230,7 @@ struct SettingsView: View {
         )
         settingToggle(
             "Bei Anmeldung starten",
-            help: "Meeting Reminder automatisch starten, wenn du dich am Mac anmeldest.",
+            help: "QuickJoin automatisch starten, wenn du dich am Mac anmeldest.",
             isOn: $launchAtLogin
         )
         .onChange(of: launchAtLogin) { _, newValue in
@@ -260,7 +260,7 @@ struct SettingsView: View {
 
         VStack(alignment: .leading, spacing: 2) {
             HStack {
-                Text("Meeting Reminder")
+                Text("QuickJoin")
                     .font(.caption)
                     .fontWeight(.medium)
                     .foregroundStyle(.secondary)

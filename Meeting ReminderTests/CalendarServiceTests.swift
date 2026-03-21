@@ -4,7 +4,7 @@
 
 import Testing
 import SwiftUI
-@testable import Meeting_Reminder
+@testable import QuickJoin
 
 @Suite("CalendarService Logik-Tests")
 struct CalendarServiceTests {

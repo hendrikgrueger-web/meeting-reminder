@@ -25,8 +25,8 @@
 	<key>LSUIElement</key>
 	<true/>
 	<key>NSCalendarsUsageDescription</key>
-	<string>Meeting Reminder benötigt Zugriff auf deine Kalender, um dich an anstehende Events zu erinnern.</string>
+	<string>QuickJoin benötigt Zugriff auf deine Kalender, um dich an anstehende Meetings zu erinnern.</string>
 	<key>NSNotificationCenterUsageDescription</key>
-	<string>Meeting Reminder sendet dir Benachrichtigungen für bevorstehende Events.</string>
+	<string>QuickJoin sendet dir Benachrichtigungen für bevorstehende Events.</string>
 </dict>
 </plist>

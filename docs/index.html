@@ -1,12 +1,15 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Meeting Reminder — Nie wieder ein Meeting verpassen</title>
-<meta name="description" content="Schlanke macOS-App. Vollbild-Erinnerung. Ein Klick in Teams. Null CPU im Ruhezustand.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<title>QuickJoin — Never miss a meeting again</title>
+<meta name="description" content="QuickJoin is a lightweight macOS menu bar app that reminds you of upcoming meetings and lets you join with one click.">
+<meta property="og:title" content="QuickJoin — Never miss a meeting again">
+<meta property="og:description" content="Smart meeting reminders for macOS. One click to join Teams, Zoom, Google Meet and more.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="de_DE">
 <style>
   :root {
     --bg: #050507;
@@ -14,20 +17,24 @@
     --card: #111116;
     --border: #1a1a22;
     --text: #f0f0f4;
-    --text-dim: #7a7a88;
-    --text-muted: #44444e;
-    --accent: #c8a04a;
-    --accent-glow: #c8a04a30;
-    --accent-bright: #e8c45a;
-    --indigo: #6c63ff;
-    --indigo-glow: #6c63ff20;
-    --green: #34d399;
-    --font: 'Outfit', -apple-system, sans-serif;
-    --mono: 'Fira Code', monospace;
+    --text-dim: #8e8e9a;
+    --text-muted: #55555f;
+    --accent: #2997ff;
+    --accent-hover: #40a9ff;
+    --accent-glow: rgba(41,151,255,0.15);
+    --green: #30d158;
+    --green-glow: rgba(48,209,88,0.12);
+    --purple: #bf5af2;
+    --purple-glow: rgba(191,90,242,0.12);
+    --orange: #ff9f0a;
+    --orange-glow: rgba(255,159,10,0.12);
+    --pink: #ff375f;
+    --pink-glow: rgba(255,55,95,0.12);
+    --font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    --mono: 'SF Mono', SFMono-Regular, ui-monospace, Menlo, monospace;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
-
   html { scroll-behavior: smooth; }
 
   body {
@@ -35,22 +42,14 @@
     background: var(--bg);
     color: var(--text);
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
+    line-height: 1.5;
   }
 
   ::selection {
     background: var(--accent);
-    color: var(--bg);
-  }
-
-  /* --- GRAIN OVERLAY --- */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 9999;
+    color: #fff;
   }
 
   /* --- NAV --- */
@@ -58,14 +57,16 @@
     position: fixed;
     top: 0;
     width: 100%;
-    z-index: 100;
-    padding: 20px 40px;
+    z-index: 1000;
+    padding: 0 40px;
+    height: 52px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: linear-gradient(to bottom, var(--bg), transparent);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: rgba(5,5,7,0.72);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
   }
 
   nav .brand {
@@ -73,19 +74,28 @@
     align-items: center;
     gap: 10px;
     font-weight: 600;
-    font-size: 15px;
+    font-size: 16px;
     letter-spacing: -0.01em;
+    color: var(--text);
+    text-decoration: none;
   }
 
   nav .brand .icon {
-    width: 28px;
-    height: 28px;
-    border-radius: 7px;
-    background: linear-gradient(135deg, var(--accent), #a07830);
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--accent), #0077ed);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 14px;
+    font-size: 16px;
+    box-shadow: 0 2px 8px rgba(41,151,255,0.3);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 4px;
+    align-items: center;
   }
 
   nav a {
@@ -94,25 +104,40 @@
     font-size: 14px;
     font-weight: 400;
     transition: color 0.2s;
-    padding: 6px 14px;
-    border-radius: 8px;
+    padding: 6px 12px;
+    border-radius: 6px;
   }
 
   nav a:hover { color: var(--text); }
 
-  nav .cta {
-    background: var(--accent);
-    color: var(--bg);
-    font-weight: 600;
-    font-size: 13px;
-    padding: 8px 18px;
-    border-radius: 8px;
-    transition: all 0.2s;
+  .lang-switch {
+    display: flex;
+    gap: 2px;
+    margin-left: 12px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 6px;
+    padding: 2px;
   }
 
-  nav .cta:hover {
-    background: var(--accent-bright);
-    transform: translateY(-1px);
+  .lang-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 600;
+    font-family: var(--font);
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.02em;
+  }
+
+  .lang-btn:hover { color: var(--text-dim); }
+
+  .lang-btn.active {
+    background: rgba(255,255,255,0.12);
+    color: var(--text);
   }
 
   /* --- HERO --- */
@@ -130,57 +155,50 @@
   .hero::before {
     content: '';
     position: absolute;
-    top: -200px;
+    top: -100px;
     left: 50%;
     transform: translateX(-50%);
-    width: 800px;
-    height: 800px;
-    background: radial-gradient(circle, var(--accent-glow) 0%, transparent 60%);
+    width: 900px;
+    height: 600px;
+    background: radial-gradient(ellipse, var(--accent-glow) 0%, transparent 70%);
     pointer-events: none;
-    opacity: 0.6;
+    opacity: 0.5;
   }
 
-  .hero .badge {
-    display: inline-flex;
+  .hero-icon {
+    width: 96px;
+    height: 96px;
+    border-radius: 24px;
+    background: linear-gradient(145deg, var(--accent), #0071e3);
+    display: flex;
     align-items: center;
-    gap: 6px;
-    font-size: 12px;
-    font-family: var(--mono);
-    font-weight: 500;
-    color: var(--accent);
-    background: var(--accent-glow);
-    border: 1px solid #c8a04a18;
-    padding: 6px 16px;
-    border-radius: 100px;
+    justify-content: center;
+    font-size: 48px;
     margin-bottom: 32px;
+    box-shadow: 0 12px 40px rgba(41,151,255,0.25), 0 0 0 1px rgba(255,255,255,0.08) inset;
     animation: fadeUp 0.8s ease both;
+    position: relative;
   }
 
   .hero h1 {
-    font-size: clamp(48px, 8vw, 88px);
-    font-weight: 800;
+    font-size: clamp(52px, 8vw, 96px);
+    font-weight: 700;
     letter-spacing: -0.04em;
-    line-height: 1.0;
-    margin-bottom: 24px;
+    line-height: 1.05;
+    margin-bottom: 20px;
     animation: fadeUp 0.8s ease 0.1s both;
-    max-width: 900px;
+    position: relative;
   }
 
-  .hero h1 .highlight {
-    background: linear-gradient(135deg, var(--accent), var(--accent-bright));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .hero p {
-    font-size: clamp(17px, 2.2vw, 21px);
+  .hero .subtitle {
+    font-size: clamp(18px, 2.5vw, 24px);
     color: var(--text-dim);
-    max-width: 560px;
-    line-height: 1.7;
+    max-width: 580px;
+    line-height: 1.5;
     margin-bottom: 40px;
     animation: fadeUp 0.8s ease 0.2s both;
-    font-weight: 300;
+    font-weight: 400;
+    position: relative;
   }
 
   .hero .buttons {
@@ -189,6 +207,7 @@
     animation: fadeUp 0.8s ease 0.3s both;
     flex-wrap: wrap;
     justify-content: center;
+    position: relative;
   }
 
   .btn-primary {
@@ -196,44 +215,96 @@
     align-items: center;
     gap: 8px;
     background: var(--accent);
-    color: var(--bg);
+    color: #fff;
     padding: 14px 28px;
-    border-radius: 12px;
-    font-size: 15px;
+    border-radius: 980px;
+    font-size: 17px;
     font-weight: 600;
     text-decoration: none;
-    transition: all 0.25s;
+    transition: all 0.3s;
     border: none;
     cursor: pointer;
     font-family: var(--font);
   }
 
   .btn-primary:hover {
-    background: var(--accent-bright);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 32px var(--accent-glow);
+    background: var(--accent-hover);
+    transform: scale(1.02);
+    box-shadow: 0 4px 24px var(--accent-glow);
   }
 
-  .btn-secondary {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: transparent;
-    color: var(--text-dim);
-    padding: 14px 28px;
-    border-radius: 12px;
-    font-size: 15px;
-    font-weight: 500;
-    text-decoration: none;
-    transition: all 0.25s;
+  .btn-primary svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* --- FEATURES --- */
+  .features {
+    padding: 100px 24px 120px;
+    max-width: 1120px;
+    margin: 0 auto;
+  }
+
+  .section-eyebrow {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--accent);
+    text-align: center;
+    margin-bottom: 8px;
+  }
+
+  .section-title {
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    text-align: center;
+    margin-bottom: 64px;
+    line-height: 1.1;
+  }
+
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+
+  .feature-card {
+    background: var(--card);
     border: 1px solid var(--border);
-    font-family: var(--font);
+    border-radius: 20px;
+    padding: 32px 24px;
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    text-align: center;
   }
 
-  .btn-secondary:hover {
-    color: var(--text);
-    border-color: #333;
-    background: var(--surface);
+  .feature-card:hover {
+    border-color: rgba(255,255,255,0.08);
+    transform: translateY(-6px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  }
+
+  .feature-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    margin: 0 auto 20px;
+  }
+
+  .feature-card h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+
+  .feature-card p {
+    font-size: 14px;
+    color: var(--text-dim);
+    line-height: 1.6;
   }
 
   /* --- MOCKUP --- */
@@ -241,18 +312,30 @@
     padding: 0 24px 120px;
     display: flex;
     justify-content: center;
-    animation: fadeUp 1s ease 0.5s both;
+    position: relative;
+  }
+
+  .mockup-section::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, var(--purple-glow), transparent 70%);
+    pointer-events: none;
   }
 
   .mockup-frame {
     width: 100%;
-    max-width: 720px;
+    max-width: 680px;
     background: var(--card);
     border-radius: 16px;
     border: 1px solid var(--border);
     overflow: hidden;
     position: relative;
-    box-shadow: 0 40px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.03) inset;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.04) inset;
   }
 
   .mockup-titlebar {
@@ -260,7 +343,7 @@
     align-items: center;
     gap: 8px;
     padding: 14px 18px;
-    background: #0a0a0e;
+    background: rgba(10,10,14,0.8);
     border-bottom: 1px solid var(--border);
   }
 
@@ -270,18 +353,18 @@
     border-radius: 50%;
   }
 
-  .mockup-dot.r { background: #ff5f56; }
-  .mockup-dot.y { background: #ffbd2e; }
-  .mockup-dot.g { background: #27c93f; }
+  .mockup-dot.r { background: #ff5f57; }
+  .mockup-dot.y { background: #febc2e; }
+  .mockup-dot.g { background: #28c840; }
 
   .mockup-content {
-    padding: 48px;
+    padding: 48px 40px;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    min-height: 380px;
-    background: linear-gradient(180deg, #0a0a12 0%, #12101a 100%);
+    min-height: 360px;
+    background: linear-gradient(180deg, #0c0c14 0%, #100e18 100%);
     position: relative;
   }
 
@@ -292,8 +375,8 @@
     left: 50%;
     transform: translateX(-50%);
     width: 300px;
-    height: 300px;
-    background: radial-gradient(circle, var(--indigo-glow), transparent 70%);
+    height: 280px;
+    background: radial-gradient(circle, rgba(108,99,255,0.08), transparent 70%);
     pointer-events: none;
   }
 
@@ -308,8 +391,8 @@
 
   .mockup-color-bar {
     width: 4px;
-    height: 26px;
-    background: var(--indigo);
+    height: 24px;
+    background: #6c63ff;
     border-radius: 2px;
     display: inline-block;
     vertical-align: middle;
@@ -317,17 +400,17 @@
   }
 
   .mockup-title {
-    font-size: 26px;
+    font-size: 24px;
     font-weight: 700;
-    margin-bottom: 6px;
     letter-spacing: -0.02em;
     position: relative;
   }
 
-  .mockup-subtitle {
+  .mockup-sub {
     font-size: 14px;
     color: var(--text-dim);
-    margin-bottom: 8px;
+    margin-top: 4px;
+    margin-bottom: 6px;
   }
 
   .mockup-countdown {
@@ -336,46 +419,43 @@
     gap: 6px;
     font-size: 12px;
     font-weight: 600;
-    color: #34d399;
-    background: #34d39912;
-    padding: 4px 12px;
-    border-radius: 100px;
-    margin-bottom: 32px;
+    color: var(--green);
+    background: var(--green-glow);
+    padding: 4px 14px;
+    border-radius: 980px;
+    margin-bottom: 28px;
   }
 
   .mockup-countdown .dot {
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: #34d399;
+    background: var(--green);
     animation: pulse 2s infinite;
   }
 
   .mockup-btn-join {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    width: 280px;
-    padding: 14px;
+    width: 260px;
+    padding: 13px;
     background: linear-gradient(135deg, #6c63ff, #5548d9);
     border-radius: 12px;
     font-size: 15px;
     font-weight: 600;
-    color: white;
+    color: #fff;
     margin-bottom: 10px;
-    box-shadow: 0 4px 20px #6c63ff30;
+    text-align: center;
+    box-shadow: 0 4px 16px rgba(108,99,255,0.25);
   }
 
   .mockup-btn-close {
-    width: 280px;
+    width: 260px;
     padding: 11px;
-    background: rgba(255,255,255,0.06);
+    background: rgba(255,255,255,0.05);
     border: 1px solid rgba(255,255,255,0.08);
     border-radius: 10px;
     font-size: 13px;
     color: var(--text-dim);
-    margin-bottom: 20px;
+    margin-bottom: 16px;
     text-align: center;
   }
 
@@ -384,209 +464,98 @@
     color: var(--text-muted);
     padding: 4px 14px;
     border: 1px solid rgba(255,255,255,0.05);
-    border-radius: 100px;
+    border-radius: 980px;
   }
 
-  /* --- FEATURES --- */
-  .features {
-    padding: 80px 24px 120px;
-    max-width: 1100px;
+  /* --- PRICING --- */
+  .pricing {
+    padding: 100px 24px 120px;
+    max-width: 960px;
     margin: 0 auto;
   }
 
-  .features .section-label {
-    font-size: 12px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: var(--accent);
-    text-align: center;
-    margin-bottom: 12px;
-  }
-
-  .features h2 {
-    font-size: clamp(32px, 5vw, 48px);
-    font-weight: 700;
-    letter-spacing: -0.03em;
-    text-align: center;
-    margin-bottom: 56px;
-    line-height: 1.1;
-  }
-
-  .feature-grid {
+  .pricing-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 16px;
+    margin-bottom: 20px;
   }
 
-  .feature-card {
+  .pricing-card {
     background: var(--card);
     border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 28px;
-    transition: all 0.3s;
+    border-radius: 20px;
+    padding: 36px 28px;
+    text-align: center;
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     position: relative;
-    overflow: hidden;
   }
 
-  .feature-card:hover {
-    border-color: #2a2a35;
+  .pricing-card:hover {
+    border-color: rgba(255,255,255,0.08);
     transform: translateY(-4px);
     box-shadow: 0 16px 48px rgba(0,0,0,0.3);
   }
 
-  .feature-card .icon-wrap {
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    margin-bottom: 16px;
+  .pricing-card.featured {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent), 0 16px 48px rgba(41,151,255,0.15);
   }
 
-  .feature-card h3 {
-    font-size: 16px;
-    font-weight: 600;
-    margin-bottom: 8px;
-    letter-spacing: -0.01em;
-  }
-
-  .feature-card p {
-    font-size: 13.5px;
-    color: var(--text-dim);
-    line-height: 1.6;
-  }
-
-  /* --- HOW IT WORKS --- */
-  .how {
-    padding: 80px 24px 120px;
-    max-width: 700px;
-    margin: 0 auto;
-  }
-
-  .how .section-label {
-    font-size: 12px;
-    font-weight: 600;
+  .pricing-badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--accent);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 980px;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: var(--accent);
-    text-align: center;
+    white-space: nowrap;
+  }
+
+  .pricing-card .plan-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
     margin-bottom: 12px;
   }
 
-  .how h2 {
-    font-size: clamp(32px, 5vw, 48px);
+  .pricing-card .price {
+    font-size: 40px;
     font-weight: 700;
     letter-spacing: -0.03em;
-    text-align: center;
-    margin-bottom: 56px;
-  }
-
-  .step {
-    display: flex;
-    gap: 20px;
-    margin-bottom: 40px;
-    align-items: flex-start;
-  }
-
-  .step-num {
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
-    background: var(--accent-glow);
-    border: 1px solid #c8a04a20;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: var(--mono);
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--accent);
-    flex-shrink: 0;
-  }
-
-  .step-content h3 {
-    font-size: 17px;
-    font-weight: 600;
     margin-bottom: 4px;
   }
 
-  .step-content p {
+  .pricing-card .price-sub {
     font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+  }
+
+  .pricing-card .price-detail {
+    font-size: 13px;
     color: var(--text-dim);
     line-height: 1.6;
   }
 
-  /* --- STATS --- */
-  .stats {
-    padding: 60px 24px;
-    max-width: 800px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 24px;
+  .pricing-note {
     text-align: center;
-  }
-
-  .stat-val {
-    font-size: 36px;
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    font-family: var(--mono);
-    background: linear-gradient(135deg, var(--text), var(--text-dim));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-
-  .stat-label {
-    font-size: 12px;
-    color: var(--text-muted);
-    margin-top: 4px;
-  }
-
-  /* --- CTA --- */
-  .cta-section {
-    padding: 80px 24px 120px;
-    text-align: center;
-    position: relative;
-  }
-
-  .cta-section::before {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 600px;
-    height: 400px;
-    background: radial-gradient(circle, var(--accent-glow) 0%, transparent 60%);
-    pointer-events: none;
-    opacity: 0.4;
-  }
-
-  .cta-section h2 {
-    font-size: clamp(28px, 4vw, 42px);
-    font-weight: 700;
-    letter-spacing: -0.03em;
-    margin-bottom: 16px;
-    position: relative;
-  }
-
-  .cta-section p {
+    font-size: 15px;
     color: var(--text-dim);
-    font-size: 16px;
-    margin-bottom: 32px;
-    position: relative;
+    margin-top: 24px;
   }
 
-  .cta-section .buttons {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    gap: 14px;
-    flex-wrap: wrap;
+  .pricing-note strong {
+    color: var(--text);
+    font-weight: 600;
   }
 
   /* --- FOOTER --- */
@@ -599,30 +568,45 @@
   footer p {
     font-size: 13px;
     color: var(--text-muted);
+    line-height: 2;
   }
 
   footer a {
     color: var(--text-dim);
     text-decoration: none;
+    transition: color 0.2s;
   }
 
   footer a:hover { color: var(--accent); }
 
+  .footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+
+  .footer-links a {
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+
   /* --- ANIMATIONS --- */
   @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(24px); }
+    from { opacity: 0; transform: translateY(28px); }
     to { opacity: 1; transform: translateY(0); }
   }
 
   @keyframes pulse {
     0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
+    50% { opacity: 0.3; }
   }
 
   .reveal {
     opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateY(32px);
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .reveal.visible {
@@ -631,12 +615,26 @@
   }
 
   /* --- RESPONSIVE --- */
-  @media (max-width: 768px) {
-    nav { padding: 16px 20px; }
-    nav .links { display: none; }
+  @media (max-width: 900px) {
+    .feature-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .pricing-grid {
+      grid-template-columns: 1fr;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+
+  @media (max-width: 600px) {
+    nav { padding: 0 16px; }
+    .nav-links a:not(.lang-switch *) { display: none; }
     .feature-grid { grid-template-columns: 1fr; }
-    .stats { grid-template-columns: repeat(2, 1fr); }
-    .mockup-content { padding: 32px 24px; }
+    .hero { padding: 100px 20px 60px; }
+    .hero-icon { width: 72px; height: 72px; font-size: 36px; border-radius: 18px; }
+    .mockup-content { padding: 32px 20px; }
+    .pricing { padding: 80px 20px; }
   }
 </style>
 </head>
@@ -644,34 +642,35 @@
 
 <!-- NAV -->
 <nav>
-  <div class="brand">
+  <a href="#" class="brand">
     <div class="icon">&#128276;</div>
-    <span>Meeting Reminder</span>
-  </div>
-  <div style="display: flex; gap: 8px; align-items: center;">
-    <a href="#features">Features</a>
-    <a href="#how">Ablauf</a>
-    <a href="https://github.com/hendrikgrueger-web/meeting-reminder" class="cta">GitHub</a>
+    <span>QuickJoin</span>
+  </a>
+  <div class="nav-links">
+    <a href="#features" data-i18n="nav.features">Features</a>
+    <a href="#pricing" data-i18n="nav.pricing">Pricing</a>
+    <div class="lang-switch">
+      <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" data-lang="de" onclick="setLang('de')">DE</button>
+    </div>
   </div>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="badge">macOS 26 &middot; Tahoe &middot; Open Source</div>
-  <h1>Nie wieder ein<br><span class="highlight">Meeting verpassen.</span></h1>
-  <p>Vollbild-Erinnerung. Ein Klick in Teams. Null CPU im Ruhezustand. Die schlankste Meeting-App f&uuml;r deinen Mac.</p>
+  <div class="hero-icon">&#128276;</div>
+  <h1>QuickJoin</h1>
+  <p class="subtitle" data-i18n="hero.subtitle">Never miss a meeting again. One click to join.</p>
   <div class="buttons">
-    <a href="https://github.com/hendrikgrueger-web/meeting-reminder/releases" class="btn-primary">
-      &#11015; Download
-    </a>
-    <a href="https://github.com/hendrikgrueger-web/meeting-reminder" class="btn-secondary">
-      Quellcode ansehen
+    <a href="#" class="btn-primary" data-i18n="hero.cta">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Download on the Mac App Store
     </a>
   </div>
 </section>
 
 <!-- MOCKUP -->
-<section class="mockup-section">
+<section class="mockup-section reveal">
   <div class="mockup-frame">
     <div class="mockup-titlebar">
       <div class="mockup-dot r"></div>
@@ -680,151 +679,239 @@
     </div>
     <div class="mockup-content">
       <div class="mockup-time">14:59:03</div>
-      <div style="margin-top: 24px;">
+      <div style="margin-top: 20px;">
         <span class="mockup-color-bar"></span><span class="mockup-title">Sprint Planning</span>
       </div>
-      <div class="mockup-subtitle">15:00 &ndash; 16:00</div>
+      <div class="mockup-sub">15:00 &ndash; 16:00</div>
       <div class="mockup-countdown">
         <span class="dot"></span>
-        beginnt in 57 Sek.
+        <span data-i18n="mockup.countdown">starts in 57 sec</span>
       </div>
-      <div class="mockup-btn-join">&#9654; Beitreten</div>
-      <div class="mockup-btn-close">Schlie&szlig;en</div>
-      <div class="mockup-snooze">&#128276; 1 Minute</div>
+      <div class="mockup-btn-join" data-i18n="mockup.join">&#9654; Join</div>
+      <div class="mockup-btn-close" data-i18n="mockup.close">Close</div>
+      <div class="mockup-snooze" data-i18n="mockup.snooze">&#128276; 1 minute</div>
     </div>
-  </div>
-</section>
-
-<!-- STATS -->
-<section class="stats reveal">
-  <div>
-    <div class="stat-val">0%</div>
-    <div class="stat-label">CPU im Ruhezustand</div>
-  </div>
-  <div>
-    <div class="stat-val">&lt;20</div>
-    <div class="stat-label">MB RAM</div>
-  </div>
-  <div>
-    <div class="stat-val">&lt;1s</div>
-    <div class="stat-label">Startzeit</div>
-  </div>
-  <div>
-    <div class="stat-val">5</div>
-    <div class="stat-label">Swift-Dateien</div>
   </div>
 </section>
 
 <!-- FEATURES -->
 <section class="features reveal" id="features">
-  <div class="section-label">Features</div>
-  <h2>Alles was du brauchst.<br>Nichts was du nicht brauchst.</h2>
+  <div class="section-eyebrow" data-i18n="features.eyebrow">Features</div>
+  <h2 class="section-title" data-i18n="features.title">Everything you need to stay on time.</h2>
 
   <div class="feature-grid">
     <div class="feature-card">
-      <div class="icon-wrap" style="background: #6c63ff18; color: #6c63ff;">&#128249;</div>
-      <h3>Ein-Klick Teams-Beitritt</h3>
-      <p>Erkennt automatisch MS Teams Links in deinen Kalender-Events. Beitreten mit einem Klick oder Enter-Taste.</p>
+      <div class="feature-icon" style="background: var(--accent-glow); color: var(--accent);">&#127760;</div>
+      <h3 data-i18n="features.providers.title">8 Providers</h3>
+      <p data-i18n="features.providers.desc">Teams, Zoom, Google Meet, WebEx, GoTo, Slack, Whereby, Jitsi</p>
     </div>
 
     <div class="feature-card">
-      <div class="icon-wrap" style="background: #c8a04a18; color: var(--accent);">&#128276;</div>
-      <h3>Vollbild-Erinnerung</h3>
-      <p>&Uuml;ber allen Fenstern, Spaces und Vollbild-Apps. Du kannst es nicht &uuml;bersehen &mdash; genau wie es sein soll.</p>
+      <div class="feature-icon" style="background: var(--green-glow); color: var(--green);">&#9889;</div>
+      <h3 data-i18n="features.oneclick.title">One-Click Join</h3>
+      <p data-i18n="features.oneclick.desc">Deep links open your meeting app directly</p>
     </div>
 
     <div class="feature-card">
-      <div class="icon-wrap" style="background: #34d39918; color: #34d399;">&#9889;</div>
-      <h3>Null Ressourcen</h3>
-      <p>Kein Polling. Die App schl&auml;ft komplett und wacht nur auf, wenn es Zeit ist. 0% CPU zwischen Meetings.</p>
+      <div class="feature-icon" style="background: var(--purple-glow); color: var(--purple);">&#128276;</div>
+      <h3 data-i18n="features.reminders.title">Smart Reminders</h3>
+      <p data-i18n="features.reminders.desc">Full-screen overlay with countdown, snooze, keyboard shortcuts</p>
     </div>
 
     <div class="feature-card">
-      <div class="icon-wrap" style="background: #f472b618; color: #f472b6;">&#128274;</div>
-      <h3>Minimale Berechtigungen</h3>
-      <p>Nur Kalender-Lesezugriff. Kein Netzwerk, kein Vollzugriff, keine Cloud. Deine Daten bleiben lokal.</p>
-    </div>
-
-    <div class="feature-card">
-      <div class="icon-wrap" style="background: #38bdf818; color: #38bdf8;">&#9000;</div>
-      <h3>Keyboard Shortcuts</h3>
-      <p>Enter = Beitreten. Escape = Schlie&szlig;en. Space = Snooze. Keine Maus n&ouml;tig.</p>
-    </div>
-
-    <div class="feature-card">
-      <div class="icon-wrap" style="background: #fb923c18; color: #fb923c;">&#128065;</div>
-      <h3>Screen-Sharing-Schutz</h3>
-      <p>Erkennt Bildschirmfreigabe und zeigt statt des Overlays eine dezente System-Notification.</p>
+      <div class="feature-icon" style="background: var(--pink-glow); color: var(--pink);">&#128274;</div>
+      <h3 data-i18n="features.privacy.title">Privacy First</h3>
+      <p data-i18n="features.privacy.desc">All data stays on your Mac. No tracking, no cloud.</p>
     </div>
   </div>
 </section>
 
-<!-- HOW IT WORKS -->
-<section class="how reveal" id="how">
-  <div class="section-label">So funktioniert's</div>
-  <h2>Einfacher geht's nicht.</h2>
+<!-- PRICING -->
+<section class="pricing reveal" id="pricing">
+  <div class="section-eyebrow" data-i18n="pricing.eyebrow">Pricing</div>
+  <h2 class="section-title" data-i18n="pricing.title">Start free. Upgrade when you're ready.</h2>
 
-  <div class="step">
-    <div class="step-num">1</div>
-    <div class="step-content">
-      <h3>App starten</h3>
-      <p>Meeting Reminder erscheint als Glocken-Icon in der Men&uuml;leiste. Kein Dock-Icon, kein Fenster.</p>
+  <div class="pricing-grid">
+    <div class="pricing-card">
+      <div class="plan-name" data-i18n="pricing.free.name">Free</div>
+      <div class="price" data-i18n="pricing.free.price">$0</div>
+      <div class="price-sub" data-i18n="pricing.free.sub">forever</div>
+      <div class="price-detail" data-i18n="pricing.free.detail">First 50 meeting reminders free</div>
+    </div>
+
+    <div class="pricing-card">
+      <div class="plan-name" data-i18n="pricing.monthly.name">Monthly</div>
+      <div class="price" data-i18n="pricing.monthly.price">&euro;0.99</div>
+      <div class="price-sub" data-i18n="pricing.monthly.sub">/ month</div>
+      <div class="price-detail" data-i18n="pricing.monthly.detail">Unlimited reminders</div>
+    </div>
+
+    <div class="pricing-card featured">
+      <div class="pricing-badge" data-i18n="pricing.annual.badge">Save 33%</div>
+      <div class="plan-name" data-i18n="pricing.annual.name">Annual</div>
+      <div class="price" data-i18n="pricing.annual.price">&euro;7.99</div>
+      <div class="price-sub" data-i18n="pricing.annual.sub">/ year</div>
+      <div class="price-detail" data-i18n="pricing.annual.detail">Unlimited reminders</div>
     </div>
   </div>
 
-  <div class="step">
-    <div class="step-num">2</div>
-    <div class="step-content">
-      <h3>Kalender ausw&auml;hlen</h3>
-      <p>W&auml;hle welche Kalender &uuml;berwacht werden sollen. Exchange, iCloud, Google &mdash; alles was in Apple Kalender sichtbar ist.</p>
-    </div>
-  </div>
-
-  <div class="step">
-    <div class="step-num">3</div>
-    <div class="step-content">
-      <h3>Meeting kommt</h3>
-      <p>1 Minute vor dem Meeting erscheint das Vollbild-Overlay mit Titel, Countdown und Beitreten-Button.</p>
-    </div>
-  </div>
-
-  <div class="step">
-    <div class="step-num">4</div>
-    <div class="step-content">
-      <h3>Beitreten oder Snooze</h3>
-      <p>Ein Klick &ouml;ffnet Teams. Oder dr&uuml;cke Space f&uuml;r 1 Minute Snooze. Escape schlie&szlig;t das Overlay.</p>
-    </div>
-  </div>
-</section>
-
-<!-- CTA -->
-<section class="cta-section reveal">
-  <h2>Open Source. Kostenlos. F&uuml;r immer.</h2>
-  <p>Gebaut mit Swift 6, SwiftUI und Liquid Glass. Keine Abos, keine Werbung, kein Tracking.</p>
-  <div class="buttons">
-    <a href="https://github.com/hendrikgrueger-web/meeting-reminder" class="btn-primary">
-      Zum Repository
-    </a>
-  </div>
+  <p class="pricing-note" data-i18n="pricing.note"><strong>All features included</strong> in every plan.</p>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <p>Meeting Reminder &middot; von <a href="https://github.com/hendrikgrueger-web">Hendrik Gr&uuml;ger</a> &middot; macOS 26+</p>
+  <div class="footer-links">
+    <a href="privacy-policy-en.html" id="privacy-link" data-i18n-href-de="privacy-policy-de.html" data-i18n-href-en="privacy-policy-en.html" data-i18n="footer.privacy">Privacy Policy</a>
+    <a href="https://github.com/hendrikgrueger-web/meeting-reminder">GitHub</a>
+  </div>
+  <p>&copy; 2026 <a href="https://github.com/hendrikgrueger-web">Hendrik Gr&uuml;ger</a></p>
 </footer>
 
-<!-- SCROLL REVEAL -->
+<!-- I18N + SCROLL REVEAL -->
 <script>
-  const reveals = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry, i) => {
-      if (entry.isIntersecting) {
-        setTimeout(() => entry.target.classList.add('visible'), i * 80);
-        observer.unobserve(entry.target);
+(function() {
+  var translations = {
+    en: {
+      'nav.features': 'Features',
+      'nav.pricing': 'Pricing',
+      'hero.subtitle': 'Never miss a meeting again. One click to join.',
+      'hero.cta': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download on the Mac App Store',
+      'mockup.countdown': 'starts in 57 sec',
+      'mockup.join': '&#9654; Join',
+      'mockup.close': 'Close',
+      'mockup.snooze': '&#128276; 1 minute',
+      'features.eyebrow': 'Features',
+      'features.title': 'Everything you need to stay on time.',
+      'features.providers.title': '8 Providers',
+      'features.providers.desc': 'Teams, Zoom, Google Meet, WebEx, GoTo, Slack, Whereby, Jitsi',
+      'features.oneclick.title': 'One-Click Join',
+      'features.oneclick.desc': 'Deep links open your meeting app directly',
+      'features.reminders.title': 'Smart Reminders',
+      'features.reminders.desc': 'Full-screen overlay with countdown, snooze, keyboard shortcuts',
+      'features.privacy.title': 'Privacy First',
+      'features.privacy.desc': 'All data stays on your Mac. No tracking, no cloud.',
+      'pricing.eyebrow': 'Pricing',
+      'pricing.title': 'Start free. Upgrade when you\u2019re ready.',
+      'pricing.free.name': 'Free',
+      'pricing.free.price': '$0',
+      'pricing.free.sub': 'forever',
+      'pricing.free.detail': 'First 50 meeting reminders free',
+      'pricing.monthly.name': 'Monthly',
+      'pricing.monthly.price': '\u20ac0.99',
+      'pricing.monthly.sub': '/ month',
+      'pricing.monthly.detail': 'Unlimited reminders',
+      'pricing.annual.badge': 'Save 33%',
+      'pricing.annual.name': 'Annual',
+      'pricing.annual.price': '\u20ac7.99',
+      'pricing.annual.sub': '/ year',
+      'pricing.annual.detail': 'Unlimited reminders',
+      'pricing.note': '<strong>All features included</strong> in every plan.',
+      'footer.privacy': 'Privacy Policy'
+    },
+    de: {
+      'nav.features': 'Features',
+      'nav.pricing': 'Preise',
+      'hero.subtitle': 'Nie wieder ein Meeting verpassen. Ein Klick zum Beitreten.',
+      'hero.cta': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Im Mac App Store laden',
+      'mockup.countdown': 'beginnt in 57 Sek.',
+      'mockup.join': '&#9654; Beitreten',
+      'mockup.close': 'Schlie\u00dfen',
+      'mockup.snooze': '&#128276; 1 Minute',
+      'features.eyebrow': 'Features',
+      'features.title': 'Alles was du brauchst, um p\u00fcnktlich zu sein.',
+      'features.providers.title': '8 Provider',
+      'features.providers.desc': 'Teams, Zoom, Google Meet, WebEx, GoTo, Slack, Whereby, Jitsi',
+      'features.oneclick.title': 'Ein-Klick-Beitritt',
+      'features.oneclick.desc': 'Deep-Links \u00f6ffnen deine Meeting-App direkt',
+      'features.reminders.title': 'Smarte Erinnerungen',
+      'features.reminders.desc': 'Vollbild-Overlay mit Countdown, Snooze, Tastaturk\u00fcrzel',
+      'features.privacy.title': 'Privatsph\u00e4re zuerst',
+      'features.privacy.desc': 'Alle Daten bleiben auf deinem Mac. Kein Tracking, keine Cloud.',
+      'pricing.eyebrow': 'Preise',
+      'pricing.title': 'Starte kostenlos. Upgrade wenn du bereit bist.',
+      'pricing.free.name': 'Kostenlos',
+      'pricing.free.price': '0\u00a0\u20ac',
+      'pricing.free.sub': 'f\u00fcr immer',
+      'pricing.free.detail': 'Die ersten 50 Meeting-Erinnerungen gratis',
+      'pricing.monthly.name': 'Monatlich',
+      'pricing.monthly.price': '0,99\u00a0\u20ac',
+      'pricing.monthly.sub': '/ Monat',
+      'pricing.monthly.detail': 'Unbegrenzte Erinnerungen',
+      'pricing.annual.badge': '33% sparen',
+      'pricing.annual.name': 'J\u00e4hrlich',
+      'pricing.annual.price': '7,99\u00a0\u20ac',
+      'pricing.annual.sub': '/ Jahr',
+      'pricing.annual.detail': 'Unbegrenzte Erinnerungen',
+      'pricing.note': '<strong>Alle Features</strong> in jedem Plan enthalten.',
+      'footer.privacy': 'Datenschutz'
+    }
+  };
+
+  function detectLang() {
+    var saved = localStorage.getItem('quickjoin-lang');
+    if (saved && translations[saved]) return saved;
+    if (navigator.language && navigator.language.startsWith('de')) return 'de';
+    return 'en';
+  }
+
+  function setLang(lang) {
+    if (!translations[lang]) return;
+    localStorage.setItem('quickjoin-lang', lang);
+    document.documentElement.lang = lang;
+
+    // Update title and meta
+    if (lang === 'de') {
+      document.title = 'QuickJoin \u2014 Nie wieder ein Meeting verpassen';
+      var desc = document.querySelector('meta[name="description"]');
+      if (desc) desc.content = 'QuickJoin ist eine schlanke macOS-Men\u00fcleisten-App, die an bevorstehende Meetings erinnert und den Beitritt per Klick erm\u00f6glicht.';
+    } else {
+      document.title = 'QuickJoin \u2014 Never miss a meeting again';
+      var desc = document.querySelector('meta[name="description"]');
+      if (desc) desc.content = 'QuickJoin is a lightweight macOS menu bar app that reminds you of upcoming meetings and lets you join with one click.';
+    }
+
+    // Update all i18n elements
+    var els = document.querySelectorAll('[data-i18n]');
+    for (var i = 0; i < els.length; i++) {
+      var key = els[i].getAttribute('data-i18n');
+      if (translations[lang][key] !== undefined) {
+        els[i].innerHTML = translations[lang][key];
       }
-    });
-  }, { threshold: 0.15 });
-  reveals.forEach(el => observer.observe(el));
+    }
+
+    // Update privacy link href
+    var privacyLink = document.getElementById('privacy-link');
+    if (privacyLink) {
+      privacyLink.href = lang === 'de' ? 'privacy-policy-de.html' : 'privacy-policy-en.html';
+    }
+
+    // Update lang buttons
+    var btns = document.querySelectorAll('.lang-btn');
+    for (var j = 0; j < btns.length; j++) {
+      btns[j].classList.toggle('active', btns[j].getAttribute('data-lang') === lang);
+    }
+  }
+
+  // Expose globally for onclick
+  window.setLang = setLang;
+
+  // Initialize
+  document.addEventListener('DOMContentLoaded', function() {
+    setLang(detectLang());
+
+    // Scroll reveal
+    var reveals = document.querySelectorAll('.reveal');
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    reveals.forEach(function(el) { observer.observe(el); });
+  });
+})();
 </script>
 
 </body>

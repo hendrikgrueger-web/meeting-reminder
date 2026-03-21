@@ -1,0 +1,455 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0CD0331729598F65DB1A449A /* MeetingLinkExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA16A8280B4270EA0AB03C8 /* MeetingLinkExtractor.swift */; };
+		14BDB1B15F5C5D4230433AD0 /* CalendarService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9A6A775866938B2D866B6C2 /* CalendarService.swift */; };
+		3066501809F6E3442436FEA4 /* MeetingReminderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E1767C5E1566F68C74A409 /* MeetingReminderTests.swift */; };
+		358B620E8E44F184C1BF6B67 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E60F39409160BCF973FFA52 /* SettingsView.swift */; };
+		3C1AC419749810D10AD43E32 /* MeetingEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1DA848F0B57043C139B254 /* MeetingEvent.swift */; };
+		4A96551DBFEB1F10B1EB2682 /* AlertOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C0969AB2B1D5BA4EA8E327B /* AlertOverlayView.swift */; };
+		4E45D1362DCA69E4C60D7EE1 /* MeetingEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00430C6368BB08784E65C769 /* MeetingEventTests.swift */; };
+		4F9BF8264F895ACCDB0A5231 /* MeetingProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8680936E7C58B25BEEE7A144 /* MeetingProvider.swift */; };
+		8A1355F4EC4CD35A375C68AE /* OverlayPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F047C526B699A094136282 /* OverlayPanel.swift */; };
+		9977BAAFBDCDDAD65B3262C6 /* TodayMeetingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E3C40070C5BDEFA92C5EC07 /* TodayMeetingsView.swift */; };
+		9FA6EE7097423EA99F5AC163 /* OverlayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A46CBA400DC9473581D75DC4 /* OverlayController.swift */; };
+		D6FEB632CBE3074F5D18AAF1 /* MeetingReminderApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9CD4F739FD75211AC242FE4 /* MeetingReminderApp.swift */; };
+		F02D86E06AB377964785BFC3 /* MeetingLinkExtractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A15B6CEED6E3AED4E6FC20 /* MeetingLinkExtractorTests.swift */; };
+		FA9AFC7D40E880F34B7D9A84 /* CalendarServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BE56F4115C6D24D64654E2 /* CalendarServiceTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		BCE2B5CE80835403BA333F5A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EBE03ABBF06DAC08E6609ABB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EDFD6AF21B11D88B0CC3EB51;
+			remoteInfo = QuickJoin;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		00430C6368BB08784E65C769 /* MeetingEventTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingEventTests.swift; sourceTree = "<group>"; };
+		0AA16A8280B4270EA0AB03C8 /* MeetingLinkExtractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingLinkExtractor.swift; sourceTree = "<group>"; };
+		38724FD415432100611D7E88 /* QuickJoinTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QuickJoinTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		38C7C2E24323D308E938CD0C /* QuickJoin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QuickJoin.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		68BE56F4115C6D24D64654E2 /* CalendarServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarServiceTests.swift; sourceTree = "<group>"; };
+		6C0969AB2B1D5BA4EA8E327B /* AlertOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertOverlayView.swift; sourceTree = "<group>"; };
+		7A1DA848F0B57043C139B254 /* MeetingEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingEvent.swift; sourceTree = "<group>"; };
+		8680936E7C58B25BEEE7A144 /* MeetingProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingProvider.swift; sourceTree = "<group>"; };
+		8E3C40070C5BDEFA92C5EC07 /* TodayMeetingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayMeetingsView.swift; sourceTree = "<group>"; };
+		9E60F39409160BCF973FFA52 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		A46CBA400DC9473581D75DC4 /* OverlayController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayController.swift; sourceTree = "<group>"; };
+		A9CD4F739FD75211AC242FE4 /* MeetingReminderApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingReminderApp.swift; sourceTree = "<group>"; };
+		C6F047C526B699A094136282 /* OverlayPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayPanel.swift; sourceTree = "<group>"; };
+		D9A6A775866938B2D866B6C2 /* CalendarService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarService.swift; sourceTree = "<group>"; };
+		E9A15B6CEED6E3AED4E6FC20 /* MeetingLinkExtractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingLinkExtractorTests.swift; sourceTree = "<group>"; };
+		E9E1767C5E1566F68C74A409 /* MeetingReminderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingReminderTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		0BBCA8A8188F01B77B75BC39 = {
+			isa = PBXGroup;
+			children = (
+				950BE71248678A30D9F559DA /* Meeting Reminder */,
+				93764F6CD15822CE0A7A88D0 /* Meeting ReminderTests */,
+				F81CF83083D65E2E01F5744C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		41F0F3F5AB7D860A23475E71 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				6C0969AB2B1D5BA4EA8E327B /* AlertOverlayView.swift */,
+				A46CBA400DC9473581D75DC4 /* OverlayController.swift */,
+				C6F047C526B699A094136282 /* OverlayPanel.swift */,
+				9E60F39409160BCF973FFA52 /* SettingsView.swift */,
+				8E3C40070C5BDEFA92C5EC07 /* TodayMeetingsView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		5F6E0C30A6C81AFD9415240F /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				D9A6A775866938B2D866B6C2 /* CalendarService.swift */,
+				0AA16A8280B4270EA0AB03C8 /* MeetingLinkExtractor.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		93764F6CD15822CE0A7A88D0 /* Meeting ReminderTests */ = {
+			isa = PBXGroup;
+			children = (
+				68BE56F4115C6D24D64654E2 /* CalendarServiceTests.swift */,
+				00430C6368BB08784E65C769 /* MeetingEventTests.swift */,
+				E9A15B6CEED6E3AED4E6FC20 /* MeetingLinkExtractorTests.swift */,
+				E9E1767C5E1566F68C74A409 /* MeetingReminderTests.swift */,
+			);
+			path = "Meeting ReminderTests";
+			sourceTree = "<group>";
+		};
+		950BE71248678A30D9F559DA /* Meeting Reminder */ = {
+			isa = PBXGroup;
+			children = (
+				A9CD4F739FD75211AC242FE4 /* MeetingReminderApp.swift */,
+				C61C1F708CBB25D6210A986C /* Models */,
+				5F6E0C30A6C81AFD9415240F /* Services */,
+				41F0F3F5AB7D860A23475E71 /* Views */,
+			);
+			path = "Meeting Reminder";
+			sourceTree = "<group>";
+		};
+		C61C1F708CBB25D6210A986C /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				7A1DA848F0B57043C139B254 /* MeetingEvent.swift */,
+				8680936E7C58B25BEEE7A144 /* MeetingProvider.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		F81CF83083D65E2E01F5744C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				38C7C2E24323D308E938CD0C /* QuickJoin.app */,
+				38724FD415432100611D7E88 /* QuickJoinTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		3B8BFC613AF83EBFE9F0021D /* QuickJoinTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7819C202F078E8F8308D8E79 /* Build configuration list for PBXNativeTarget "QuickJoinTests" */;
+			buildPhases = (
+				DB9A1B648FB744290392CFB5 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DFE410F8E3772E6F680B76E3 /* PBXTargetDependency */,
+			);
+			name = QuickJoinTests;
+			packageProductDependencies = (
+			);
+			productName = QuickJoinTests;
+			productReference = 38724FD415432100611D7E88 /* QuickJoinTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		EDFD6AF21B11D88B0CC3EB51 /* QuickJoin */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 297D5796821EEF88A1818698 /* Build configuration list for PBXNativeTarget "QuickJoin" */;
+			buildPhases = (
+				5BE7F2187663CBC539C907EB /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = QuickJoin;
+			packageProductDependencies = (
+			);
+			productName = QuickJoin;
+			productReference = 38C7C2E24323D308E938CD0C /* QuickJoin.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		EBE03ABBF06DAC08E6609ABB /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+			};
+			buildConfigurationList = 36B6C1902E0912383F3D8DB4 /* Build configuration list for PBXProject "QuickJoin" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 0BBCA8A8188F01B77B75BC39;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				EDFD6AF21B11D88B0CC3EB51 /* QuickJoin */,
+				3B8BFC613AF83EBFE9F0021D /* QuickJoinTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		5BE7F2187663CBC539C907EB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4A96551DBFEB1F10B1EB2682 /* AlertOverlayView.swift in Sources */,
+				14BDB1B15F5C5D4230433AD0 /* CalendarService.swift in Sources */,
+				3C1AC419749810D10AD43E32 /* MeetingEvent.swift in Sources */,
+				0CD0331729598F65DB1A449A /* MeetingLinkExtractor.swift in Sources */,
+				4F9BF8264F895ACCDB0A5231 /* MeetingProvider.swift in Sources */,
+				D6FEB632CBE3074F5D18AAF1 /* MeetingReminderApp.swift in Sources */,
+				9FA6EE7097423EA99F5AC163 /* OverlayController.swift in Sources */,
+				8A1355F4EC4CD35A375C68AE /* OverlayPanel.swift in Sources */,
+				358B620E8E44F184C1BF6B67 /* SettingsView.swift in Sources */,
+				9977BAAFBDCDDAD65B3262C6 /* TodayMeetingsView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DB9A1B648FB744290392CFB5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FA9AFC7D40E880F34B7D9A84 /* CalendarServiceTests.swift in Sources */,
+				4E45D1362DCA69E4C60D7EE1 /* MeetingEventTests.swift in Sources */,
+				F02D86E06AB377964785BFC3 /* MeetingLinkExtractorTests.swift in Sources */,
+				3066501809F6E3442436FEA4 /* MeetingReminderTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		DFE410F8E3772E6F680B76E3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EDFD6AF21B11D88B0CC3EB51 /* QuickJoin */;
+			targetProxy = BCE2B5CE80835403BA333F5A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		1363336C0B82633A3DF49467 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Meeting Reminder/Meeting_Reminder.entitlements";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "Meeting Reminder/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		1F4B8B17FEFBE117BE4949C6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		221A649C89F19BE1EBE6DADA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		98805933066D596E7C416CA2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Meeting Reminder/Meeting_Reminder.entitlements";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "Meeting Reminder/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		ADDA79C04B62CD1CEE2F7649 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/QuickJoin.app/Contents/MacOS/QuickJoin";
+			};
+			name = Debug;
+		};
+		C8659D59E9BBAA820808F78A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/QuickJoin.app/Contents/MacOS/QuickJoin";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		297D5796821EEF88A1818698 /* Build configuration list for PBXNativeTarget "QuickJoin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1363336C0B82633A3DF49467 /* Debug */,
+				98805933066D596E7C416CA2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		36B6C1902E0912383F3D8DB4 /* Build configuration list for PBXProject "QuickJoin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1F4B8B17FEFBE117BE4949C6 /* Debug */,
+				221A649C89F19BE1EBE6DADA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		7819C202F078E8F8308D8E79 /* Build configuration list for PBXNativeTarget "QuickJoinTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ADDA79C04B62CD1CEE2F7649 /* Debug */,
+				C8659D59E9BBAA820808F78A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = EBE03ABBF06DAC08E6609ABB /* Project object */;
+}

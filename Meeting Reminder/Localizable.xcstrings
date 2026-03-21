@@ -1,0 +1,1177 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+
+    "LIVE" : {
+      "comment" : "Badge label shown when a meeting is currently running",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "LIVE"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "LIVE"
+          }
+        }
+      }
+    },
+
+    "Meeting läuft bereits" : {
+      "comment" : "Accessibility label for LIVE badge",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meeting läuft bereits"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meeting already in progress"
+          }
+        }
+      }
+    },
+
+    "Kein Einwahllink vorhanden" : {
+      "comment" : "Warning shown in overlay when no meeting join link is available",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kein Einwahllink vorhanden"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No join link available"
+          }
+        }
+      }
+    },
+
+    "Schließen" : {
+      "comment" : "Button label to dismiss the meeting reminder overlay",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schließen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dismiss"
+          }
+        }
+      }
+    },
+
+    "Erinnerung schließen" : {
+      "comment" : "Accessibility label for the dismiss button in the overlay",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erinnerung schließen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dismiss reminder"
+          }
+        }
+      }
+    },
+
+    "Später erinnern" : {
+      "comment" : "Label above the snooze button",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Später erinnern"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remind me later"
+          }
+        }
+      }
+    },
+
+    "1 Minute" : {
+      "comment" : "Label on the snooze button indicating snooze duration",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 Minute"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 minute"
+          }
+        }
+      }
+    },
+
+    "In einer Minute erneut erinnern" : {
+      "comment" : "Accessibility label for the snooze button",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In einer Minute erneut erinnern"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remind me again in one minute"
+          }
+        }
+      }
+    },
+
+    "beginnt in %lld Sek." : {
+      "comment" : "Countdown text when meeting starts in less than 60 seconds. %lld = number of seconds",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "beginnt in %lld Sek."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "starts in %lld sec."
+          }
+        }
+      }
+    },
+
+    "beginnt in %lld Min." : {
+      "comment" : "Countdown text when meeting starts in more than 60 seconds. %lld = number of minutes",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "beginnt in %lld Min."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "starts in %lld min."
+          }
+        }
+      }
+    },
+
+    "läuft gerade" : {
+      "comment" : "Countdown text when meeting just started (0 minutes elapsed)",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "läuft gerade"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "starting now"
+          }
+        }
+      }
+    },
+
+    "läuft seit %lld Min." : {
+      "comment" : "Countdown text when meeting is already in progress. %lld = elapsed minutes",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "läuft seit %lld Min."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "started %lld min. ago"
+          }
+        }
+      }
+    },
+
+    "via %@" : {
+      "comment" : "Provider indicator below join button. %@ = provider short name",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "via %@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "via %@"
+          }
+        }
+      }
+    },
+
+    "Keine anstehenden Meetings" : {
+      "comment" : "Status text when no upcoming meetings are scheduled",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine anstehenden Meetings"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No upcoming meetings"
+          }
+        }
+      }
+    },
+
+    "Kalender-Zugriff benötigt" : {
+      "comment" : "Status label shown when calendar access has not been granted",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kalender-Zugriff benötigt"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calendar access required"
+          }
+        }
+      }
+    },
+
+    "Systemeinstellungen öffnen" : {
+      "comment" : "Button to open System Settings for granting calendar access",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Systemeinstellungen öffnen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open System Settings"
+          }
+        }
+      }
+    },
+
+    "Keine Kalender gefunden" : {
+      "comment" : "Status label when no calendars are configured",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine Kalender gefunden"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No calendars found"
+          }
+        }
+      }
+    },
+
+    "Heute" : {
+      "comment" : "Section header for today's meetings in the menu bar popover",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Heute"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Today"
+          }
+        }
+      }
+    },
+
+    "Kalender" : {
+      "comment" : "Section header for calendar toggles in settings",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kalender"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calendars"
+          }
+        }
+      }
+    },
+
+    "Meeting-Provider" : {
+      "comment" : "Section header for meeting provider toggles in settings",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meeting-Provider"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meeting Providers"
+          }
+        }
+      }
+    },
+
+    "Einstellungen" : {
+      "comment" : "Section header for general settings",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Einstellungen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings"
+          }
+        }
+      }
+    },
+
+    "Meetings von %@ einbeziehen" : {
+      "comment" : "Tooltip for provider toggle rows. %@ = provider name",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meetings von %@ einbeziehen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Include meetings from %@"
+          }
+        }
+      }
+    },
+
+    "Events aus diesem Kalender einbeziehen" : {
+      "comment" : "Tooltip for calendar toggle rows",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Events aus diesem Kalender einbeziehen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Include events from this calendar"
+          }
+        }
+      }
+    },
+
+    "Vorlaufzeit" : {
+      "comment" : "Label for the lead time setting (minutes before meeting to show reminder)",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vorlaufzeit"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reminder Lead Time"
+          }
+        }
+      }
+    },
+
+    "Wie viele Minuten vor dem Meeting soll die Erinnerung erscheinen?" : {
+      "comment" : "Help text for the lead time stepper",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wie viele Minuten vor dem Meeting soll die Erinnerung erscheinen?"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How many minutes before the meeting should the reminder appear?"
+          }
+        }
+      }
+    },
+
+    "%lld Min" : {
+      "comment" : "Display value for lead time stepper. %lld = number of minutes",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld Min"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld min"
+          }
+        }
+      }
+    },
+
+    "Nur Online-Meetings" : {
+      "comment" : "Toggle label: only show reminders for online meetings with a join link",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nur Online-Meetings"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Online Meetings Only"
+          }
+        }
+      }
+    },
+
+    "Nur an Meetings mit Einwahllink erinnern (Teams, Zoom, Google Meet, WebEx, etc.). Termine ohne Link werden ignoriert." : {
+      "comment" : "Help text for online-only meeting toggle",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nur an Meetings mit Einwahllink erinnern (Teams, Zoom, Google Meet, WebEx, etc.). Termine ohne Link werden ignoriert."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Only remind for meetings with a join link (Teams, Zoom, Google Meet, WebEx, etc.). Events without a link are ignored."
+          }
+        }
+      }
+    },
+
+    "Bildschirmfreigabe: Notification" : {
+      "comment" : "Toggle label for screen sharing notification fallback setting",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bildschirmfreigabe: Notification"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Screen Sharing: Notification Only"
+          }
+        }
+      }
+    },
+
+    "Bei aktiver Bildschirmfreigabe statt Vollbild-Overlay eine dezente Benachrichtigung anzeigen." : {
+      "comment" : "Help text for screen sharing toggle",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bei aktiver Bildschirmfreigabe statt Vollbild-Overlay eine dezente Benachrichtigung anzeigen."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show a subtle notification instead of a full-screen overlay when sharing your screen."
+          }
+        }
+      }
+    },
+
+    "Sound" : {
+      "comment" : "Toggle label for sound alert setting",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sound"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sound"
+          }
+        }
+      }
+    },
+
+    "Einen kurzen Signalton abspielen, wenn die Erinnerung erscheint." : {
+      "comment" : "Help text for sound toggle",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Einen kurzen Signalton abspielen, wenn die Erinnerung erscheint."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Play a brief alert sound when the reminder appears."
+          }
+        }
+      }
+    },
+
+    "Globaler Shortcut (⌘⇧J)" : {
+      "comment" : "Toggle label for global keyboard shortcut setting",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Globaler Shortcut (⌘⇧J)"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Global Shortcut (⌘⇧J)"
+          }
+        }
+      }
+    },
+
+    "Mit Cmd+Shift+J das nächste Meeting sofort öffnen, ohne das Overlay zu verwenden." : {
+      "comment" : "Help text for global shortcut toggle",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mit Cmd+Shift+J das nächste Meeting sofort öffnen, ohne das Overlay zu verwenden."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Use Cmd+Shift+J to instantly join the next meeting without the overlay."
+          }
+        }
+      }
+    },
+
+    "Bei Anmeldung starten" : {
+      "comment" : "Toggle label for launch at login setting",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bei Anmeldung starten"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Launch at Login"
+          }
+        }
+      }
+    },
+
+    "QuickJoin automatisch starten, wenn du dich am Mac anmeldest." : {
+      "comment" : "Help text for launch at login toggle",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "QuickJoin automatisch starten, wenn du dich am Mac anmeldest."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatically launch QuickJoin when you log in to your Mac."
+          }
+        }
+      }
+    },
+
+    "In Systemeinstellungen aktivieren" : {
+      "comment" : "Label shown when launch-at-login requires approval in System Settings",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In Systemeinstellungen aktivieren"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable in System Settings"
+          }
+        }
+      }
+    },
+
+    "QuickJoin" : {
+      "comment" : "App name shown in the about section of the settings popover",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "QuickJoin"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "QuickJoin"
+          }
+        }
+      }
+    },
+
+    "Version %@ (%@)" : {
+      "comment" : "Version string in about section. First %@ = marketing version, second %@ = build number",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Version %@ (%@)"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Version %@ (%@)"
+          }
+        }
+      }
+    },
+
+    "© 2026 Grüpi GmbH" : {
+      "comment" : "Copyright notice in about section",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "© 2026 Grüpi GmbH"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "© 2026 Grüpi GmbH"
+          }
+        }
+      }
+    },
+
+    "Beenden" : {
+      "comment" : "Quit button in settings popover",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beenden"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quit"
+          }
+        }
+      }
+    },
+
+    "Keine Meetings heute" : {
+      "comment" : "Placeholder shown in today's meetings list when there are no events",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine Meetings heute"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No meetings today"
+          }
+        }
+      }
+    },
+
+    "Klicken zum Beitreten via %@" : {
+      "comment" : "Tooltip for a meeting row in today's view when it has a join link. %@ = provider short name",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Klicken zum Beitreten via %@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Click to join via %@"
+          }
+        }
+      }
+    },
+
+    "Kein Kalenderzugriff – Einstellungen öffnen" : {
+      "comment" : "Menu bar tooltip when calendar access has not been granted",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kein Kalenderzugriff – Einstellungen öffnen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No calendar access – open Settings"
+          }
+        }
+      }
+    },
+
+    "Meeting läuft: %@" : {
+      "comment" : "Menu bar tooltip when a meeting is currently in progress. %@ = meeting title",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meeting läuft: %@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meeting in progress: %@"
+          }
+        }
+      }
+    },
+
+    "Nächstes Meeting: %@ in 1 Min" : {
+      "comment" : "Menu bar tooltip when next meeting starts in 1 minute. %@ = meeting title",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nächstes Meeting: %@ in 1 Min"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Next meeting: %@ in 1 min"
+          }
+        }
+      }
+    },
+
+    "Nächstes Meeting: %@ in %lld Min" : {
+      "comment" : "Menu bar tooltip when next meeting starts in N minutes. First %@ = meeting title, %lld = minutes",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nächstes Meeting: %@ in %lld Min"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Next meeting: %@ in %lld min"
+          }
+        }
+      }
+    },
+
+    "Meeting beginnt gleich — Klicke zum Beitreten via %@" : {
+      "comment" : "System notification body when screen sharing is active and a meeting is about to start. %@ = provider short name",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meeting beginnt gleich — Klicke zum Beitreten via %@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meeting starts now — click to join via %@"
+          }
+        }
+      }
+    },
+
+    "Meeting beginnt gleich" : {
+      "comment" : "System notification body when screen sharing is active and meeting has no join link",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meeting beginnt gleich"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meeting is about to start"
+          }
+        }
+      }
+    },
+
+    "Teams beitreten" : {
+      "comment" : "Join button label for Microsoft Teams",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Teams beitreten"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Join Teams"
+          }
+        }
+      }
+    },
+
+    "Zoom beitreten" : {
+      "comment" : "Join button label for Zoom",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zoom beitreten"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Join Zoom"
+          }
+        }
+      }
+    },
+
+    "Google Meet beitreten" : {
+      "comment" : "Join button label for Google Meet",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Google Meet beitreten"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Join Google Meet"
+          }
+        }
+      }
+    },
+
+    "WebEx beitreten" : {
+      "comment" : "Join button label for Cisco WebEx",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WebEx beitreten"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Join WebEx"
+          }
+        }
+      }
+    },
+
+    "GoTo beitreten" : {
+      "comment" : "Join button label for GoTo Meeting",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "GoTo beitreten"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Join GoTo"
+          }
+        }
+      }
+    },
+
+    "Slack Huddle beitreten" : {
+      "comment" : "Join button label for Slack Huddle",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Slack Huddle beitreten"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Join Slack Huddle"
+          }
+        }
+      }
+    },
+
+    "Whereby beitreten" : {
+      "comment" : "Join button label for Whereby",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Whereby beitreten"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Join Whereby"
+          }
+        }
+      }
+    },
+
+    "Jitsi beitreten" : {
+      "comment" : "Join button label for Jitsi Meet",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jitsi beitreten"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Join Jitsi"
+          }
+        }
+      }
+    },
+
+    "Beitreten via Microsoft Teams" : {
+      "comment" : "Accessibility join label for Microsoft Teams",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beitreten via Microsoft Teams"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Join via Microsoft Teams"
+          }
+        }
+      }
+    },
+
+    "Beitreten via Zoom" : {
+      "comment" : "Accessibility join label for Zoom",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beitreten via Zoom"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Join via Zoom"
+          }
+        }
+      }
+    },
+
+    "Beitreten via Google Meet" : {
+      "comment" : "Accessibility join label for Google Meet",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beitreten via Google Meet"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Join via Google Meet"
+          }
+        }
+      }
+    },
+
+    "Beitreten via WebEx" : {
+      "comment" : "Accessibility join label for Cisco WebEx",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beitreten via WebEx"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Join via WebEx"
+          }
+        }
+      }
+    },
+
+    "Beitreten via GoTo Meeting" : {
+      "comment" : "Accessibility join label for GoTo Meeting",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beitreten via GoTo Meeting"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Join via GoTo Meeting"
+          }
+        }
+      }
+    },
+
+    "Beitreten via Slack Huddle" : {
+      "comment" : "Accessibility join label for Slack Huddle",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beitreten via Slack Huddle"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Join via Slack Huddle"
+          }
+        }
+      }
+    },
+
+    "Beitreten via Whereby" : {
+      "comment" : "Accessibility join label for Whereby",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beitreten via Whereby"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Join via Whereby"
+          }
+        }
+      }
+    },
+
+    "Beitreten via Jitsi Meet" : {
+      "comment" : "Accessibility join label for Jitsi Meet",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beitreten via Jitsi Meet"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Join via Jitsi Meet"
+          }
+        }
+      }
+    }
+
+  },
+  "version" : "1.0"
+}

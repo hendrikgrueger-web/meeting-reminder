@@ -1,6 +1,6 @@
 import Testing
 import Foundation
-@testable import Meeting_Reminder
+@testable import QuickJoin
 
 @Suite("MeetingLinkExtractor Tests")
 struct MeetingLinkExtractorTests {

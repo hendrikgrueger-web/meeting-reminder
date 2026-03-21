@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Datenschutzerkl&auml;rung — QuickJoin</title>
+<meta name="description" content="Datenschutzerkl&auml;rung f&uuml;r QuickJoin, die macOS Meeting-Erinnerungs-App.">
+<style>
+  :root {
+    --bg: #050507;
+    --card: #111116;
+    --border: #1a1a22;
+    --text: #f0f0f4;
+    --text-dim: #8e8e9a;
+    --text-muted: #55555f;
+    --accent: #2997ff;
+    --font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.7;
+  }
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 80px 24px 60px;
+  }
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 14px;
+    margin-bottom: 40px;
+    transition: opacity 0.2s;
+  }
+  .back-link:hover { opacity: 0.8; }
+  h1 {
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin-bottom: 8px;
+  }
+  .last-updated {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 40px;
+  }
+  h2 {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-top: 40px;
+    margin-bottom: 12px;
+  }
+  p {
+    font-size: 16px;
+    color: var(--text-dim);
+    margin-bottom: 16px;
+  }
+  ul {
+    margin: 0 0 16px 20px;
+    color: var(--text-dim);
+    font-size: 16px;
+  }
+  li { margin-bottom: 6px; }
+  strong { color: var(--text); font-weight: 600; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  footer {
+    padding: 32px 24px;
+    text-align: center;
+    border-top: 1px solid var(--border);
+    margin-top: 60px;
+  }
+  footer p { font-size: 13px; color: var(--text-muted); }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <a href="index.html" class="back-link">&larr; Zur&uuml;ck zu QuickJoin</a>
+
+  <h1>Datenschutzerkl&auml;rung</h1>
+  <p class="last-updated">Zuletzt aktualisiert: 21. M&auml;rz 2026</p>
+
+  <h2>&Uuml;bersicht</h2>
+  <p>QuickJoin (&bdquo;die App&ldquo;) ist eine macOS-Men&uuml;leisten-App, entwickelt von Hendrik Gr&uuml;ger. Deine Privatsph&auml;re ist uns wichtig. Diese Richtlinie erkl&auml;rt, auf welche Daten die App zugreift und wie sie damit umgeht.</p>
+
+  <h2>Datenerhebung</h2>
+  <p><strong>QuickJoin erhebt, speichert und &uuml;bertr&auml;gt keinerlei personenbezogene Daten.</strong> Die App verwendet keine Analyse-Tools, kein Tracking und keine Dienste Dritter.</p>
+
+  <h2>Kalenderzugriff</h2>
+  <p>QuickJoin fordert Lesezugriff auf deine macOS-Kalender &uuml;ber Apples EventKit-Framework an. Dieser Zugriff wird ausschlie&szlig;lich verwendet, um:</p>
+  <ul>
+    <li>Bevorstehende Kalender-Events anzuzeigen</li>
+    <li>Meeting-Beitrittslinks zu extrahieren (Teams, Zoom, Google Meet, WebEx, GoTo, Slack, Whereby, Jitsi)</li>
+    <li>Erinnerungen zu planen</li>
+  </ul>
+  <p>Kalenderdaten werden vollst&auml;ndig auf deinem Ger&auml;t verarbeitet und niemals an einen Server &uuml;bertragen.</p>
+
+  <h2>Netzwerkzugriff</h2>
+  <p>QuickJoin stellt <strong>keine</strong> Netzwerkanfragen. Die App hat keine Netzwerk-Berechtigungen. Wenn du auf &bdquo;Beitreten&ldquo; klickst, wird die Meeting-URL &uuml;ber den macOS-Standard-URL-Handler (NSWorkspace) ge&ouml;ffnet, der sie an die entsprechende App weiterleitet (z.B. Microsoft Teams, Zoom).</p>
+
+  <h2>Datenspeicherung</h2>
+  <p>Die App speichert lediglich deine Einstellungen (ausgew&auml;hlte Kalender, Vorlaufzeit, Sound-Einstellungen) &uuml;ber macOS UserDefaults. Es werden keine Kalenderdaten dauerhaft gespeichert.</p>
+
+  <h2>Dienste Dritter</h2>
+  <p>QuickJoin integriert keine Dienste, SDKs oder Analyseplattformen Dritter.</p>
+
+  <h2>Datenschutz f&uuml;r Kinder</h2>
+  <p>Die App erhebt wissentlich keine Daten von Kindern unter 13 Jahren.</p>
+
+  <h2>&Auml;nderungen</h2>
+  <p>Wird diese Datenschutzerkl&auml;rung aktualisiert, werden die &Auml;nderungen auf dieser Seite mit einem aktualisierten Datum ver&ouml;ffentlicht.</p>
+
+  <h2>Kontakt</h2>
+  <p>Bei Fragen zu dieser Datenschutzerkl&auml;rung: <a href="mailto:hendrik@gruepi.de">hendrik@gruepi.de</a></p>
+</div>
+
+<footer>
+  <p>&copy; 2026 Hendrik Gr&uuml;ger &middot; <a href="index.html">QuickJoin</a></p>
+</footer>
+
+</body>
+</html>
