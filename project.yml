@@ -22,7 +22,7 @@ targets:
   Meeting Reminder:
     type: application
     platform: macOS
-    deploymentTarget: "15.0"
+    deploymentTarget: "26.0"
     bundleId: de.hendrikgrueger.meeting-reminder
 
     sources:

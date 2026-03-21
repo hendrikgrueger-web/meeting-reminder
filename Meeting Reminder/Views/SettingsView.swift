@@ -115,7 +115,10 @@ struct SettingsView: View {
             Divider().padding(.vertical, 8)
 
             // Vorlaufzeit
-            settingRow("Vorlaufzeit") {
+            settingRow(
+                "Vorlaufzeit",
+                help: "Wie viele Minuten vor dem Meeting soll die Erinnerung erscheinen?"
+            ) {
                 Picker("", selection: $calendarService.leadTimeMinutes) {
                     Text("1 Min").tag(1)
                     Text("2 Min").tag(2)
@@ -127,18 +130,34 @@ struct SettingsView: View {
                 .frame(width: 80)
             }
 
-            settingToggle("Nur Online-Meetings", isOn: $calendarService.onlyOnlineMeetings)
-            settingToggle("Bildschirmfreigabe: Notification", isOn: $calendarService.silentWhenScreenSharing)
-            settingToggle("Sound", isOn: $calendarService.soundEnabled)
-            settingToggle("Bei Anmeldung starten", isOn: $launchAtLogin)
-                .onChange(of: launchAtLogin) { _, newValue in
-                    do {
-                        if newValue { try SMAppService.mainApp.register() }
-                        else { try SMAppService.mainApp.unregister() }
-                    } catch {
-                        launchAtLogin = SMAppService.mainApp.status == .enabled
-                    }
+            settingToggle(
+                "Nur Online-Meetings",
+                help: "Nur an Meetings mit Teams-Einwahllink erinnern. Termine ohne Link werden ignoriert.",
+                isOn: $calendarService.onlyOnlineMeetings
+            )
+            settingToggle(
+                "Bildschirmfreigabe: Notification",
+                help: "Bei aktiver Bildschirmfreigabe statt Vollbild-Overlay eine dezente Benachrichtigung anzeigen.",
+                isOn: $calendarService.silentWhenScreenSharing
+            )
+            settingToggle(
+                "Sound",
+                help: "Einen kurzen Signalton abspielen, wenn die Erinnerung erscheint.",
+                isOn: $calendarService.soundEnabled
+            )
+            settingToggle(
+                "Bei Anmeldung starten",
+                help: "Meeting Reminder automatisch starten, wenn du dich am Mac anmeldest.",
+                isOn: $launchAtLogin
+            )
+            .onChange(of: launchAtLogin) { _, newValue in
+                do {
+                    if newValue { try SMAppService.mainApp.register() }
+                    else { try SMAppService.mainApp.unregister() }
+                } catch {
+                    launchAtLogin = SMAppService.mainApp.status == .enabled
                 }
+            }
 
             if SMAppService.mainApp.status == .requiresApproval {
                 Label("In Systemeinstellungen aktivieren", systemImage: "exclamationmark.triangle")
@@ -168,9 +187,10 @@ struct SettingsView: View {
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 3)
+        .help("Events aus diesem Kalender einbeziehen")
     }
 
-    private func settingRow(_ label: String, @ViewBuilder control: () -> some View) -> some View {
+    private func settingRow(_ label: String, help: String, @ViewBuilder control: () -> some View) -> some View {
         HStack {
             Text(label)
                 .font(.subheadline)
@@ -179,9 +199,10 @@ struct SettingsView: View {
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 4)
+        .help(help)
     }
 
-    private func settingToggle(_ label: String, isOn: Binding<Bool>) -> some View {
+    private func settingToggle(_ label: String, help: String, isOn: Binding<Bool>) -> some View {
         HStack {
             Text(label)
                 .font(.subheadline)
@@ -193,5 +214,6 @@ struct SettingsView: View {
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 4)
+        .help(help)
     }
 }

@@ -124,26 +124,8 @@ struct AlertOverlayView: View {
         .padding(.horizontal, 48)
         .padding(.vertical, 36)
         .frame(width: 440)
-        .background(
-            RoundedRectangle(cornerRadius: 24)
-                .fill(.black.opacity(0.5))
-                .background(
-                    RoundedRectangle(cornerRadius: 24)
-                        .fill(.ultraThinMaterial)
-                )
-                .clipShape(RoundedRectangle(cornerRadius: 24))
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: 24)
-                .strokeBorder(
-                    LinearGradient(
-                        colors: [.white.opacity(0.2), .white.opacity(0.05)],
-                        startPoint: .top,
-                        endPoint: .bottom
-                    ),
-                    lineWidth: 0.5
-                )
-        )
+        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 24))
+        .glassEffect(.regular.interactive(), in: RoundedRectangle(cornerRadius: 24))
         .shadow(color: .black.opacity(0.5), radius: 40, y: 12)
     }
 
@@ -187,18 +169,11 @@ struct AlertOverlayView: View {
                     }
                     .frame(maxWidth: .infinity)
                     .frame(height: 44)
-                    .background(
-                        LinearGradient(
-                            colors: [Color(red: 0.45, green: 0.4, blue: 0.85), Color(red: 0.35, green: 0.3, blue: 0.75)],
-                            startPoint: .top,
-                            endPoint: .bottom
-                        )
-                    )
-                    .foregroundStyle(.white)
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
-                    .shadow(color: Color(red: 0.4, green: 0.35, blue: 0.8).opacity(0.4), radius: 8, y: 4)
                 }
-                .buttonStyle(.plain)
+                .buttonStyle(.borderedProminent)
+                .tint(.indigo)
+                .controlSize(.large)
+                .glassEffect(.regular.interactive(), in: RoundedRectangle(cornerRadius: 12))
                 .accessibilityLabel("Beitreten via Microsoft Teams")
             }
 
@@ -208,15 +183,10 @@ struct AlertOverlayView: View {
                     .font(.system(size: 14, weight: .medium))
                     .frame(maxWidth: .infinity)
                     .frame(height: 38)
-                    .background(.white.opacity(0.08))
-                    .foregroundStyle(.white.opacity(0.7))
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 10)
-                            .strokeBorder(.white.opacity(0.1), lineWidth: 0.5)
-                    )
             }
-            .buttonStyle(.plain)
+            .buttonStyle(.bordered)
+            .controlSize(.large)
+            .glassEffect(.regular.interactive(), in: RoundedRectangle(cornerRadius: 10))
             .accessibilityLabel("Erinnerung schließen")
         }
     }
