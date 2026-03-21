@@ -10,12 +10,19 @@ final class OverlayController: ObservableObject {
     @Published var isVisible = false
 
     func show(content: some View) {
+        dismiss() // Vorheriges Panel schließen
+
         guard let screen = NSScreen.main else { return }
 
-        let hostingView = NSHostingView(rootView: content)
-        hostingView.frame = screen.frame
+        // SwiftUI View muss den gesamten Bildschirm füllen
+        let fullScreenContent = content
+            .frame(width: screen.frame.width, height: screen.frame.height)
+
+        let hostingView = NSHostingView(rootView: fullScreenContent)
+        hostingView.frame = CGRect(origin: .zero, size: screen.frame.size)
 
         let newPanel = OverlayPanel(contentView: hostingView, screen: screen)
+        newPanel.setFrame(screen.frame, display: true)
         newPanel.makeKeyAndOrderFront(nil)
 
         self.panel = newPanel
@@ -28,7 +35,6 @@ final class OverlayController: ObservableObject {
         isVisible = false
     }
 
-    /// Prüft ob Screen Sharing aktiv ist (bekannte Capture-Prozesse)
     static func isScreenSharing() -> Bool {
         let windowList = CGWindowListCopyWindowInfo([.optionOnScreenOnly], kCGNullWindowID) as? [[String: Any]] ?? []
         let captureProcesses: Set<String> = [
