@@ -114,7 +114,7 @@ final class MeetingAppDelegate: NSObject, NSApplicationDelegate {
             event: event,
             onJoin: {
                 if let url = event.teamsURL {
-                    NSWorkspace.shared.open(url)
+                    Self.openTeamsDirectly(url)
                 }
                 overlayController.dismiss()
                 calendarService.dismissEvent(event)
@@ -134,6 +134,35 @@ final class MeetingAppDelegate: NSObject, NSApplicationDelegate {
         // Accessibility: Overlay erscheint
         if let panel = overlayController.panel {
             NSAccessibility.post(element: panel, notification: .layoutChanged)
+        }
+    }
+
+    // MARK: - Teams direkt öffnen (ohne Browser-Umweg)
+
+    private static func openTeamsDirectly(_ url: URL) {
+        // msteams:// URL-Scheme: öffnet Teams direkt ohne Browser
+        let urlString = url.absoluteString
+        let teamsDeepLink: String
+
+        if urlString.contains("teams.microsoft.com/l/meetup-join/") {
+            // https://teams.microsoft.com/l/meetup-join/... → msteams://l/meetup-join/...
+            teamsDeepLink = urlString.replacingOccurrences(
+                of: "https://teams.microsoft.com",
+                with: "msteams:"
+            )
+        } else if urlString.contains("teams.microsoft.com/meet/") {
+            // Neues /meet/ Format — hier funktioniert der Deep Link nicht, Browser-Fallback
+            teamsDeepLink = urlString
+        } else {
+            teamsDeepLink = urlString
+        }
+
+        if let deepURL = URL(string: teamsDeepLink),
+           NSWorkspace.shared.urlForApplication(toOpen: deepURL) != nil {
+            NSWorkspace.shared.open(deepURL)
+        } else {
+            // Fallback: normalen HTTPS-Link öffnen
+            NSWorkspace.shared.open(url)
         }
     }
 
