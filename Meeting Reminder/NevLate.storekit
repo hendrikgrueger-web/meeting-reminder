@@ -1,0 +1,78 @@
+{
+  "identifier" : "NevLatePremium",
+  "nonConsumableProducts" : [],
+  "nonRenewingSubscriptionProducts" : [],
+  "products" : [],
+  "settings" : {
+    "_failTransactionsEnabled" : false,
+    "_localReceiptValidation" : false,
+    "_timeRate" : "MONTHLY_RENEWAL_EVERY_5_MINUTES",
+    "_usePrivacyPolicy" : false,
+    "serverEnvironment" : "production",
+    "storefront" : "DEU",
+    "locale" : "de_DE"
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "nevrlate_premium",
+      "localizations" : [],
+      "name" : "Nevr Late Premium",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [],
+          "displayPrice" : "0.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "nevrlate_monthly",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Unlimited meeting reminders. Cancel anytime.",
+              "displayName" : "Nevr Late Premium Monthly",
+              "locale" : "en_US"
+            },
+            {
+              "description" : "Unbegrenzte Meeting-Reminder. Jederzeit kündbar.",
+              "displayName" : "Nevr Late Premium Monatlich",
+              "locale" : "de_DE"
+            }
+          ],
+          "productID" : "de.hendrikgrueger.nevrlate.premium.monthly",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Monthly",
+          "subscriptionGroupID" : "nevrlate_premium",
+          "type" : "RecurringSubscription"
+        },
+        {
+          "adHocOffers" : [],
+          "displayPrice" : "7.99",
+          "familyShareable" : false,
+          "groupNumber" : 2,
+          "internalID" : "nevrlate_annual",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Unlimited meeting reminders at the best value. Save 33% vs. monthly.",
+              "displayName" : "Nevr Late Premium Annual",
+              "locale" : "en_US"
+            },
+            {
+              "description" : "Unbegrenzte Meeting-Reminder zum besten Preis. 33 % sparen gegenüber monatlich.",
+              "displayName" : "Nevr Late Premium Jährlich",
+              "locale" : "de_DE"
+            }
+          ],
+          "productID" : "de.hendrikgrueger.nevrlate.premium.annual",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "Annual",
+          "subscriptionGroupID" : "nevrlate_premium",
+          "type" : "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}

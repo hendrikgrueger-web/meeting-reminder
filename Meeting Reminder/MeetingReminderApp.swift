@@ -1,4 +1,4 @@
-// Meeting Reminder/MeetingReminderApp.swift — QuickJoin
+// Meeting Reminder/MeetingReminderApp.swift — Nevr Late
 import SwiftUI
 import UserNotifications
 import AppKit
@@ -99,7 +99,7 @@ final class MeetingAppDelegate: NSObject, NSApplicationDelegate {
     private var localMonitor: Any?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
-        print("[QuickJoin] App gestartet")
+        print("[NevLate] App gestartet")
         let calendarService = CalendarService.shared
         let overlayController = OverlayController.shared
 
@@ -116,6 +116,9 @@ final class MeetingAppDelegate: NSObject, NSApplicationDelegate {
 
         // Globalen Keyboard Shortcut registrieren (Cmd+Shift+J)
         registerGlobalShortcut()
+
+        // StoreKit starten
+        StoreKitService.shared.start()
 
         // CalendarService starten + Notifications
         Task {
@@ -189,6 +192,21 @@ final class MeetingAppDelegate: NSObject, NSApplicationDelegate {
             calendarService.dismissEvent(event)
             return
         }
+
+        // Freemium-Check: Reminder-Limit erreicht?
+        let counter = ReminderCounter.shared
+        guard counter.canShow(event: event) else {
+            // Paywall anzeigen statt normalem Overlay
+            let paywallView = PaywallView(event: event) {
+                overlayController.dismiss()
+                calendarService.dismissEvent(event)
+            }
+            overlayController.show(content: paywallView)
+            return
+        }
+
+        // Counter erhöhen (nur wenn neues Event)
+        counter.record(event: event)
 
         // Sound abspielen
         if calendarService.soundEnabled {

@@ -1,6 +1,6 @@
 import XCTest
 import SwiftUI
-@testable import QuickJoin
+@testable import NevLate
 
 final class MeetingEventTests: XCTestCase {
 

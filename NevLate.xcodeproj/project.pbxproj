@@ -1,0 +1,469 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		014B684EB0FD35522F5F486B /* CalendarServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6776A61E19B56EDC4AC6DF9B /* CalendarServiceTests.swift */; };
+		038FCC3D6A7F1196C774FE30 /* MeetingReminderApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C908411B15A4734A9204778 /* MeetingReminderApp.swift */; };
+		11BB53386C4163C8509A9EF1 /* MeetingProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76DBC14233FCB808AFCB3C74 /* MeetingProvider.swift */; };
+		1A1E748BEED0F3095C788583 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF74CABDF7BBB8B37E144EE /* SettingsView.swift */; };
+		2501EBE97930AAFC00302074 /* OverlayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949E432ED20E73799943A634 /* OverlayController.swift */; };
+		2FB72522DFCB041C94A476B3 /* OverlayPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D161910594D360198E73816 /* OverlayPanel.swift */; };
+		3CA7ECD57EA92C3AD5026152 /* MeetingLinkExtractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA3F5841A56C4480A261CFF /* MeetingLinkExtractorTests.swift */; };
+		444838CCA4ADFAD17418447A /* StoreKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78B0CABB354E1B0FF3717CD0 /* StoreKitService.swift */; };
+		5748FC874B8C69571D2016FB /* MeetingLinkExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A18888816757BF3BBC0AFD5 /* MeetingLinkExtractor.swift */; };
+		6E2A155073565E7E12DDB1D9 /* TodayMeetingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6039C95C46542A1CB38B28 /* TodayMeetingsView.swift */; };
+		7B9009041B129361125C6AB5 /* CalendarService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC689F1B33F003CFFD6CD25B /* CalendarService.swift */; };
+		874FAB3B93904B62DC3B0249 /* ReminderCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E0CFD909AD171F177998731 /* ReminderCounter.swift */; };
+		A691427FAAF2F0975BBB89F2 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236004FAF273686AA207AD73 /* PaywallView.swift */; };
+		C7EE99C6DCC8AD1940A3FDAE /* MeetingEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38FA63A0959D172CE24CA6F /* MeetingEvent.swift */; };
+		CCFC418B678C26450567C077 /* MeetingReminderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFA69F93AA2FCBFAF4B174B4 /* MeetingReminderTests.swift */; };
+		D97D634503D609FB71CDDB9C /* MeetingEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0102721E1319A074C1261981 /* MeetingEventTests.swift */; };
+		F07D63007118005681E715C9 /* AlertOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 985C300F196862414345B354 /* AlertOverlayView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		4A0F2D745225756FA536D863 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 865CAB06A7D48701E18BD546 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 51049C4B1D85CD4E28F0C1ED;
+			remoteInfo = NevLate;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0102721E1319A074C1261981 /* MeetingEventTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingEventTests.swift; sourceTree = "<group>"; };
+		236004FAF273686AA207AD73 /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
+		3A18888816757BF3BBC0AFD5 /* MeetingLinkExtractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingLinkExtractor.swift; sourceTree = "<group>"; };
+		3C4DAA04861AD4EAAF35F6C8 /* NevLate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NevLate.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6776A61E19B56EDC4AC6DF9B /* CalendarServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarServiceTests.swift; sourceTree = "<group>"; };
+		6961765AF2660D13D01506E8 /* NevLateTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NevLateTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6C908411B15A4734A9204778 /* MeetingReminderApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingReminderApp.swift; sourceTree = "<group>"; };
+		6E6039C95C46542A1CB38B28 /* TodayMeetingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayMeetingsView.swift; sourceTree = "<group>"; };
+		76DBC14233FCB808AFCB3C74 /* MeetingProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingProvider.swift; sourceTree = "<group>"; };
+		78B0CABB354E1B0FF3717CD0 /* StoreKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreKitService.swift; sourceTree = "<group>"; };
+		949E432ED20E73799943A634 /* OverlayController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayController.swift; sourceTree = "<group>"; };
+		985C300F196862414345B354 /* AlertOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertOverlayView.swift; sourceTree = "<group>"; };
+		9D161910594D360198E73816 /* OverlayPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayPanel.swift; sourceTree = "<group>"; };
+		9E0CFD909AD171F177998731 /* ReminderCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderCounter.swift; sourceTree = "<group>"; };
+		9FF74CABDF7BBB8B37E144EE /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		C38FA63A0959D172CE24CA6F /* MeetingEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingEvent.swift; sourceTree = "<group>"; };
+		DC689F1B33F003CFFD6CD25B /* CalendarService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarService.swift; sourceTree = "<group>"; };
+		DFA69F93AA2FCBFAF4B174B4 /* MeetingReminderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingReminderTests.swift; sourceTree = "<group>"; };
+		EFA3F5841A56C4480A261CFF /* MeetingLinkExtractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingLinkExtractorTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		21824D2C76CB53E5E98F7A07 /* Meeting Reminder */ = {
+			isa = PBXGroup;
+			children = (
+				6C908411B15A4734A9204778 /* MeetingReminderApp.swift */,
+				4DECCE460C04B707B4D15EA8 /* Models */,
+				EA65DECC4B43B49B486EAD1F /* Services */,
+				71D7EADC8318B601B3312841 /* Views */,
+			);
+			path = "Meeting Reminder";
+			sourceTree = "<group>";
+		};
+		4DECCE460C04B707B4D15EA8 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				C38FA63A0959D172CE24CA6F /* MeetingEvent.swift */,
+				76DBC14233FCB808AFCB3C74 /* MeetingProvider.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		71D7EADC8318B601B3312841 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				985C300F196862414345B354 /* AlertOverlayView.swift */,
+				949E432ED20E73799943A634 /* OverlayController.swift */,
+				9D161910594D360198E73816 /* OverlayPanel.swift */,
+				236004FAF273686AA207AD73 /* PaywallView.swift */,
+				9FF74CABDF7BBB8B37E144EE /* SettingsView.swift */,
+				6E6039C95C46542A1CB38B28 /* TodayMeetingsView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		8136FD6FD694FDE74BBCFD46 = {
+			isa = PBXGroup;
+			children = (
+				21824D2C76CB53E5E98F7A07 /* Meeting Reminder */,
+				FE911661CB3DDAF972948543 /* Meeting ReminderTests */,
+				BE350663A54E1D743EC1056B /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		BE350663A54E1D743EC1056B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3C4DAA04861AD4EAAF35F6C8 /* NevLate.app */,
+				6961765AF2660D13D01506E8 /* NevLateTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		EA65DECC4B43B49B486EAD1F /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				DC689F1B33F003CFFD6CD25B /* CalendarService.swift */,
+				3A18888816757BF3BBC0AFD5 /* MeetingLinkExtractor.swift */,
+				9E0CFD909AD171F177998731 /* ReminderCounter.swift */,
+				78B0CABB354E1B0FF3717CD0 /* StoreKitService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		FE911661CB3DDAF972948543 /* Meeting ReminderTests */ = {
+			isa = PBXGroup;
+			children = (
+				6776A61E19B56EDC4AC6DF9B /* CalendarServiceTests.swift */,
+				0102721E1319A074C1261981 /* MeetingEventTests.swift */,
+				EFA3F5841A56C4480A261CFF /* MeetingLinkExtractorTests.swift */,
+				DFA69F93AA2FCBFAF4B174B4 /* MeetingReminderTests.swift */,
+			);
+			path = "Meeting ReminderTests";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		51049C4B1D85CD4E28F0C1ED /* NevLate */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 39014429E674469397740F3E /* Build configuration list for PBXNativeTarget "NevLate" */;
+			buildPhases = (
+				C44F653D44DFC34567465F6E /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NevLate;
+			packageProductDependencies = (
+			);
+			productName = NevLate;
+			productReference = 3C4DAA04861AD4EAAF35F6C8 /* NevLate.app */;
+			productType = "com.apple.product-type.application";
+		};
+		AFE87E5AAE9B7F4F4D780312 /* NevLateTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A59F27F31C5FAED7767B2EAA /* Build configuration list for PBXNativeTarget "NevLateTests" */;
+			buildPhases = (
+				22BB0DE0447AB97187C201D2 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9AF86EC42E8FE17B2F5395A5 /* PBXTargetDependency */,
+			);
+			name = NevLateTests;
+			packageProductDependencies = (
+			);
+			productName = NevLateTests;
+			productReference = 6961765AF2660D13D01506E8 /* NevLateTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		865CAB06A7D48701E18BD546 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+			};
+			buildConfigurationList = 6E89D1345CC38ECD36EC1468 /* Build configuration list for PBXProject "NevLate" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 8136FD6FD694FDE74BBCFD46;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				51049C4B1D85CD4E28F0C1ED /* NevLate */,
+				AFE87E5AAE9B7F4F4D780312 /* NevLateTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		22BB0DE0447AB97187C201D2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				014B684EB0FD35522F5F486B /* CalendarServiceTests.swift in Sources */,
+				D97D634503D609FB71CDDB9C /* MeetingEventTests.swift in Sources */,
+				3CA7ECD57EA92C3AD5026152 /* MeetingLinkExtractorTests.swift in Sources */,
+				CCFC418B678C26450567C077 /* MeetingReminderTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C44F653D44DFC34567465F6E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F07D63007118005681E715C9 /* AlertOverlayView.swift in Sources */,
+				7B9009041B129361125C6AB5 /* CalendarService.swift in Sources */,
+				C7EE99C6DCC8AD1940A3FDAE /* MeetingEvent.swift in Sources */,
+				5748FC874B8C69571D2016FB /* MeetingLinkExtractor.swift in Sources */,
+				11BB53386C4163C8509A9EF1 /* MeetingProvider.swift in Sources */,
+				038FCC3D6A7F1196C774FE30 /* MeetingReminderApp.swift in Sources */,
+				2501EBE97930AAFC00302074 /* OverlayController.swift in Sources */,
+				2FB72522DFCB041C94A476B3 /* OverlayPanel.swift in Sources */,
+				A691427FAAF2F0975BBB89F2 /* PaywallView.swift in Sources */,
+				874FAB3B93904B62DC3B0249 /* ReminderCounter.swift in Sources */,
+				1A1E748BEED0F3095C788583 /* SettingsView.swift in Sources */,
+				444838CCA4ADFAD17418447A /* StoreKitService.swift in Sources */,
+				6E2A155073565E7E12DDB1D9 /* TodayMeetingsView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		9AF86EC42E8FE17B2F5395A5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 51049C4B1D85CD4E28F0C1ED /* NevLate */;
+			targetProxy = 4A0F2D745225756FA536D863 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		3D87A47BB4B4FAA44A275470 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Meeting Reminder/Meeting_Reminder.entitlements";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "Meeting Reminder/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				PRODUCT_BUNDLE_IDENTIFIER = de.hendrikgrueger.nevrlate;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		40A4DEB8D1AE70843D4375BC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NevLate.app/Contents/MacOS/NevLate";
+			};
+			name = Debug;
+		};
+		725882BCE67DA0ADCE211651 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		7BD8B2ED65B8B4059AE57928 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NevLate.app/Contents/MacOS/NevLate";
+			};
+			name = Release;
+		};
+		BA296F49D0EE8E10CED6ABC9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Meeting Reminder/Meeting_Reminder.entitlements";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "Meeting Reminder/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				PRODUCT_BUNDLE_IDENTIFIER = de.hendrikgrueger.nevrlate;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		ECE0CD446CF467FB8015C5FB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		39014429E674469397740F3E /* Build configuration list for PBXNativeTarget "NevLate" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3D87A47BB4B4FAA44A275470 /* Debug */,
+				BA296F49D0EE8E10CED6ABC9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		6E89D1345CC38ECD36EC1468 /* Build configuration list for PBXProject "NevLate" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				725882BCE67DA0ADCE211651 /* Debug */,
+				ECE0CD446CF467FB8015C5FB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		A59F27F31C5FAED7767B2EAA /* Build configuration list for PBXNativeTarget "NevLateTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				40A4DEB8D1AE70843D4375BC /* Debug */,
+				7BD8B2ED65B8B4059AE57928 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 865CAB06A7D48701E18BD546 /* Project object */;
+}

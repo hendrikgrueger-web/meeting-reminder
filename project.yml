@@ -1,5 +1,5 @@
-name: QuickJoin
-projectPath: QuickJoin.xcodeproj
+name: NevLate
+projectPath: NevLate.xcodeproj
 
 settings:
   MARKETING_VERSION: 1.0.0
@@ -15,24 +15,26 @@ options:
     - de
 
 schemes:
-  QuickJoin:
+  NevLate:
     build:
       targets:
-        QuickJoin: all
+        NevLate: all
     test:
       targets:
-        - QuickJoinTests
+        - NevLateTests
       gatherCoverageData: true
     run:
       askForUserToEnableDebugger: true
       consoleLogsInDebugConsole: true
 
 targets:
-  QuickJoin:
+  NevLate:
     type: application
     platform: macOS
     deploymentTarget: "26.0"
-    bundleId: de.hendrikgrueger.quickjoin
+    bundleId: de.hendrikgrueger.nevrlate
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: de.hendrikgrueger.nevrlate
 
     sources:
       - path: Meeting Reminder
@@ -44,18 +46,23 @@ targets:
         includes:
           - "**/*.xcassets"
           - "**/*.xcstrings"
+          - "**/*.storekit"
 
     entitlements:
       path: Meeting Reminder/Meeting_Reminder.entitlements
       properties:
+        com.apple.security.app-sandbox: true
         com.apple.security.personal-information.calendars: true
+        com.apple.security.network.client: true
 
     infoPlist:
       path: Meeting Reminder/Info.plist
       properties:
         LSUIElement: true
-        NSCalendarsUsageDescription: "QuickJoin liest deine Kalender-Events (nur lesend), um dich rechtzeitig an Meetings zu erinnern und Beitreten-Links zu erkennen. Keine Daten verlassen dein Gerät."
-        NSNotificationCenterUsageDescription: "QuickJoin sendet dir Benachrichtigungen für bevorstehende Events."
+        CFBundleDisplayName: "Nevr Late"
+        NSCalendarsUsageDescription: "Nevr Late liest deine Kalender-Events (nur lesend), um dich rechtzeitig an Meetings zu erinnern und Beitreten-Links zu erkennen. Keine Daten verlassen dein Gerät."
+        NSNotificationCenterUsageDescription: "Nevr Late sendet dir Benachrichtigungen für bevorstehende Events."
+        NSHumanReadableCopyright: "© 2026 Hendrik Grueger"
 
     frameworks:
       - EventKit
@@ -63,8 +70,9 @@ targets:
       - SwiftUI
       - UserNotifications
       - ServiceManagement
+      - StoreKit
 
-  QuickJoinTests:
+  NevLateTests:
     type: bundle.unit-test
     platform: macOS
     deploymentTarget: "26.0"
@@ -73,6 +81,6 @@ targets:
         includes:
           - "**/*.swift"
     dependencies:
-      - target: QuickJoin
+      - target: NevLate
     settings:
       GENERATE_INFOPLIST_FILE: true

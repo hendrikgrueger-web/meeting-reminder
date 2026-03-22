@@ -1,6 +1,6 @@
 import Testing
 import Foundation
-@testable import QuickJoin
+@testable import NevLate
 
 @Suite("MeetingLinkExtractor Tests")
 struct MeetingLinkExtractorTests {

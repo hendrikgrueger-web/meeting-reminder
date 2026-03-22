@@ -4,7 +4,7 @@
 
 import Testing
 import SwiftUI
-@testable import QuickJoin
+@testable import NevLate
 
 @Suite("CalendarService Logik-Tests")
 struct CalendarServiceTests {
