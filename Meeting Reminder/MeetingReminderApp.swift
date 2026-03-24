@@ -100,6 +100,16 @@ final class MeetingAppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         print("[NevLate] App gestartet")
+
+        // Demo-Modus für Screenshots (Launch-Argument --demo-overlay / --demo-paywall)
+        let args = ProcessInfo.processInfo.arguments
+        if args.contains("--demo-overlay") {
+            Task { @MainActor in
+                try? await Task.sleep(nanoseconds: 800_000_000)
+                MeetingAppDelegate.showDemoOverlay()
+            }
+            return
+        }
         let calendarService = CalendarService.shared
         let overlayController = OverlayController.shared
 
@@ -116,9 +126,6 @@ final class MeetingAppDelegate: NSObject, NSApplicationDelegate {
 
         // Globalen Keyboard Shortcut registrieren (Cmd+Shift+J)
         registerGlobalShortcut()
-
-        // StoreKit starten
-        StoreKitService.shared.start()
 
         // CalendarService starten + Notifications
         Task {
@@ -193,21 +200,6 @@ final class MeetingAppDelegate: NSObject, NSApplicationDelegate {
             return
         }
 
-        // Freemium-Check: Reminder-Limit erreicht?
-        let counter = ReminderCounter.shared
-        guard counter.canShow(event: event) else {
-            // Paywall anzeigen statt normalem Overlay
-            let paywallView = PaywallView(event: event) {
-                overlayController.dismiss()
-                calendarService.dismissEvent(event)
-            }
-            overlayController.show(content: paywallView)
-            return
-        }
-
-        // Counter erhöhen (nur wenn neues Event)
-        counter.record(event: event)
-
         // Sound abspielen
         if calendarService.soundEnabled {
             NSSound(named: .init("Funk"))?.play()
@@ -254,6 +246,37 @@ final class MeetingAppDelegate: NSObject, NSApplicationDelegate {
             // Fallback: normalen HTTPS-Link im Browser öffnen
             NSWorkspace.shared.open(meetingLink.url)
         }
+    }
+
+    // MARK: - Demo Modus (nur für Screenshots, via Launch-Argument)
+
+    private static func makeDemoEvent(provider: MeetingProvider, minutesFromNow: Double) -> MeetingEvent {
+        let start = Date(timeIntervalSinceNow: minutesFromNow * 60)
+        let end = Date(timeIntervalSinceNow: (minutesFromNow + 60) * 60)
+        let url = URL(string: "https://zoom.us/j/123456789")!
+        return MeetingEvent(
+            eventIdentifier: "demo-event",
+            title: "Weekly Team Sync",
+            startDate: start,
+            endDate: end,
+            location: "https://zoom.us/j/123456789",
+            calendarColor: .blue,
+            calendarTitle: "Arbeit",
+            meetingLink: MeetingLink(url: url, provider: provider),
+            isAllDay: false
+        )
+    }
+
+    private static func showDemoOverlay() {
+        let event = makeDemoEvent(provider: .zoom, minutesFromNow: 2.5)
+        let overlayController = OverlayController.shared
+        let overlayView = AlertOverlayView(
+            event: event,
+            onJoin: { overlayController.dismiss() },
+            onDismiss: { overlayController.dismiss() },
+            onSnooze: { overlayController.dismiss() }
+        )
+        overlayController.show(content: overlayView)
     }
 
     // MARK: - System Notification (Screen-Sharing Fallback)

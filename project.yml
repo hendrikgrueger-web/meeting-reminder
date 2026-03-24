@@ -46,14 +46,13 @@ targets:
         includes:
           - "**/*.xcassets"
           - "**/*.xcstrings"
-          - "**/*.storekit"
+          - "**/*.xcprivacy"
 
     entitlements:
       path: Meeting Reminder/Meeting_Reminder.entitlements
       properties:
         com.apple.security.app-sandbox: true
         com.apple.security.personal-information.calendars: true
-        com.apple.security.network.client: true
 
     infoPlist:
       path: Meeting Reminder/Info.plist
@@ -70,7 +69,6 @@ targets:
       - SwiftUI
       - UserNotifications
       - ServiceManagement
-      - StoreKit
 
   NevLateTests:
     type: bundle.unit-test

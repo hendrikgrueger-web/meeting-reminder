@@ -14,12 +14,9 @@
 		2501EBE97930AAFC00302074 /* OverlayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949E432ED20E73799943A634 /* OverlayController.swift */; };
 		2FB72522DFCB041C94A476B3 /* OverlayPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D161910594D360198E73816 /* OverlayPanel.swift */; };
 		3CA7ECD57EA92C3AD5026152 /* MeetingLinkExtractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA3F5841A56C4480A261CFF /* MeetingLinkExtractorTests.swift */; };
-		444838CCA4ADFAD17418447A /* StoreKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78B0CABB354E1B0FF3717CD0 /* StoreKitService.swift */; };
 		5748FC874B8C69571D2016FB /* MeetingLinkExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A18888816757BF3BBC0AFD5 /* MeetingLinkExtractor.swift */; };
 		6E2A155073565E7E12DDB1D9 /* TodayMeetingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6039C95C46542A1CB38B28 /* TodayMeetingsView.swift */; };
 		7B9009041B129361125C6AB5 /* CalendarService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC689F1B33F003CFFD6CD25B /* CalendarService.swift */; };
-		874FAB3B93904B62DC3B0249 /* ReminderCounter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E0CFD909AD171F177998731 /* ReminderCounter.swift */; };
-		A691427FAAF2F0975BBB89F2 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236004FAF273686AA207AD73 /* PaywallView.swift */; };
 		C7EE99C6DCC8AD1940A3FDAE /* MeetingEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38FA63A0959D172CE24CA6F /* MeetingEvent.swift */; };
 		CCFC418B678C26450567C077 /* MeetingReminderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFA69F93AA2FCBFAF4B174B4 /* MeetingReminderTests.swift */; };
 		D97D634503D609FB71CDDB9C /* MeetingEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0102721E1319A074C1261981 /* MeetingEventTests.swift */; };
@@ -38,7 +35,6 @@
 
 /* Begin PBXFileReference section */
 		0102721E1319A074C1261981 /* MeetingEventTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingEventTests.swift; sourceTree = "<group>"; };
-		236004FAF273686AA207AD73 /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
 		3A18888816757BF3BBC0AFD5 /* MeetingLinkExtractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingLinkExtractor.swift; sourceTree = "<group>"; };
 		3C4DAA04861AD4EAAF35F6C8 /* NevLate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NevLate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6776A61E19B56EDC4AC6DF9B /* CalendarServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarServiceTests.swift; sourceTree = "<group>"; };
@@ -46,11 +42,9 @@
 		6C908411B15A4734A9204778 /* MeetingReminderApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingReminderApp.swift; sourceTree = "<group>"; };
 		6E6039C95C46542A1CB38B28 /* TodayMeetingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayMeetingsView.swift; sourceTree = "<group>"; };
 		76DBC14233FCB808AFCB3C74 /* MeetingProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingProvider.swift; sourceTree = "<group>"; };
-		78B0CABB354E1B0FF3717CD0 /* StoreKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreKitService.swift; sourceTree = "<group>"; };
 		949E432ED20E73799943A634 /* OverlayController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayController.swift; sourceTree = "<group>"; };
 		985C300F196862414345B354 /* AlertOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertOverlayView.swift; sourceTree = "<group>"; };
 		9D161910594D360198E73816 /* OverlayPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayPanel.swift; sourceTree = "<group>"; };
-		9E0CFD909AD171F177998731 /* ReminderCounter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderCounter.swift; sourceTree = "<group>"; };
 		9FF74CABDF7BBB8B37E144EE /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		C38FA63A0959D172CE24CA6F /* MeetingEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingEvent.swift; sourceTree = "<group>"; };
 		DC689F1B33F003CFFD6CD25B /* CalendarService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarService.swift; sourceTree = "<group>"; };
@@ -85,7 +79,6 @@
 				985C300F196862414345B354 /* AlertOverlayView.swift */,
 				949E432ED20E73799943A634 /* OverlayController.swift */,
 				9D161910594D360198E73816 /* OverlayPanel.swift */,
-				236004FAF273686AA207AD73 /* PaywallView.swift */,
 				9FF74CABDF7BBB8B37E144EE /* SettingsView.swift */,
 				6E6039C95C46542A1CB38B28 /* TodayMeetingsView.swift */,
 			);
@@ -115,8 +108,6 @@
 			children = (
 				DC689F1B33F003CFFD6CD25B /* CalendarService.swift */,
 				3A18888816757BF3BBC0AFD5 /* MeetingLinkExtractor.swift */,
-				9E0CFD909AD171F177998731 /* ReminderCounter.swift */,
-				78B0CABB354E1B0FF3717CD0 /* StoreKitService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -223,10 +214,7 @@
 				038FCC3D6A7F1196C774FE30 /* MeetingReminderApp.swift in Sources */,
 				2501EBE97930AAFC00302074 /* OverlayController.swift in Sources */,
 				2FB72522DFCB041C94A476B3 /* OverlayPanel.swift in Sources */,
-				A691427FAAF2F0975BBB89F2 /* PaywallView.swift in Sources */,
-				874FAB3B93904B62DC3B0249 /* ReminderCounter.swift in Sources */,
 				1A1E748BEED0F3095C788583 /* SettingsView.swift in Sources */,
-				444838CCA4ADFAD17418447A /* StoreKitService.swift in Sources */,
 				6E2A155073565E7E12DDB1D9 /* TodayMeetingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

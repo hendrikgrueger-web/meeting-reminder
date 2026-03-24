@@ -97,15 +97,10 @@ LIGHTWEIGHT BY DESIGN
 • Handles Mac sleep/wake: catches meetings you might have missed when your MacBook wakes up
 
 ─────────────────────────────────
-NEVR LATE PREMIUM
+FREE — ALWAYS
 ─────────────────────────────────
 
-Nevr Late is free for your first 50 meeting reminders — no account, no sign-up. After that, Nevr Late Premium keeps the reminders coming indefinitely:
-
-• Monthly: €0.99 / month
-• Annual: €7.99 / year (save 33%)
-
-Nevr Late Premium is an auto-renewable subscription. Payment is charged to your Apple ID at confirmation of purchase. The subscription automatically renews unless cancelled at least 24 hours before the end of the current period. You can manage and cancel your subscription at any time in your App Store account settings.
+Nevr Late is completely free. No ads, no tracking, no subscription required.
 
 ─────────────────────────────────
 REQUIREMENTS
@@ -134,7 +129,7 @@ meeting,reminder,calendar,teams,zoom,google meet,menu bar,webex,join,countdown,s
 ```
 Welcome to Nevr Late!
 
-Nevr Late brings full-screen meeting reminders and one-click join for 8 video conferencing providers directly to your macOS menu bar. Free for your first 50 meetings.
+Nevr Late brings full-screen meeting reminders and one-click join for 8 video conferencing providers directly to your macOS menu bar. Completely free for everyone.
 ```
 
 ---
@@ -234,15 +229,10 @@ SCHLANK & RESSOURCENSCHONEND
 • Schlaf/Aufwachen-Handling: erkennt Meetings, die beim MacBook-Aufklappen gestartet hätten
 
 ─────────────────────────────────
-NEVR LATE PREMIUM
+KOSTENLOS — FÜR IMMER
 ─────────────────────────────────
 
-Nevr Late ist für die ersten 50 Meeting-Erinnerungen kostenlos — kein Account, keine Registrierung. Danach hält Nevr Late Premium die Erinnerungen unbegrenzt am Laufen:
-
-• Monatlich: 0,99 € / Monat
-• Jährlich: 7,99 € / Jahr (33 % sparen)
-
-Nevr Late Premium ist ein automatisch verlängerbares Abonnement. Der Betrag wird bei Kaufbestätigung deiner Apple-ID belastet. Das Abonnement verlängert sich automatisch, sofern es nicht mindestens 24 Stunden vor Ende des laufenden Zeitraums gekündigt wird. Abonnements können jederzeit in den App-Store-Kontoeinstellungen verwaltet und gekündigt werden.
+Nevr Late ist vollständig kostenlos. Keine Werbung, kein Tracking, kein Abo.
 
 ─────────────────────────────────
 VORAUSSETZUNGEN
@@ -277,7 +267,7 @@ meeting,kalender,erinnerung,teams,zoom,google meet,beitreten,menüleiste,webex,c
 ```
 Willkommen bei Nevr Late!
 
-Nevr Late bringt Vollbild-Meeting-Reminder und Ein-Klick-Beitritt für 8 Videokonferenz-Anbieter direkt in die macOS-Menüleiste. Kostenlos für deine ersten 50 Meetings.
+Nevr Late bringt Vollbild-Meeting-Reminder und Ein-Klick-Beitritt für 8 Videokonferenz-Anbieter direkt in die macOS-Menüleiste. Vollständig kostenlos für alle.
 ```
 
 ---
@@ -300,36 +290,11 @@ Nevr Late bringt Vollbild-Meeting-Reminder und Ein-Klick-Beitritt für 8 Videoko
 
 ## Pricing & In-App Purchases
 
-### Free Tier
-50 Meeting Reminders inklusive (kein Konto erforderlich)
-
-### Subscription-Konfiguration (App Store Connect)
+### Pricing
+Kostenlos — keine In-App-Käufe, keine Abonnements.
 
 | Feld | Wert |
 |------|------|
-| Subscription Group Name | Nevr Late Premium |
-| Subscription Group Reference Name | nevrlate_premium |
-| Monatliches Abo — Product ID | `de.hendrikgrueger.nevrlate.premium.monthly` |
-| Monatliches Abo — Preis | Tier 1 (0,99 € / $0.99) |
-| Monatliches Abo — Dauer | 1 Monat |
-| Jährliches Abo — Product ID | `de.hendrikgrueger.nevrlate.premium.annual` |
-| Jährliches Abo — Preis | Tier 8 (7,99 € / $7.99) |
-| Jährliches Abo — Dauer | 1 Jahr |
-
-### Subscription Localization (App Store Connect)
-
-**Englisch — Monthly:**
-- Display Name: Nevr Late Premium Monthly
-- Description: Unlimited meeting reminders. Cancel anytime.
-
-**Englisch — Annual:**
-- Display Name: Nevr Late Premium Annual
-- Description: Unlimited meeting reminders at the best value. Save 33% vs. monthly.
-
-**Deutsch — Monthly:**
-- Display Name: Nevr Late Premium Monatlich
-- Description: Unbegrenzte Meeting-Reminder. Jederzeit kündbar.
-
-**Deutsch — Annual:**
-- Display Name: Nevr Late Premium Jährlich
-- Description: Unbegrenzte Meeting-Reminder zum besten Preis. 33 % sparen gegenüber monatlich.
+| Preis | Free (Tier 0) |
+| In-App Purchases | Keine |
+| Verfügbarkeit | Alle Länder (weltweit) |
