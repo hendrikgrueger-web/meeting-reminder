@@ -35,6 +35,7 @@ targets:
     bundleId: de.hendrikgrueger.nevrlate
     settings:
       PRODUCT_BUNDLE_IDENTIFIER: de.hendrikgrueger.nevrlate
+      ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
 
     sources:
       - path: Meeting Reminder
