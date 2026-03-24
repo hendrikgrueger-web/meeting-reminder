@@ -47,6 +47,7 @@ targets:
           - "**/*.xcassets"
           - "**/*.xcstrings"
           - "**/*.xcprivacy"
+          - "**/*.strings"
 
     entitlements:
       path: Meeting Reminder/Meeting_Reminder.entitlements
@@ -59,8 +60,7 @@ targets:
       properties:
         LSUIElement: true
         CFBundleDisplayName: "Nevr Late"
-        NSCalendarsUsageDescription: "Nevr Late liest deine Kalender-Events (nur lesend), um dich rechtzeitig an Meetings zu erinnern und Beitreten-Links zu erkennen. Keine Daten verlassen dein Gerät."
-        NSNotificationCenterUsageDescription: "Nevr Late sendet dir Benachrichtigungen für bevorstehende Events."
+        NSCalendarsUsageDescription: "Nevr Late reads your calendar events (read-only) to remind you about upcoming meetings and detect video conference join links. No data leaves your device."
         NSHumanReadableCopyright: "© 2026 Hendrik Grueger"
 
     frameworks:

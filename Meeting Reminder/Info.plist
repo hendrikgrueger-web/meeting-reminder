@@ -30,8 +30,6 @@
 	<key>LSUIElement</key>
 	<true/>
 	<key>NSCalendarsUsageDescription</key>
-	<string>Nevr Late liest deine Kalender-Events (nur lesend), um dich rechtzeitig an Meetings zu erinnern und Beitreten-Links zu erkennen. Keine Daten verlassen dein Gerät.</string>
-	<key>NSNotificationCenterUsageDescription</key>
-	<string>Nevr Late sendet Benachrichtigungen für bevorstehende Meetings, wenn du gerade den Bildschirm teilst.</string>
+	<string>Nevr Late reads your calendar events (read-only) to remind you about upcoming meetings and detect video conference join links. No data leaves your device.</string>
 </dict>
 </plist>
