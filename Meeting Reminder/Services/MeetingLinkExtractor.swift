@@ -126,16 +126,16 @@ enum MeetingLinkExtractor {
 
     /// Erzeugt einen Deep-Link für den nativen App-Start (Teams, Zoom, WebEx, GoTo)
     static func deepLinkURL(for meetingLink: MeetingLink) -> URL {
-        let urlString = meetingLink.url.absoluteString
+        let url = meetingLink.url
+        let urlString = url.absoluteString
 
         switch meetingLink.provider {
         case .teams:
             if urlString.contains("teams.microsoft.com/l/meetup-join/") {
-                let deepLink = urlString.replacingOccurrences(
-                    of: "https://teams.microsoft.com",
-                    with: "msteams:"
-                )
-                if let deepURL = URL(string: deepLink) { return deepURL }
+                // Scheme auf "msteams" setzen, Host entfernen (msteams: verwendet nur Pfad)
+                if let deepURL = substituteScheme(url, newScheme: "msteams", removeHost: true) {
+                    return deepURL
+                }
             }
 
         case .zoom:
@@ -145,25 +145,33 @@ enum MeetingLinkExtractor {
                 components.host = "zoom.us"
                 components.path = "/join"
                 components.queryItems = [URLQueryItem(name: "confno", value: meetingID)]
-                if let pwd = URLComponents(string: urlString)?.queryItems?.first(where: { $0.name == "pwd" })?.value {
+                if let pwd = URLComponents(url: url, resolvingAgainstBaseURL: false)?
+                    .queryItems?.first(where: { $0.name == "pwd" })?.value {
                     components.queryItems?.append(URLQueryItem(name: "pwd", value: pwd))
                 }
                 if let deepURL = components.url { return deepURL }
             }
 
         case .webex:
-            let deepLink = urlString.replacingOccurrences(of: "https://", with: "webex://")
-            if let deepURL = URL(string: deepLink) { return deepURL }
+            if let deepURL = substituteScheme(url, newScheme: "webex") { return deepURL }
 
         case .gotoMeeting:
-            let deepLink = urlString.replacingOccurrences(of: "https://", with: "gotomeeting://")
-            if let deepURL = URL(string: deepLink) { return deepURL }
+            if let deepURL = substituteScheme(url, newScheme: "gotomeeting") { return deepURL }
 
         case .googleMeet, .slack, .whereby, .jitsi:
             break // Kein Deep-Link verfügbar, Browser-Fallback
         }
 
         return meetingLink.url
+    }
+
+    /// Tauscht nur das URL-Scheme aus — Host, Path und Query bleiben unverändert.
+    /// Verhindert Path-Injection aus manipulierten Kalender-Events.
+    private static func substituteScheme(_ url: URL, newScheme: String, removeHost: Bool = false) -> URL? {
+        var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
+        components?.scheme = newScheme
+        if removeHost { components?.host = nil }
+        return components?.url
     }
 
     // MARK: - Private
