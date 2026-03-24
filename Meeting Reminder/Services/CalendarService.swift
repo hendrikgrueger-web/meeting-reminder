@@ -398,7 +398,9 @@ final class CalendarService: ObservableObject {
                 let now = Date()
                 let timeSinceStart = now.timeIntervalSince(event.startDate)
                 // Nur erneut anzeigen wenn < 5 Min seit Start
-                if timeSinceStart < 5 * 60 && !self.dismissedEvents.contains(event.id) {
+                if timeSinceStart < 5 * 60 &&
+                   !self.dismissedEvents.contains(event.id) &&
+                   !self.pendingEvents.contains(where: { $0.id == event.id }) {
                     self.pendingEvents.append(event)
                 }
             }
