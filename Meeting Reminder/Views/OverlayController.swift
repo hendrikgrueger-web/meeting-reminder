@@ -35,7 +35,7 @@ final class OverlayController: ObservableObject {
         isVisible = false
     }
 
-    static func isScreenSharing() -> Bool {
+    nonisolated static func isScreenSharing() -> Bool {
         let windowList = CGWindowListCopyWindowInfo([.optionOnScreenOnly], kCGNullWindowID) as? [[String: Any]] ?? []
         let captureProcesses: Set<String> = [
             "CaptureAgent", "screensharingd", "Screen Sharing",

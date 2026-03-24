@@ -50,42 +50,52 @@ struct MeetingReminderApp: App {
 
     /// Dynamisches Icon je nach Zeit bis zum nächsten Meeting und Zugriffsstand
     private var menuBarIcon: String {
-        guard calendarService.accessGranted else {
-            return "bell.slash"
-        }
-        guard let next = calendarService.nextEvent else {
-            return "bell"
-        }
-        let minUntilStart = next.startDate.timeIntervalSinceNow / 60
-        if minUntilStart < 5 {
-            // Meeting beginnt gleich (< 5 Min): gefülltes Badge — höchste Dringlichkeit
-            return "bell.badge.fill"
-        } else if minUntilStart < 15 {
-            // Meeting kommt bald (< 15 Min): normales Badge
-            return "bell.badge"
-        } else {
-            return "bell"
-        }
+        Self.menuBarIconName(
+            accessGranted: calendarService.accessGranted,
+            nextEvent: calendarService.nextEvent
+        )
     }
 
     // MARK: - Tooltip
 
     /// Tooltip-Text beim Hover auf das Menüleisten-Icon
     private var menuBarTooltip: String {
-        guard calendarService.accessGranted else {
-            return "Kein Kalenderzugriff – Einstellungen öffnen"
-        }
-        guard let next = calendarService.nextEvent else {
-            return "Keine anstehenden Meetings"
-        }
-        let minutes = Int(next.startDate.timeIntervalSinceNow / 60)
-        if minutes <= 0 {
-            return "Meeting läuft: \(next.title)"
-        } else if minutes == 1 {
-            return "Nächstes Meeting: \(next.title) in 1 Min"
-        } else {
-            return "Nächstes Meeting: \(next.title) in \(minutes) Min"
-        }
+        Self.menuBarTooltipText(
+            accessGranted: calendarService.accessGranted,
+            nextEvent: calendarService.nextEvent
+        )
+    }
+
+    // MARK: - Testbare Static-Hilfsfunktionen (nonisolated — kein @MainActor nötig)
+
+    /// Berechnet den Icon-Namen ohne Abhängigkeit von UI-Kontext.
+    /// `now` injizierbar für deterministische Unit Tests.
+    nonisolated static func menuBarIconName(
+        accessGranted: Bool,
+        nextEvent: MeetingEvent?,
+        now: Date = Date()
+    ) -> String {
+        guard accessGranted else { return "bell.slash" }
+        guard let next = nextEvent else { return "bell" }
+        let minUntilStart = next.startDate.timeIntervalSince(now) / 60
+        if minUntilStart < 5 { return "bell.badge.fill" }
+        if minUntilStart < 15 { return "bell.badge" }
+        return "bell"
+    }
+
+    /// Berechnet den Tooltip-Text ohne Abhängigkeit von UI-Kontext.
+    /// `now` injizierbar für deterministische Unit Tests.
+    nonisolated static func menuBarTooltipText(
+        accessGranted: Bool,
+        nextEvent: MeetingEvent?,
+        now: Date = Date()
+    ) -> String {
+        guard accessGranted else { return "Kein Kalenderzugriff – Einstellungen öffnen" }
+        guard let next = nextEvent else { return "Keine anstehenden Meetings" }
+        let minutes = Int(next.startDate.timeIntervalSince(now) / 60)
+        if minutes <= 0 { return "Meeting läuft: \(next.title)" }
+        if minutes == 1 { return "Nächstes Meeting: \(next.title) in 1 Min" }
+        return "Nächstes Meeting: \(next.title) in \(minutes) Min"
     }
 }
 
@@ -101,7 +111,8 @@ final class MeetingAppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         print("[NevLate] App gestartet")
 
-        // Demo-Modus für Screenshots (Launch-Argument --demo-overlay / --demo-paywall)
+#if DEBUG
+        // Demo-Modus für Screenshots (Launch-Argument: --demo-overlay)
         let args = ProcessInfo.processInfo.arguments
         if args.contains("--demo-overlay") {
             Task { @MainActor in
@@ -110,6 +121,8 @@ final class MeetingAppDelegate: NSObject, NSApplicationDelegate {
             }
             return
         }
+#endif
+
         let calendarService = CalendarService.shared
         let overlayController = OverlayController.shared
 
@@ -183,10 +196,12 @@ final class MeetingAppDelegate: NSObject, NSApplicationDelegate {
 
     // MARK: - Alert Flow
 
-    private func handlePendingEvents(
+    /// isScreenSharing als injizierbarer Default-Closure für Unit-Test-Isolation
+    func handlePendingEvents(
         _ events: [MeetingEvent],
         calendarService: CalendarService,
-        overlayController: OverlayController
+        overlayController: OverlayController,
+        isScreenSharing: () -> Bool = { OverlayController.isScreenSharing() }
     ) {
         guard let event = events.first else {
             overlayController.dismiss()
@@ -194,7 +209,7 @@ final class MeetingAppDelegate: NSObject, NSApplicationDelegate {
         }
 
         // Screen-Sharing aktiv + Setting an → System-Notification statt Overlay
-        if calendarService.silentWhenScreenSharing && OverlayController.isScreenSharing() {
+        if calendarService.silentWhenScreenSharing && isScreenSharing() {
             sendSystemNotification(for: event, soundEnabled: calendarService.soundEnabled)
             calendarService.dismissEvent(event)
             return
@@ -248,6 +263,7 @@ final class MeetingAppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
+#if DEBUG
     // MARK: - Demo Modus (nur für Screenshots, via Launch-Argument)
 
     private static func makeDemoEvent(provider: MeetingProvider, minutesFromNow: Double) -> MeetingEvent {
@@ -278,6 +294,7 @@ final class MeetingAppDelegate: NSObject, NSApplicationDelegate {
         )
         overlayController.show(content: overlayView)
     }
+#endif
 
     // MARK: - System Notification (Screen-Sharing Fallback)
 

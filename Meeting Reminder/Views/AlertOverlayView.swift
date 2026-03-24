@@ -19,6 +19,15 @@ struct AlertOverlayView: View {
         event.startDate.timeIntervalSince(now) <= 0
     }
 
+    /// Physische Adresse anzeigen — Meeting-URLs (alle 8 Provider) werden unterdrückt
+    private var displayLocation: String? {
+        guard let loc = event.location, !loc.isEmpty else { return nil }
+        // Wenn location eine Meeting-URL enthält → nicht als Adresse anzeigen
+        if let meetingURL = event.meetingURL, loc.contains(meetingURL.host ?? "") { return nil }
+        if event.hasMeetingLink && loc.hasPrefix("http") { return nil }
+        return loc
+    }
+
     /// Sekunden bis zum Start (positiv = noch nicht gestartet)
     private var secondsUntilStart: Int {
         Int(event.startDate.timeIntervalSince(now))
@@ -126,12 +135,8 @@ struct AlertOverlayView: View {
                 countdownPill
                     .padding(.bottom, 24)
 
-                // Ort (wenn vorhanden und kein Meeting-Link im Location-Feld)
-                if let location = event.location, !location.isEmpty,
-                   !location.lowercased().contains("teams.microsoft"),
-                   !location.lowercased().contains("zoom.us"),
-                   !location.lowercased().contains("meet.google"),
-                   !location.lowercased().contains("webex.com") {
+                // Ort (wenn vorhanden und nicht eine Meeting-URL)
+                if let location = displayLocation {
                     HStack(spacing: 6) {
                         Image(systemName: "mappin.circle.fill")
                             .font(.system(size: 14))
