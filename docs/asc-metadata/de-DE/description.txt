@@ -1,0 +1,68 @@
+Nevr Late sitzt in deiner Menüleiste und sorgt dafür, dass du kein Video-Meeting mehr verpasst. Kurz vor dem Start erscheint ein Vollbild-Overlay mit Titel, Countdown und einem Beitreten-Button — ein Klick, und deine Videokonferenz-App öffnet sich sofort.
+
+Kein Suchen nach Links im Kalender. Kein „Sorry, bin eine Minute zu spät".
+
+─────────────────────────────────
+NIE WIEDER ZU SPÄT
+─────────────────────────────────
+
+• Vollbild-Overlay mit Live-Countdown und LIVE-Badge
+• Konfigurierbare Vorlaufzeit: 1 bis 10 Minuten vor Beginn
+• Snooze für 1 Minute, wenn du noch nicht bereit bist
+• Tastenkürzel: Return zum Beitreten, Escape zum Schließen, Leertaste für Snooze
+• Bildschirmfreigabe-bewusst: sendet eine Systembenachrichtigung, wenn du gerade präsentierst
+
+─────────────────────────────────
+EIN-KLICK-BEITRITT FÜR 8 ANBIETER
+─────────────────────────────────
+
+Nevr Late erkennt Meeting-Links automatisch für:
+
+• Microsoft Teams (inkl. GCC und Government)
+• Zoom (alle regionalen Subdomains)
+• Google Meet
+• Cisco WebEx
+• GoTo Meeting
+• Slack Huddles
+• Whereby
+• Jitsi Meet
+
+Links werden aus Ort, Notizen und URL deines Kalender-Events extrahiert — kein manuelles Einrichten, kein Kopieren.
+
+─────────────────────────────────
+SMARTE TAGESÜBERSICHT
+─────────────────────────────────
+
+• Vollständige Meeting-Übersicht für heute direkt in der Menüleiste
+• Kalender nach Account gruppiert — per Klick ein- und ausblenden
+• Filter: nur Meetings mit Video-Link anzeigen
+• Globaler Shortcut (⌘⇧J) öffnet das nächste Meeting von überall auf dem Mac
+• Dynamisches Menüleisten-Icon mit Badge-Zähler bei anstehenden Meetings
+
+─────────────────────────────────
+PRIVACY FIRST
+─────────────────────────────────
+
+Nevr Late läuft vollständig auf deinem Gerät. Deine Kalenderdaten verlassen deinen Mac nicht — keine Server, kein Tracking, keine Analyse. Der Kalender-Zugriff ist ausschließlich lesend und bleibt 100 % lokal.
+
+─────────────────────────────────
+SCHLANK & RESSOURCENSCHONEND
+─────────────────────────────────
+
+• 0 % CPU im Ruhezustand — event-basiertes Scheduling, kein Polling
+• Weniger als 20 MB Arbeitsspeicher
+• Sofortiger Start, kein Account nötig
+• Schlaf/Aufwachen-Handling: erkennt Meetings, die beim MacBook-Aufklappen gestartet hätten
+
+─────────────────────────────────
+KOSTENLOS — FÜR IMMER
+─────────────────────────────────
+
+Nevr Late ist vollständig kostenlos. Keine Werbung, kein Tracking, kein Abo.
+
+─────────────────────────────────
+VORAUSSETZUNGEN
+─────────────────────────────────
+
+• macOS 26 oder neuer
+• Kalender-Zugriff (nur lesend)
