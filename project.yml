@@ -36,6 +36,7 @@ targets:
     settings:
       PRODUCT_BUNDLE_IDENTIFIER: de.hendrikgrueger.nevrlate
       ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+      INFOPLIST_KEY_CFBundleIconFile: AppIcon
 
     sources:
       - path: Meeting Reminder
@@ -43,12 +44,12 @@ targets:
           - "**/*.swift"
 
     resources:
-      - path: Meeting Reminder
-        includes:
-          - "**/*.xcassets"
-          - "**/*.xcstrings"
-          - "**/*.xcprivacy"
-          - "**/*.strings"
+      - "Meeting Reminder/Assets.xcassets"
+      - "Meeting Reminder/AppIcon.icns"
+      - "Meeting Reminder/Localizable.xcstrings"
+      - "Meeting Reminder/PrivacyInfo.xcprivacy"
+      - "Meeting Reminder/en.lproj/InfoPlist.strings"
+      - "Meeting Reminder/de.lproj/InfoPlist.strings"
 
     entitlements:
       path: Meeting Reminder/Meeting_Reminder.entitlements
@@ -61,6 +62,7 @@ targets:
       properties:
         LSUIElement: true
         CFBundleDisplayName: "Nevr Late"
+        CFBundleIconFile: "AppIcon"
         NSCalendarsUsageDescription: "Nevr Late reads your calendar events (read-only) to remind you about upcoming meetings and detect video conference join links. No data leaves your device."
         NSHumanReadableCopyright: "© 2026 Hendrik Grueger"
 

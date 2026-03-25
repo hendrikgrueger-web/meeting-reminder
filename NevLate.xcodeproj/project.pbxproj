@@ -21,6 +21,12 @@
 		CCFC418B678C26450567C077 /* MeetingReminderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFA69F93AA2FCBFAF4B174B4 /* MeetingReminderTests.swift */; };
 		D97D634503D609FB71CDDB9C /* MeetingEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0102721E1319A074C1261981 /* MeetingEventTests.swift */; };
 		F07D63007118005681E715C9 /* AlertOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 985C300F196862414345B354 /* AlertOverlayView.swift */; };
+		AA000002000000000000A001 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000A001 /* Assets.xcassets */; };
+		AA000002000000000000A002 /* AppIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000A002 /* AppIcon.icns */; };
+		AA000002000000000000A003 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000A003 /* Localizable.xcstrings */; };
+		AA000002000000000000A004 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000A004 /* PrivacyInfo.xcprivacy */; };
+		AA000002000000000000A005 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000A005 /* InfoPlist.strings */; };
+		AA000002000000000000A006 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000A006 /* InfoPlist.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +56,12 @@
 		DC689F1B33F003CFFD6CD25B /* CalendarService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarService.swift; sourceTree = "<group>"; };
 		DFA69F93AA2FCBFAF4B174B4 /* MeetingReminderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingReminderTests.swift; sourceTree = "<group>"; };
 		EFA3F5841A56C4480A261CFF /* MeetingLinkExtractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingLinkExtractorTests.swift; sourceTree = "<group>"; };
+		AA000001000000000000A001 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Meeting Reminder/Assets.xcassets"; sourceTree = SOURCE_ROOT; };
+		AA000001000000000000A002 /* AppIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = "Meeting Reminder/AppIcon.icns"; sourceTree = SOURCE_ROOT; };
+		AA000001000000000000A003 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "Meeting Reminder/Localizable.xcstrings"; sourceTree = SOURCE_ROOT; };
+		AA000001000000000000A004 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Meeting Reminder/PrivacyInfo.xcprivacy"; sourceTree = SOURCE_ROOT; };
+		AA000001000000000000A005 /* InfoPlist.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = "Meeting Reminder/en.lproj/InfoPlist.strings"; sourceTree = SOURCE_ROOT; };
+		AA000001000000000000A006 /* InfoPlist.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = "Meeting Reminder/de.lproj/InfoPlist.strings"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -129,8 +141,9 @@
 		51049C4B1D85CD4E28F0C1ED /* NevLate */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 39014429E674469397740F3E /* Build configuration list for PBXNativeTarget "NevLate" */;
-			buildPhases = (
-				C44F653D44DFC34567465F6E /* Sources */,
+				buildPhases = (
+					AA000003000000000000A000 /* Resources */,
+					C44F653D44DFC34567465F6E /* Sources */,
 			);
 			buildRules = (
 			);
@@ -190,6 +203,21 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		AA000003000000000000A000 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA000002000000000000A001 /* Assets.xcassets in Resources */,
+				AA000002000000000000A002 /* AppIcon.icns in Resources */,
+				AA000002000000000000A003 /* Localizable.xcstrings in Resources */,
+				AA000002000000000000A004 /* PrivacyInfo.xcprivacy in Resources */,
+				AA000002000000000000A005 /* InfoPlist.strings in Resources */,
+				AA000002000000000000A006 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 /* Begin PBXSourcesBuildPhase section */
 		22BB0DE0447AB97187C201D2 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -237,6 +265,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Meeting Reminder/Meeting_Reminder.entitlements";
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = "Meeting Reminder/Info.plist";
+				INFOPLIST_KEY_CFBundleIconFile = AppIcon;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -353,6 +382,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Meeting Reminder/Meeting_Reminder.entitlements";
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = "Meeting Reminder/Info.plist";
+				INFOPLIST_KEY_CFBundleIconFile = AppIcon;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",

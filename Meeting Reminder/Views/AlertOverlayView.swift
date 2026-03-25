@@ -95,17 +95,17 @@ struct AlertOverlayView: View {
     private var cardContent: some View {
         ZStack(alignment: .topTrailing) {
             VStack(spacing: 0) {
-                // Uhrzeit
+                // Uhrzeit — gut sichtbar (0.75 statt 0.4)
                 Text(now.formatted(.dateTime.hour(.twoDigits(amPM: .omitted)).minute(.twoDigits).second(.twoDigits)))
                     .font(.system(size: 14, weight: .medium, design: .monospaced))
-                    .foregroundStyle(.white.opacity(0.4))
+                    .foregroundStyle(.white.opacity(0.75))
                     .padding(.bottom, 28)
 
                 // Kalenderfarbe-Akzent + Titel
                 HStack(spacing: 0) {
                     RoundedRectangle(cornerRadius: 2)
                         .fill(event.calendarColor)
-                        .frame(width: 4, height: 32)
+                        .frame(width: 4, height: 44)   // höher: 44pt statt 32pt
                         .padding(.trailing, 12)
 
                     Text(event.title)
@@ -117,18 +117,18 @@ struct AlertOverlayView: View {
                 }
                 .padding(.bottom, 4)
 
-                // Kalender-Titel + Account-Name
+                // Kalender-Titel — besser sichtbar (0.75 statt 0.5)
                 VStack(spacing: 2) {
                     Text(event.calendarTitle)
                         .font(.system(size: 13, weight: .semibold))
-                        .foregroundStyle(.white.opacity(0.5))
+                        .foregroundStyle(.white.opacity(0.75))
                 }
                 .padding(.bottom, 8)
 
-                // Zeitraum
+                // Zeitraum — klar lesbar (0.9 statt 0.6)
                 Text(timeRange)
                     .font(.system(size: 16, weight: .medium))
-                    .foregroundStyle(.white.opacity(0.6))
+                    .foregroundStyle(.white.opacity(0.9))
                     .padding(.bottom, 6)
 
                 // Countdown — wird bei < 10 Sek. größer und rot
@@ -184,6 +184,7 @@ struct AlertOverlayView: View {
         .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 24))
         .glassEffect(.regular.interactive(), in: RoundedRectangle(cornerRadius: 24))
         .shadow(color: .black.opacity(0.5), radius: 40, y: 12)
+        .environment(\.colorScheme, .dark)   // Erzwingt dunkles Glas — größter Kontrastgewinn
     }
 
     // MARK: - LIVE Badge
@@ -191,18 +192,18 @@ struct AlertOverlayView: View {
     private var liveBadge: some View {
         HStack(spacing: 5) {
             Circle()
-                .fill(.red)
-                .frame(width: 8, height: 8)
-                .opacity(livePulse ? 1.0 : 0.3)
-                .shadow(color: .red.opacity(livePulse ? 0.8 : 0.0), radius: 6)
+                .fill(.white)                          // weiß auf rotem Hintergrund
+                .frame(width: 7, height: 7)
+                .opacity(livePulse ? 1.0 : 0.5)
+                .shadow(color: .white.opacity(livePulse ? 0.8 : 0.0), radius: 4)
 
             Text("LIVE")
                 .font(.system(size: 11, weight: .heavy, design: .rounded))
-                .foregroundStyle(.red)
+                .foregroundStyle(.white)               // weißer Text statt roter auf hellem Grund
         }
         .padding(.horizontal, 10)
         .padding(.vertical, 5)
-        .background(.red.opacity(0.15), in: Capsule())
+        .background(.red, in: Capsule())               // solider roter Hintergrund statt opacity(0.15)
         .accessibilityLabel("Meeting läuft bereits")
     }
 
@@ -260,28 +261,32 @@ struct AlertOverlayView: View {
                     .glassEffect(.regular.interactive(), in: RoundedRectangle(cornerRadius: 12))
                     .accessibilityLabel(meetingLink.provider.accessibilityJoinLabel)
 
-                    // Provider-Indikator unter dem Button
+                    // Provider-Indikator unter dem Button — besser sichtbar (0.55 statt 0.3)
                     HStack(spacing: 4) {
                         Image(systemName: meetingLink.provider.iconName)
                             .font(.system(size: 9))
                         Text("via \(meetingLink.provider.shortName)")
                             .font(.system(size: 10, weight: .medium))
                     }
-                    .foregroundStyle(.white.opacity(0.3))
+                    .foregroundStyle(.white.opacity(0.55))
                     .accessibilityHidden(true)
                 }
             }
 
-            // Schließen Button
+            // Schließen Button — klar sichtbar mit Kontur und Plain-Style
             Button(action: onDismiss) {
                 Text("Schließen")
                     .font(.system(size: 14, weight: .medium))
+                    .foregroundStyle(.white.opacity(0.9))
                     .frame(maxWidth: .infinity)
                     .frame(height: 38)
+                    .background(.white.opacity(0.1), in: RoundedRectangle(cornerRadius: 10))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .strokeBorder(.white.opacity(0.3), lineWidth: 1)
+                    )
             }
-            .buttonStyle(.bordered)
-            .controlSize(.large)
-            .glassEffect(.regular.interactive(), in: RoundedRectangle(cornerRadius: 10))
+            .buttonStyle(.plain)
             .accessibilityLabel("Erinnerung schließen")
         }
     }
@@ -290,22 +295,24 @@ struct AlertOverlayView: View {
 
     private var snoozeSection: some View {
         VStack(spacing: 6) {
+            // Label besser lesbar (0.6 statt 0.3)
             Text("Später erinnern")
                 .font(.system(size: 11, weight: .medium))
-                .foregroundStyle(.white.opacity(0.3))
+                .foregroundStyle(.white.opacity(0.6))
 
             Button(action: onSnooze) {
                 HStack(spacing: 4) {
-                    Image(systemName: "bell.badge")
+                    Image(systemName: "clock.badge")
                         .font(.system(size: 10))
-                    Text("1 Minute")
+                    Text("In 1 Minute erneut erinnern")
                         .font(.system(size: 12, weight: .medium))
                 }
-                .foregroundStyle(.white.opacity(0.5))
+                // Snooze-Text besser lesbar (0.8 statt 0.5)
+                .foregroundStyle(.white.opacity(0.8))
                 .padding(.horizontal, 16)
                 .padding(.vertical, 6)
-                .background(.white.opacity(0.06), in: Capsule())
-                .overlay(Capsule().strokeBorder(.white.opacity(0.08), lineWidth: 0.5))
+                .background(.white.opacity(0.08), in: Capsule())
+                .overlay(Capsule().strokeBorder(.white.opacity(0.15), lineWidth: 0.5))
             }
             .buttonStyle(.plain)
             .accessibilityLabel("In einer Minute erneut erinnern")
