@@ -1,7 +1,7 @@
 ---
 title: "feat: Overlay Redesign nach Stitch Glassmorphic Variant 1"
 type: feat
-status: active
+status: completed
 date: 2026-03-25
 ---
 
