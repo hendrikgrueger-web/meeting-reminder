@@ -22,7 +22,6 @@ struct AlertOverlayView: View {
     /// Physische Adresse anzeigen — Meeting-URLs (alle 8 Provider) werden unterdrückt
     private var displayLocation: String? {
         guard let loc = event.location, !loc.isEmpty else { return nil }
-        // Wenn location eine Meeting-URL enthält → nicht als Adresse anzeigen
         if let meetingURL = event.meetingURL, loc.contains(meetingURL.host ?? "") { return nil }
         if event.hasMeetingLink && loc.hasPrefix("http") { return nil }
         return loc
@@ -35,13 +34,13 @@ struct AlertOverlayView: View {
 
     var body: some View {
         ZStack {
-            // Vollbild dimmed + blur Hintergrund — Desktop scheint sanft durch
+            // Helles Frosted-Glass Hintergrund — Desktop scheint klar durch
             Rectangle()
-                .fill(.black.opacity(0.65))
+                .fill(.black.opacity(0.4))
                 .overlay(
                     Rectangle()
                         .fill(.ultraThinMaterial)
-                        .opacity(0.5)
+                        .opacity(0.6)
                 )
                 .ignoresSafeArea()
                 .accessibilityHidden(true)
@@ -61,11 +60,9 @@ struct AlertOverlayView: View {
         .onReceive(NotificationCenter.default.publisher(for: .overlaySnooze)) { _ in onSnooze() }
         .onAppear {
             if !reduceMotion {
-                // Slide-Down Spring Animation
                 withAnimation(.spring(response: 0.6, dampingFraction: 0.75)) {
                     appeared = true
                 }
-                // LIVE-Puls starten wenn Meeting bereits läuft
                 if isLive {
                     startLivePulse()
                 }
@@ -75,7 +72,6 @@ struct AlertOverlayView: View {
             }
         }
         .onChange(of: isLive) { _, newValue in
-            // Puls aktivieren sobald Meeting live geht
             if newValue && !reduceMotion {
                 startLivePulse()
             }
@@ -95,45 +91,43 @@ struct AlertOverlayView: View {
     private var cardContent: some View {
         ZStack(alignment: .topTrailing) {
             VStack(spacing: 0) {
-                // Uhrzeit — gut sichtbar (0.75 statt 0.4)
-                Text(now.formatted(.dateTime.hour(.twoDigits(amPM: .omitted)).minute(.twoDigits).second(.twoDigits)))
-                    .font(.system(size: 14, weight: .medium, design: .monospaced))
-                    .foregroundStyle(.white.opacity(0.75))
-                    .padding(.bottom, 28)
+                // Titel — full-width, dunkle Farbe (kein Farbbalken, keine Uhrzeit)
+                Text(event.title)
+                    .font(.system(size: 30, weight: .bold, design: .default))
+                    .foregroundStyle(.primary)
+                    .lineLimit(2)
+                    .multilineTextAlignment(.center)
+                    .frame(maxWidth: .infinity)
+                    .accessibilityAddTraits(.isHeader)
+                    .padding(.bottom, 4)
 
-                // Kalenderfarbe-Akzent + Titel
-                HStack(spacing: 0) {
-                    RoundedRectangle(cornerRadius: 2)
-                        .fill(event.calendarColor)
-                        .frame(width: 4, height: 44)   // höher: 44pt statt 32pt
-                        .padding(.trailing, 12)
+                // Kalender-Titel
+                Text(event.calendarTitle)
+                    .font(.system(size: 13, weight: .semibold))
+                    .foregroundStyle(.secondary)
+                    .padding(.bottom, 8)
 
-                    Text(event.title)
-                        .font(.system(size: 28, weight: .bold, design: .default))
-                        .foregroundStyle(.white)
-                        .lineLimit(2)
-                        .multilineTextAlignment(.center)
-                        .accessibilityAddTraits(.isHeader)
-                }
-                .padding(.bottom, 4)
-
-                // Kalender-Titel — besser sichtbar (0.75 statt 0.5)
-                VStack(spacing: 2) {
-                    Text(event.calendarTitle)
-                        .font(.system(size: 13, weight: .semibold))
-                        .foregroundStyle(.white.opacity(0.75))
-                }
-                .padding(.bottom, 8)
-
-                // Zeitraum — klar lesbar (0.9 statt 0.6)
+                // Zeitraum mit Datum
                 Text(timeRange)
                     .font(.system(size: 16, weight: .medium))
-                    .foregroundStyle(.white.opacity(0.9))
+                    .foregroundStyle(.primary)
                     .padding(.bottom, 6)
 
-                // Countdown — wird bei < 10 Sek. größer und rot
+                // Countdown
                 countdownPill
-                    .padding(.bottom, 24)
+                    .padding(.bottom, 16)
+
+                // Provider-Info — zwischen Countdown und Join-Button
+                if let meetingLink = event.meetingLink {
+                    HStack(spacing: 6) {
+                        Image(systemName: meetingLink.provider.iconName)
+                            .font(.system(size: 13))
+                        Text(meetingLink.provider.rawValue)
+                            .font(.system(size: 13, weight: .medium))
+                    }
+                    .foregroundStyle(.secondary)
+                    .padding(.bottom, 16)
+                }
 
                 // Ort (wenn vorhanden und nicht eine Meeting-URL)
                 if let location = displayLocation {
@@ -144,8 +138,8 @@ struct AlertOverlayView: View {
                             .font(.system(size: 15, weight: .medium))
                             .lineLimit(1)
                     }
-                    .foregroundStyle(.white.opacity(0.7))
-                    .padding(.bottom, 24)
+                    .foregroundStyle(.secondary)
+                    .padding(.bottom, 16)
                 }
 
                 // Kein Einwahllink Warnung
@@ -160,7 +154,7 @@ struct AlertOverlayView: View {
                     .padding(.horizontal, 16)
                     .padding(.vertical, 8)
                     .background(.orange.opacity(0.15), in: Capsule())
-                    .padding(.bottom, 24)
+                    .padding(.bottom, 16)
                 }
 
                 // Buttons
@@ -183,8 +177,8 @@ struct AlertOverlayView: View {
         .frame(width: 440)
         .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 24))
         .glassEffect(.regular.interactive(), in: RoundedRectangle(cornerRadius: 24))
-        .shadow(color: .black.opacity(0.5), radius: 40, y: 12)
-        .environment(\.colorScheme, .dark)   // Erzwingt dunkles Glas — größter Kontrastgewinn
+        .shadow(color: .black.opacity(0.25), radius: 40, y: 12)
+        // Kein .environment(\.colorScheme, .dark) — helles Glassmorphic nach Stitch-Design
     }
 
     // MARK: - LIVE Badge
@@ -192,18 +186,18 @@ struct AlertOverlayView: View {
     private var liveBadge: some View {
         HStack(spacing: 5) {
             Circle()
-                .fill(.white)                          // weiß auf rotem Hintergrund
+                .fill(.white)
                 .frame(width: 7, height: 7)
                 .opacity(livePulse ? 1.0 : 0.5)
                 .shadow(color: .white.opacity(livePulse ? 0.8 : 0.0), radius: 4)
 
             Text("LIVE")
                 .font(.system(size: 11, weight: .heavy, design: .rounded))
-                .foregroundStyle(.white)               // weißer Text statt roter auf hellem Grund
+                .foregroundStyle(.white)
         }
         .padding(.horizontal, 10)
         .padding(.vertical, 5)
-        .background(.red, in: Capsule())               // solider roter Hintergrund statt opacity(0.15)
+        .background(.red, in: Capsule())
         .accessibilityLabel("Meeting läuft bereits")
     }
 
@@ -213,7 +207,6 @@ struct AlertOverlayView: View {
         let diff = event.startDate.timeIntervalSince(now)
         let isRunning = diff <= 0
         let isUrgent = diff > 0 && diff <= 60
-        // Countdown < 10 Sekunden: rot und größer
         let isCritical = diff > 0 && diff <= 10
         let color: Color = isRunning ? .green : (isCritical ? .red : (isUrgent ? .orange : .cyan))
         let fontSize: CGFloat = isCritical ? 20 : 13
@@ -242,48 +235,35 @@ struct AlertOverlayView: View {
 
     private var actionButtons: some View {
         VStack(spacing: 10) {
-            // Beitreten Button — mit Provider-Icon, Label und "via Provider" Hinweis
+            // Join-Button — solid blau (#3B82F6), kein Glass
             if let meetingLink = event.meetingLink {
-                VStack(spacing: 4) {
-                    Button(action: onJoin) {
-                        HStack(spacing: 8) {
-                            Image(systemName: meetingLink.provider.iconName)
-                                .font(.system(size: 14, weight: .semibold))
-                            Text(meetingLink.provider.joinLabel)
-                                .font(.system(size: 16, weight: .semibold))
-                        }
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 44)
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .tint(.indigo)
-                    .controlSize(.large)
-                    .glassEffect(.regular.interactive(), in: RoundedRectangle(cornerRadius: 12))
-                    .accessibilityLabel(meetingLink.provider.accessibilityJoinLabel)
-
-                    // Provider-Indikator unter dem Button — besser sichtbar (0.55 statt 0.3)
-                    HStack(spacing: 4) {
+                Button(action: onJoin) {
+                    HStack(spacing: 8) {
                         Image(systemName: meetingLink.provider.iconName)
-                            .font(.system(size: 9))
-                        Text("via \(meetingLink.provider.shortName)")
-                            .font(.system(size: 10, weight: .medium))
+                            .font(.system(size: 14, weight: .semibold))
+                        Text(meetingLink.provider.joinLabel)
+                            .font(.system(size: 16, weight: .semibold))
                     }
-                    .foregroundStyle(.white.opacity(0.55))
-                    .accessibilityHidden(true)
+                    .foregroundStyle(.white)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 44)
+                    .background(Color(red: 0.23, green: 0.51, blue: 0.96), in: RoundedRectangle(cornerRadius: 12))
                 }
+                .buttonStyle(.plain)
+                .accessibilityLabel(meetingLink.provider.accessibilityJoinLabel)
             }
 
-            // Schließen Button — klar sichtbar mit Kontur und Plain-Style
+            // Schließen-Button — Outline mit dunklem Text
             Button(action: onDismiss) {
                 Text("Schließen")
                     .font(.system(size: 14, weight: .medium))
-                    .foregroundStyle(.white.opacity(0.9))
+                    .foregroundStyle(.primary)
                     .frame(maxWidth: .infinity)
-                    .frame(height: 38)
-                    .background(.white.opacity(0.1), in: RoundedRectangle(cornerRadius: 10))
+                    .frame(height: 44)
+                    .background(.clear, in: RoundedRectangle(cornerRadius: 12))
                     .overlay(
-                        RoundedRectangle(cornerRadius: 10)
-                            .strokeBorder(.white.opacity(0.3), lineWidth: 1)
+                        RoundedRectangle(cornerRadius: 12)
+                            .strokeBorder(.secondary.opacity(0.4), lineWidth: 1)
                     )
             }
             .buttonStyle(.plain)
@@ -291,40 +271,40 @@ struct AlertOverlayView: View {
         }
     }
 
-    // MARK: - Snooze
+    // MARK: - Snooze (horizontal)
 
     private var snoozeSection: some View {
-        VStack(spacing: 6) {
-            // Label besser lesbar (0.6 statt 0.3)
-            Text("Später erinnern")
-                .font(.system(size: 11, weight: .medium))
-                .foregroundStyle(.white.opacity(0.6))
+        HStack(spacing: 12) {
+            Button(action: onDismiss) {
+                Text("Später erinnern")
+                    .font(.system(size: 12, weight: .medium))
+                    .foregroundStyle(.secondary)
+            }
+            .buttonStyle(.plain)
+
+            Text("|")
+                .font(.system(size: 12))
+                .foregroundStyle(.tertiary)
 
             Button(action: onSnooze) {
-                HStack(spacing: 4) {
-                    Image(systemName: "clock.badge")
-                        .font(.system(size: 10))
-                    Text("In 1 Minute erneut erinnern")
-                        .font(.system(size: 12, weight: .medium))
-                }
-                // Snooze-Text besser lesbar (0.8 statt 0.5)
-                .foregroundStyle(.white.opacity(0.8))
-                .padding(.horizontal, 16)
-                .padding(.vertical, 6)
-                .background(.white.opacity(0.08), in: Capsule())
-                .overlay(Capsule().strokeBorder(.white.opacity(0.15), lineWidth: 0.5))
+                Text("In 1 Minute erneut erinnern")
+                    .font(.system(size: 12, weight: .medium))
+                    .foregroundStyle(.secondary)
             }
             .buttonStyle(.plain)
             .accessibilityLabel("In einer Minute erneut erinnern")
         }
+        .padding(.bottom, 4)
     }
 
     // MARK: - Hilfsfunktionen
 
     private var timeRange: String {
-        let fmt = DateFormatter()
-        fmt.dateFormat = "HH:mm"
-        return "\(fmt.string(from: event.startDate)) – \(fmt.string(from: event.endDate))"
+        let timeFmt = DateFormatter()
+        timeFmt.dateFormat = "HH:mm"
+        let dateFmt = DateFormatter()
+        dateFmt.dateFormat = "dd.MM."
+        return "\(timeFmt.string(from: event.startDate)) – \(timeFmt.string(from: event.endDate)) (\(dateFmt.string(from: event.startDate)))"
     }
 
     private var countdownText: String {
