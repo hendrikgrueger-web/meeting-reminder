@@ -274,26 +274,13 @@ struct AlertOverlayView: View {
     // MARK: - Snooze (horizontal)
 
     private var snoozeSection: some View {
-        HStack(spacing: 12) {
-            Button(action: onDismiss) {
-                Text("Später erinnern")
-                    .font(.system(size: 12, weight: .medium))
-                    .foregroundStyle(.secondary)
-            }
-            .buttonStyle(.plain)
-
-            Text("|")
-                .font(.system(size: 12))
-                .foregroundStyle(.tertiary)
-
-            Button(action: onSnooze) {
-                Text("In 1 Minute erneut erinnern")
-                    .font(.system(size: 12, weight: .medium))
-                    .foregroundStyle(.secondary)
-            }
-            .buttonStyle(.plain)
-            .accessibilityLabel("In einer Minute erneut erinnern")
+        Button(action: onSnooze) {
+            Text("In 1 Min. erinnern")
+                .font(.system(size: 12, weight: .medium))
+                .foregroundStyle(.secondary)
         }
+        .buttonStyle(.plain)
+        .accessibilityLabel("In einer Minute erneut erinnern")
         .padding(.bottom, 4)
     }
 
