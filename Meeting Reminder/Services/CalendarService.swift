@@ -47,23 +47,6 @@ final class CalendarService: ObservableObject {
         }
     }
 
-    /// Aktivierte Meeting-Provider als Set der rawValues (z.B. "Microsoft Teams", "Zoom").
-    /// Standard: alle Provider aktiviert.
-    @Published var enabledProviders: Set<String> = {
-        guard let data = UserDefaults.standard.data(forKey: "enabledProviders"),
-              let decoded = try? JSONDecoder().decode(Set<String>.self, from: data) else {
-            // Standard: alle Provider aktiviert
-            return Set(MeetingProvider.allCases.map(\.rawValue))
-        }
-        return decoded
-    }() {
-        didSet {
-            let data = (try? JSONEncoder().encode(enabledProviders)) ?? Data()
-            UserDefaults.standard.set(data, forKey: "enabledProviders")
-            reloadAndReschedule()
-        }
-    }
-
     // MARK: - Private
 
     private let eventStore = EKEventStore()
@@ -333,12 +316,6 @@ final class CalendarService: ObservableObject {
     private func isRelevant(_ event: MeetingEvent, now: Date) -> Bool {
         // Snoozed Events sind temporär ausgeblendet
         guard !snoozedEvents.contains(event.id) else { return false }
-
-        // Provider-Filter: wenn ein Meeting-Link vorhanden, muss der Provider aktiviert sein
-        if let provider = event.meetingProvider,
-           !enabledProviders.contains(provider.rawValue) {
-            return false
-        }
 
         return CalendarService.isEventRelevant(
             event,

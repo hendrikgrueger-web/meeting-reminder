@@ -22,7 +22,6 @@ struct SettingsView: View {
                     Divider().padding(.vertical, 8)
 
                     calendarSection
-                    providerSection
                     generalSection
                 }
             }
@@ -143,42 +142,6 @@ struct SettingsView: View {
 
             Divider().padding(.vertical, 8)
         }
-    }
-
-    // MARK: - Meeting-Provider-Sektion
-
-    @ViewBuilder
-    private var providerSection: some View {
-        sectionHeader(icon: "video.fill", title: "Meeting-Provider")
-
-        ForEach(MeetingProvider.allCases, id: \.rawValue) { provider in
-            let isEnabled = calendarService.enabledProviders.contains(provider.rawValue)
-            HStack {
-                Image(systemName: provider.iconName)
-                    .foregroundStyle(.secondary)
-                    .frame(width: 16)
-                Text(provider.rawValue)
-                    .font(.subheadline)
-                Spacer()
-                Toggle("", isOn: Binding(
-                    get: { isEnabled },
-                    set: { enabled in
-                        var providers = calendarService.enabledProviders
-                        if enabled { providers.insert(provider.rawValue) }
-                        else { providers.remove(provider.rawValue) }
-                        calendarService.enabledProviders = providers
-                    }
-                ))
-                .labelsHidden()
-                .toggleStyle(.switch)
-                .controlSize(.small)
-            }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 3)
-            .help("Meetings von \(provider.rawValue) einbeziehen")
-        }
-
-        Divider().padding(.vertical, 8)
     }
 
     // MARK: - Allgemeine Einstellungen
