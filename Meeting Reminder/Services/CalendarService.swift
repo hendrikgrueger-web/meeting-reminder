@@ -191,12 +191,13 @@ final class CalendarService: ObservableObject {
         let validIDs = Set(events.map(\.id))
         pendingEvents.removeAll { !validIDs.contains($0.id) }
 
-        // Nächstes Event für Status-Anzeige
-        nextEvent = events.first
+        // Nächstes Event für Status-Anzeige (aus todayEvents, nicht Reminder-gefilterter Liste)
+        // todayEvents ist chronologisch sortiert → first { endDate > now } liefert laufendes oder nächstes Meeting
+        nextEvent = todayEvents.first(where: { $0.endDate > now })
 
         // Anzahl der Events in den nächsten 60 Minuten (für Menüleisten-Zähler)
         let oneHourFromNow = now.addingTimeInterval(60 * 60)
-        upcomingEventsCount = events.filter { $0.startDate > now && $0.startDate <= oneHourFromNow }.count
+        upcomingEventsCount = todayEvents.filter { $0.startDate > now && $0.startDate <= oneHourFromNow }.count
 
         // Prüfen ob ein Meeting JETZT läuft (nach Wake)
         let runningEvents = events.filter { $0.startDate <= now && !dismissedEvents.contains($0.id) }

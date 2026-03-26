@@ -532,4 +532,126 @@ struct CalendarServiceTests {
         #expect(result != nil)
         #expect(result == Set(["a", "b"]))
     }
+
+    // MARK: - nextEvent-Ableitung aus todayEvents (endDate > now)
+
+    @Test("nextEvent-Logik: Vergangenes Meeting wird übersprungen, nächstes gezeigt")
+    func nextEventSkipsPastMeeting() {
+        let now = Date()
+        let pastEvent = makeEvent(
+            eventIdentifier: "past",
+            title: "Vergangenes Meeting",
+            startDate: now.addingTimeInterval(-2 * 3600),
+            endDate: now.addingTimeInterval(-1 * 3600)
+        )
+        let futureEvent = makeEvent(
+            eventIdentifier: "future",
+            title: "Zukünftiges Meeting",
+            startDate: now.addingTimeInterval(1 * 3600),
+            endDate: now.addingTimeInterval(2 * 3600)
+        )
+        let todayEvents = [pastEvent, futureEvent].sorted { $0.startDate < $1.startDate }
+        let result = todayEvents.first(where: { $0.endDate > now })
+        #expect(result?.eventIdentifier == "future")
+    }
+
+    @Test("nextEvent-Logik: Laufendes Meeting wird angezeigt")
+    func nextEventShowsRunningMeeting() {
+        let now = Date()
+        let runningEvent = makeEvent(
+            eventIdentifier: "running",
+            title: "Laufendes Meeting",
+            startDate: now.addingTimeInterval(-30 * 60),
+            endDate: now.addingTimeInterval(30 * 60)
+        )
+        let futureEvent = makeEvent(
+            eventIdentifier: "future",
+            title: "Späteres Meeting",
+            startDate: now.addingTimeInterval(2 * 3600),
+            endDate: now.addingTimeInterval(3 * 3600)
+        )
+        let todayEvents = [runningEvent, futureEvent].sorted { $0.startDate < $1.startDate }
+        let result = todayEvents.first(where: { $0.endDate > now })
+        #expect(result?.eventIdentifier == "running")
+    }
+
+    @Test("nextEvent-Logik: Kein Meeting mehr heute → nil")
+    func nextEventNilWhenAllPast() {
+        let now = Date()
+        let pastEvent1 = makeEvent(
+            eventIdentifier: "past1",
+            startDate: now.addingTimeInterval(-4 * 3600),
+            endDate: now.addingTimeInterval(-3 * 3600)
+        )
+        let pastEvent2 = makeEvent(
+            eventIdentifier: "past2",
+            startDate: now.addingTimeInterval(-2 * 3600),
+            endDate: now.addingTimeInterval(-1 * 3600)
+        )
+        let todayEvents = [pastEvent1, pastEvent2].sorted { $0.startDate < $1.startDate }
+        let result = todayEvents.first(where: { $0.endDate > now })
+        #expect(result == nil)
+    }
+
+    @Test("nextEvent-Logik: Leere todayEvents → nil")
+    func nextEventNilWhenEmpty() {
+        let todayEvents: [MeetingEvent] = []
+        let result = todayEvents.first(where: { $0.endDate > Date() })
+        #expect(result == nil)
+    }
+
+    @Test("nextEvent-Logik: Meeting ohne Link wird auch angezeigt (kein Online-Only-Filter)")
+    func nextEventShowsMeetingWithoutLink() {
+        let now = Date()
+        let offlineMeeting = makeEvent(
+            eventIdentifier: "offline",
+            title: "Raum-Meeting",
+            startDate: now.addingTimeInterval(30 * 60),
+            endDate: now.addingTimeInterval(90 * 60),
+            meetingLink: nil
+        )
+        let todayEvents = [offlineMeeting]
+        let result = todayEvents.first(where: { $0.endDate > now })
+        #expect(result?.eventIdentifier == "offline")
+    }
+
+    @Test("upcomingCount-Logik: Zählt alle Meetings in 60 Min, auch ohne Link")
+    func upcomingCountIncludesOfflineMeetings() {
+        let now = Date()
+        let oneHourFromNow = now.addingTimeInterval(60 * 60)
+        let onlineMeeting = makeEvent(
+            eventIdentifier: "online",
+            startDate: now.addingTimeInterval(20 * 60),
+            endDate: now.addingTimeInterval(80 * 60),
+            meetingLink: MeetingLink(url: URL(string: "https://zoom.us/j/123")!, provider: .zoom)
+        )
+        let offlineMeeting = makeEvent(
+            eventIdentifier: "offline",
+            startDate: now.addingTimeInterval(40 * 60),
+            endDate: now.addingTimeInterval(100 * 60),
+            meetingLink: nil
+        )
+        let todayEvents = [onlineMeeting, offlineMeeting].sorted { $0.startDate < $1.startDate }
+        let count = todayEvents.filter { $0.startDate > now && $0.startDate <= oneHourFromNow }.count
+        #expect(count == 2)
+    }
+
+    @Test("upcomingCount-Logik: Laufendes Meeting zählt nicht als upcoming")
+    func upcomingCountExcludesRunningMeeting() {
+        let now = Date()
+        let oneHourFromNow = now.addingTimeInterval(60 * 60)
+        let runningMeeting = makeEvent(
+            eventIdentifier: "running",
+            startDate: now.addingTimeInterval(-10 * 60),
+            endDate: now.addingTimeInterval(50 * 60)
+        )
+        let futureMeeting = makeEvent(
+            eventIdentifier: "future",
+            startDate: now.addingTimeInterval(30 * 60),
+            endDate: now.addingTimeInterval(90 * 60)
+        )
+        let todayEvents = [runningMeeting, futureMeeting].sorted { $0.startDate < $1.startDate }
+        let count = todayEvents.filter { $0.startDate > now && $0.startDate <= oneHourFromNow }.count
+        #expect(count == 1) // Nur futureMeeting, nicht runningMeeting
+    }
 }
