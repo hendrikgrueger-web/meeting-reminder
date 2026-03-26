@@ -286,12 +286,20 @@ struct AlertOverlayView: View {
 
     // MARK: - Hilfsfunktionen
 
+    private static let timeFmt: DateFormatter = {
+        let f = DateFormatter()
+        f.dateFormat = "HH:mm"
+        return f
+    }()
+
+    private static let dateFmt: DateFormatter = {
+        let f = DateFormatter()
+        f.dateFormat = "dd.MM."
+        return f
+    }()
+
     private var timeRange: String {
-        let timeFmt = DateFormatter()
-        timeFmt.dateFormat = "HH:mm"
-        let dateFmt = DateFormatter()
-        dateFmt.dateFormat = "dd.MM."
-        return "\(timeFmt.string(from: event.startDate)) – \(timeFmt.string(from: event.endDate)) (\(dateFmt.string(from: event.startDate)))"
+        "\(Self.timeFmt.string(from: event.startDate)) – \(Self.timeFmt.string(from: event.endDate)) (\(Self.dateFmt.string(from: event.startDate)))"
     }
 
     private var countdownText: String {
