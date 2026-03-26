@@ -103,16 +103,6 @@ struct TodayMeetingsView: View {
 
     private func handleTap(_ event: MeetingEvent) {
         guard let meetingLink = event.meetingLink else { return }
-
-        let deepURL = MeetingLinkExtractor.deepLinkURL(for: meetingLink)
-
-        // Deep-Link versuchen (prüfen ob App installiert ist)
-        if deepURL != meetingLink.url,
-           NSWorkspace.shared.urlForApplication(toOpen: deepURL) != nil {
-            NSWorkspace.shared.open(deepURL)
-        } else {
-            // Fallback: normalen HTTPS-Link im Browser öffnen
-            NSWorkspace.shared.open(meetingLink.url)
-        }
+        MeetingLinkExtractor.open(meetingLink)
     }
 }

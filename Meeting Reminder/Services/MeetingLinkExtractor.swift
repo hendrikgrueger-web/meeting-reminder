@@ -1,4 +1,5 @@
 import Foundation
+import AppKit
 
 // MARK: - Meeting Link Extractor
 
@@ -115,6 +116,21 @@ enum MeetingLinkExtractor {
             }
         }
         return nil
+    }
+
+    // MARK: - Meeting öffnen (Deep-Link mit Fallback)
+
+    /// Öffnet einen Meeting-Link: versucht zuerst den nativen Deep-Link, dann HTTPS-Fallback.
+    @MainActor
+    static func open(_ meetingLink: MeetingLink) {
+        let deepURL = deepLinkURL(for: meetingLink)
+
+        if deepURL != meetingLink.url,
+           NSWorkspace.shared.urlForApplication(toOpen: deepURL) != nil {
+            NSWorkspace.shared.open(deepURL)
+        } else {
+            NSWorkspace.shared.open(meetingLink.url)
+        }
     }
 
     // MARK: - Deep Links
