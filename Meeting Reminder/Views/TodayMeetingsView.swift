@@ -2,7 +2,7 @@
 import SwiftUI
 
 /// Tagesübersicht aller heutigen Meetings im Menüleisten-Popover.
-/// Vergangene Meetings ausgegraut, aktuelles hervorgehoben, zukünftige normal.
+/// 3-Stufen-Hierarchie: vergangen (gedimmt), aktuell (hervorgehoben), zukünftig (volle Farbe).
 struct TodayMeetingsView: View {
 
     @ObservedObject var calendarService: CalendarService
@@ -33,49 +33,61 @@ struct TodayMeetingsView: View {
     @ViewBuilder
     private func meetingRow(_ event: MeetingEvent) -> some View {
         let status = eventStatus(event)
-        let isClickable = event.meetingLink != nil
+        let isClickable = event.meetingLink != nil && status != .past
 
         Button(action: { handleTap(event) }) {
             HStack(spacing: 8) {
-                // Kalender-Farbbalken
-                RoundedRectangle(cornerRadius: 1.5)
+                // Kalender-Farbbalken — 4px für bessere Sichtbarkeit im Dark Mode
+                RoundedRectangle(cornerRadius: 2)
                     .fill(event.calendarColor)
-                    .frame(width: 3, height: 20)
+                    .frame(width: 4, height: 22)
+                    .opacity(status == .past ? 0.4 : 1.0)
 
                 // Uhrzeit
                 Text(event.startDate.formatted(.dateTime.hour(.twoDigits(amPM: .omitted)).minute(.twoDigits)))
                     .font(.system(size: 11, weight: .medium, design: .monospaced))
+                    .monospacedDigit()
                     .foregroundStyle(status == .past ? .tertiary : .secondary)
                     .frame(width: 38, alignment: .leading)
+
+                // "Jetzt"-Badge für laufendes Meeting
+                if status == .current {
+                    Text("Jetzt")
+                        .font(.system(size: 9, weight: .bold))
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 5)
+                        .padding(.vertical, 1)
+                        .background(.green, in: Capsule())
+                }
 
                 // Titel
                 Text(event.title)
                     .font(.system(size: 12, weight: status == .current ? .semibold : .regular))
-                    .foregroundStyle(status == .past ? .secondary : .primary)
+                    .foregroundStyle(status == .past ? .tertiary : .primary)
                     .lineLimit(1)
                     .truncationMode(.tail)
 
                 Spacer(minLength: 4)
 
-                // Provider-Icon (wenn vorhanden)
-                if let provider = event.meetingProvider {
+                // Provider-Icon — nur für aktuelle und zukünftige Events, 12pt für Lesbarkeit
+                if status != .past, let provider = event.meetingProvider {
                     Image(systemName: provider.iconName)
-                        .font(.system(size: 10))
-                        .foregroundStyle(status == .past ? .quaternary : .secondary)
+                        .font(.system(size: 12))
+                        .foregroundStyle(status == .current ? .primary : .secondary)
                 }
             }
-            .frame(height: 28)
+            .frame(height: 30)
             .padding(.horizontal, 16)
             .padding(.vertical, 1)
             .background(
                 status == .current
-                    ? AnyShapeStyle(event.calendarColor.opacity(0.1))
-                    : AnyShapeStyle(.clear)
+                    ? event.calendarColor.opacity(0.12)
+                    : Color.clear
             )
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
-        .opacity(status == .past ? 0.4 : 1.0)
+        .opacity(status == .past ? 0.35 : 1.0)
         .disabled(!isClickable)
         .help(isClickable
             ? "Klicken zum Beitreten via \(event.meetingProvider?.shortName ?? "Link")"
