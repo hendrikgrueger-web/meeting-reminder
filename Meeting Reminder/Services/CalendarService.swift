@@ -26,7 +26,6 @@ final class CalendarService: ObservableObject {
     @AppStorage("enabledCalendarIDs") private var enabledCalendarIDsData: Data = Data()
     @AppStorage("soundEnabled") var soundEnabled: Bool = false
     @AppStorage("silentWhenScreenSharing") var silentWhenScreenSharing: Bool = true
-    @AppStorage("hasLaunchedBefore") var hasLaunchedBefore: Bool = false
     @AppStorage("globalShortcutEnabled") var globalShortcutEnabled: Bool = true
 
     // Diese Settings lösen reloadAndReschedule() aus wenn sie sich ändern
@@ -293,11 +292,6 @@ final class CalendarService: ObservableObject {
         return a.startDate < b.startDate
     }
 
-    /// Erstellt den zusammengesetzten Dismiss-Key für ein Event
-    nonisolated static func dismissKey(for event: MeetingEvent) -> String {
-        event.id
-    }
-
     /// Bereinigt Dismissed-Keys: entfernt Events die > 2h in der Vergangenheit liegen
     nonisolated static func cleanedDismissedSet(_ dismissed: Set<String>, now: Date) -> Set<String> {
         dismissed.filter { key in
@@ -306,11 +300,6 @@ final class CalendarService: ObservableObject {
             // Behalte für 2h nach Start (konservativ)
             return Date(timeIntervalSince1970: timestamp).addingTimeInterval(2 * 3600) > now
         }
-    }
-
-    /// Dekodiert enabledCalendarIDs aus gespeicherten Data
-    nonisolated static func decodeEnabledCalendarIDs(from data: Data) -> Set<String>? {
-        try? JSONDecoder().decode(Set<String>.self, from: data)
     }
 
     private func isRelevant(_ event: MeetingEvent, now: Date) -> Bool {

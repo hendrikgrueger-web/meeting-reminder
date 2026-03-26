@@ -127,28 +127,6 @@ struct CalendarServiceTests {
         #expect(result == false)
     }
 
-    // MARK: - Dismissed Key Tests
-
-    @Test("Zusammengesetzter Key enthält ID und Datum")
-    func dismissKeyContainsIDAndDate() {
-        let startDate = Date(timeIntervalSince1970: 1_700_000_000)
-        let event = makeEvent(eventIdentifier: "ABC-123", startDate: startDate)
-        let key = CalendarService.dismissKey(for: event)
-        #expect(key.contains("ABC-123"))
-        #expect(key.contains("1700000000"))
-    }
-
-    @Test("Verschiedene Occurrences haben verschiedene Keys")
-    func differentOccurrencesHaveDifferentKeys() {
-        let date1 = Date(timeIntervalSince1970: 1_000_000)
-        let date2 = Date(timeIntervalSince1970: 2_000_000)
-        let event1 = makeEvent(eventIdentifier: "recurring", startDate: date1)
-        let event2 = makeEvent(eventIdentifier: "recurring", startDate: date2)
-        let key1 = CalendarService.dismissKey(for: event1)
-        let key2 = CalendarService.dismissKey(for: event2)
-        #expect(key1 != key2)
-    }
-
     // MARK: - Dismissed Set Cleanup Tests
 
     @Test("Alte Events werden aus dem Dismissed-Set entfernt")
@@ -219,22 +197,6 @@ struct CalendarServiceTests {
         defaults.removeObject(forKey: "onlyOnlineMeetings")
         let value = defaults.bool(forKey: "onlyOnlineMeetings")
         #expect(value == false)
-    }
-
-    // MARK: - EnabledCalendarIDs Tests
-
-    @Test("Leere Data gibt nil zurück (Fallback auf alle Kalender)")
-    func emptyDataReturnsNil() {
-        let result = CalendarService.decodeEnabledCalendarIDs(from: Data())
-        #expect(result == nil)
-    }
-
-    @Test("Gültige Data wird korrekt dekodiert")
-    func validDataDecodes() {
-        let ids: Set<String> = ["cal-1", "cal-2", "cal-3"]
-        let data = try! JSONEncoder().encode(ids)
-        let result = CalendarService.decodeEnabledCalendarIDs(from: data)
-        #expect(result == ids)
     }
 
     // MARK: - Zusätzliche Relevanz-Tests
@@ -503,34 +465,6 @@ struct CalendarServiceTests {
         #expect(CalendarService.compareEvents(eventWithLink, eventWithoutLink) == true)
         // Ohne Link kommt nicht zuerst
         #expect(CalendarService.compareEvents(eventWithoutLink, eventWithLink) == false)
-    }
-
-    // MARK: - Edge Case Tests: enabledCalendarIDs Dekodierung
-
-    @Test("enabledCalendarIDs: Ungültige JSON-Data gibt nil zurück")
-    func invalidJSONDataReturnsNil() {
-        let invalidData = "kein json".data(using: .utf8)!
-        let result = CalendarService.decodeEnabledCalendarIDs(from: invalidData)
-        #expect(result == nil)
-    }
-
-    @Test("enabledCalendarIDs: Leeres Set wird korrekt dekodiert")
-    func emptySetDecodesCorrectly() {
-        let emptySet: Set<String> = []
-        let data = try! JSONEncoder().encode(emptySet)
-        let result = CalendarService.decodeEnabledCalendarIDs(from: data)
-        #expect(result != nil)
-        #expect(result!.isEmpty)
-    }
-
-    @Test("enabledCalendarIDs: JSON-Array statt Set gibt nil zurück")
-    func jsonArrayInsteadOfSetReturnsNil() {
-        // Ein Array von Strings sollte als Set dekodierbar sein, da JSONDecoder Set<String> aus Array dekodiert
-        let arrayData = "[\"a\",\"b\"]".data(using: .utf8)!
-        let result = CalendarService.decodeEnabledCalendarIDs(from: arrayData)
-        // JSONDecoder dekodiert Set<String> aus JSON-Array
-        #expect(result != nil)
-        #expect(result == Set(["a", "b"]))
     }
 
     // MARK: - nextEvent-Ableitung aus todayEvents (endDate > now)

@@ -144,10 +144,6 @@ final class MeetingAppDelegate: NSObject, NSApplicationDelegate {
         Task {
             await calendarService.start()
 
-            if !calendarService.hasLaunchedBefore {
-                calendarService.hasLaunchedBefore = true
-            }
-
             // Notification-Berechtigung nur anfragen wenn Bundle-ID vorhanden
             if Bundle.main.bundleIdentifier != nil {
                 _ = try? await UNUserNotificationCenter.current().requestAuthorization(

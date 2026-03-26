@@ -117,11 +117,6 @@ enum MeetingLinkExtractor {
         return nil
     }
 
-    /// Abwärtskompatibilität: gibt nur die URL zurück
-    static func extractURL(location: String?, notes: String?, url: URL?) -> URL? {
-        extractMeetingLink(location: location, notes: notes, url: url)?.url
-    }
-
     // MARK: - Deep Links
 
     /// Erzeugt einen Deep-Link für den nativen App-Start (Teams, Zoom, WebEx, GoTo)

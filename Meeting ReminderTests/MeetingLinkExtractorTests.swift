@@ -726,31 +726,6 @@ struct MeetingLinkExtractorTests {
     }
 
     // ══════════════════════════════════════════════════════════════════
-    // MARK: - Abwärtskompatibilität
-    // ══════════════════════════════════════════════════════════════════
-
-    @Test("extractURL() gibt URL zurück (Abwärtskompatibilität)")
-    func extractURLBackwardsCompat() {
-        let url = MeetingLinkExtractor.extractURL(
-            location: "https://teams.microsoft.com/meet/test123",
-            notes: nil,
-            url: nil
-        )
-        #expect(url != nil)
-        #expect(url?.absoluteString.contains("test123") == true)
-    }
-
-    @Test("extractURL() gibt nil bei keinem Link")
-    func extractURLNilWhenNoLink() {
-        let url = MeetingLinkExtractor.extractURL(
-            location: "Raum 42",
-            notes: nil,
-            url: nil
-        )
-        #expect(url == nil)
-    }
-
-    // ══════════════════════════════════════════════════════════════════
     // MARK: - MeetingProvider Properties
     // ══════════════════════════════════════════════════════════════════
 
@@ -951,18 +926,6 @@ struct MeetingLinkExtractorTests {
         let deep = MeetingLinkExtractor.deepLinkURL(for: link)
         // /s/ wird von extractZoomMeetingID erkannt, also gibt es einen Deep-Link
         #expect(deep.scheme == "zoommtg")
-    }
-
-    // ══════════════════════════════════════════════════════════════════
-    // MARK: - Edge Case Tests: Abwärtskompatibilität
-    // ══════════════════════════════════════════════════════════════════
-
-    @Test("extractURL gibt gleiche URL wie extractMeetingLink zurück")
-    func extractURLBackwardsCompatSameResult() {
-        let location = "https://zoom.us/j/123456789?pwd=test123"
-        let urlResult = MeetingLinkExtractor.extractURL(location: location, notes: nil, url: nil)
-        let linkResult = MeetingLinkExtractor.extractMeetingLink(location: location, notes: nil, url: nil)
-        #expect(urlResult == linkResult?.url)
     }
 
     // ══════════════════════════════════════════════════════════════════
