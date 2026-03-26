@@ -40,7 +40,7 @@ struct SettingsView: View {
                 }
                 .buttonStyle(.borderless)
                 .font(.caption)
-                .foregroundStyle(.red)
+                .foregroundStyle(.secondary)
             }
             .padding(.horizontal, 16)
             .padding(.bottom, 8)
@@ -72,15 +72,26 @@ struct SettingsView: View {
                 HStack(spacing: 8) {
                     RoundedRectangle(cornerRadius: 2)
                         .fill(next.calendarColor)
-                        .frame(width: 3, height: 18)
+                        .frame(width: 4, height: 20)
                     VStack(alignment: .leading, spacing: 1) {
                         Text(next.title)
                             .font(.subheadline)
                             .fontWeight(.medium)
                             .lineLimit(1)
-                        Text(next.startDate.formatted(date: .omitted, time: .shortened))
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
+                        HStack(spacing: 4) {
+                            // Laufendes Meeting: "Jetzt"-Badge
+                            if next.startDate <= Date() {
+                                Text("Jetzt")
+                                    .font(.system(size: 9, weight: .bold))
+                                    .foregroundStyle(.white)
+                                    .padding(.horizontal, 4)
+                                    .padding(.vertical, 1)
+                                    .background(.green, in: Capsule())
+                            }
+                            Text(statusTimeText(for: next))
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
                     }
                 }
             } else {
@@ -193,7 +204,7 @@ struct SettingsView: View {
         )
         settingToggle(
             "Bei Anmeldung starten",
-            help: "QuickJoin automatisch starten, wenn du dich am Mac anmeldest.",
+            help: "Nevr Late automatisch starten, wenn du dich am Mac anmeldest.",
             isOn: $launchAtLogin
         )
         .onChange(of: launchAtLogin) { _, newValue in
@@ -223,7 +234,7 @@ struct SettingsView: View {
 
         VStack(alignment: .leading, spacing: 2) {
             HStack {
-                Text("QuickJoin")
+                Text("Nevr Late")
                     .font(.caption)
                     .fontWeight(.medium)
                     .foregroundStyle(.secondary)
@@ -238,6 +249,25 @@ struct SettingsView: View {
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 4)
+    }
+
+    // MARK: - Helper: Status-Zeittext
+
+    private func statusTimeText(for event: MeetingEvent) -> String {
+        let now = Date()
+        if event.startDate <= now {
+            return event.startDate.formatted(date: .omitted, time: .shortened)
+        }
+        let minutes = Int(event.startDate.timeIntervalSince(now) / 60)
+        if minutes < 1 {
+            return "gleich"
+        } else if minutes == 1 {
+            return "in 1 Min."
+        } else if minutes < 60 {
+            return "in \(minutes) Min."
+        } else {
+            return event.startDate.formatted(date: .omitted, time: .shortened)
+        }
     }
 
     // MARK: - Helper: Sektions-Header
@@ -282,7 +312,7 @@ struct SettingsView: View {
         HStack {
             Circle()
                 .fill(color)
-                .frame(width: 8, height: 8)
+                .frame(width: 10, height: 10)
             Text(title)
                 .font(.subheadline)
                 .lineLimit(1)
