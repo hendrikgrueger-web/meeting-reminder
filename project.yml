@@ -3,7 +3,7 @@ projectPath: NevLate.xcodeproj
 
 settings:
   MARKETING_VERSION: 1.0.0
-  CURRENT_PROJECT_VERSION: 1
+  CURRENT_PROJECT_VERSION: 4
 
 options:
   developmentLanguage: en
@@ -64,7 +64,8 @@ targets:
         CFBundleDisplayName: "Nevr Late"
         CFBundleIconFile: "AppIcon"
         NSCalendarsUsageDescription: "Nevr Late reads your calendar events (read-only) to remind you about upcoming meetings and detect video conference join links. No data leaves your device."
-        NSHumanReadableCopyright: "© 2026 Hendrik Grueger"
+        NSHumanReadableCopyright: "© 2026 Grüpi GmbH"
+        NSCalendarsFullAccessUsageDescription: "Nevr Late reads your calendar events (read-only) to remind you about upcoming meetings and detect video conference join links. No data leaves your device."
 
     frameworks:
       - EventKit
@@ -72,6 +73,7 @@ targets:
       - SwiftUI
       - UserNotifications
       - ServiceManagement
+      - ApplicationServices
 
   NevLateTests:
     type: bundle.unit-test

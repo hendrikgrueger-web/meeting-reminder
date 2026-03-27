@@ -638,13 +638,13 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "QuickJoin automatisch starten, wenn du dich am Mac anmeldest."
+            "value" : "Nevr Late automatisch starten, wenn du dich am Mac anmeldest."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Automatically launch QuickJoin when you log in to your Mac."
+            "value" : "Automatically launch Nevr Late when you log in to your Mac."
           }
         }
       }
@@ -674,13 +674,13 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "QuickJoin"
+            "value" : "Nevr Late"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "QuickJoin"
+            "value" : "Nevr Late"
           }
         }
       }

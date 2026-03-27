@@ -2,11 +2,15 @@
 import SwiftUI
 import ServiceManagement
 import EventKit
+import ApplicationServices
 
 struct SettingsView: View {
     @ObservedObject var calendarService: CalendarService
 
     @State private var launchAtLogin = SMAppService.mainApp.status == .enabled
+    @State private var now: Date = .now
+
+    private let timer = Timer.publish(every: 30, on: .main, in: .common).autoconnect()
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -55,6 +59,7 @@ struct SettingsView: View {
             .padding(.bottom, 8)
         }
         .frame(width: 320)
+        .onReceive(timer) { now = $0 }
     }
 
     /// ID des Events zu dem gescrollt werden soll (laufend oder nächstes zukünftig)
@@ -104,7 +109,7 @@ struct SettingsView: View {
                             .lineLimit(1)
                         HStack(spacing: 4) {
                             // Laufendes Meeting: "Jetzt"-Badge
-                            if next.startDate <= Date() {
+                            if next.startDate <= now {
                                 Text("Jetzt")
                                     .font(.system(size: 9, weight: .bold))
                                     .foregroundStyle(.white)
@@ -226,6 +231,25 @@ struct SettingsView: View {
             help: "Mit Cmd+Shift+J das nächste Meeting sofort öffnen, ohne das Overlay zu verwenden.",
             isOn: $calendarService.globalShortcutEnabled
         )
+
+        if calendarService.globalShortcutEnabled && !AXIsProcessTrusted() {
+            HStack(spacing: 4) {
+                Label("Bedienungshilfen-Zugriff benötigt", systemImage: "exclamationmark.triangle")
+                    .font(.caption)
+                    .foregroundStyle(.orange)
+                Spacer()
+                Button("Aktivieren") {
+                    NSWorkspace.shared.open(
+                        URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility")!
+                    )
+                }
+                .buttonStyle(.bordered)
+                .controlSize(.mini)
+            }
+            .padding(.horizontal, 16)
+            .padding(.top, 2)
+            .padding(.bottom, 4)
+        }
         settingToggle(
             "Bei Anmeldung starten",
             help: "Nevr Late automatisch starten, wenn du dich am Mac anmeldest.",
@@ -278,7 +302,6 @@ struct SettingsView: View {
     // MARK: - Helper: Status-Zeittext
 
     private func statusTimeText(for event: MeetingEvent) -> String {
-        let now = Date()
         if event.startDate <= now {
             return event.startDate.formatted(date: .omitted, time: .shortened)
         }

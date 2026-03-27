@@ -11,13 +11,9 @@ struct MeetingReminderApp: App {
 
     @NSApplicationDelegateAdaptor(MeetingAppDelegate.self) private var appDelegate
     @ObservedObject private var calendarService: CalendarService
-    @ObservedObject private var overlayController: OverlayController
 
     init() {
-        let service = CalendarService.shared
-        let overlay = OverlayController.shared
-        _calendarService = ObservedObject(wrappedValue: service)
-        _overlayController = ObservedObject(wrappedValue: overlay)
+        _calendarService = ObservedObject(wrappedValue: CalendarService.shared)
     }
 
     var body: some Scene {
@@ -109,7 +105,9 @@ final class MeetingAppDelegate: NSObject, NSApplicationDelegate {
     private var localMonitor: Any?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
+#if DEBUG
         print("[NevLate] App gestartet")
+#endif
 
 #if DEBUG
         // Demo-Modus für Screenshots (Launch-Argument: --demo-overlay)
@@ -187,7 +185,7 @@ final class MeetingAppDelegate: NSObject, NSApplicationDelegate {
               let meetingLink = nextEvent.meetingLink else { return }
 
         // Meeting direkt öffnen
-        Self.openMeetingDirectly(meetingLink)
+        MeetingLinkExtractor.open(meetingLink)
     }
 
     // MARK: - Alert Flow
@@ -221,7 +219,7 @@ final class MeetingAppDelegate: NSObject, NSApplicationDelegate {
             event: event,
             onJoin: {
                 if let meetingLink = event.meetingLink {
-                    Self.openMeetingDirectly(meetingLink)
+                    MeetingLinkExtractor.open(meetingLink)
                 }
                 overlayController.dismiss()
                 calendarService.dismissEvent(event)
@@ -242,12 +240,6 @@ final class MeetingAppDelegate: NSObject, NSApplicationDelegate {
         if let panel = overlayController.panel {
             NSAccessibility.post(element: panel, notification: .layoutChanged)
         }
-    }
-
-    // MARK: - Meeting direkt öffnen
-
-    private static func openMeetingDirectly(_ meetingLink: MeetingLink) {
-        MeetingLinkExtractor.open(meetingLink)
     }
 
 #if DEBUG
@@ -297,8 +289,6 @@ final class MeetingAppDelegate: NSObject, NSApplicationDelegate {
         }
 
         content.sound = soundEnabled ? .default : nil
-        content.categoryIdentifier = "MEETING_ALERT"
-
         let request = UNNotificationRequest(
             identifier: event.id,
             content: content,

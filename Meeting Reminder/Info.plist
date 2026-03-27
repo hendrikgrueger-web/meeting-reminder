@@ -22,7 +22,7 @@
 	<key>CFBundleShortVersionString</key>
 	<string>1.0.0</string>
 	<key>CFBundleVersion</key>
-	<string>3</string>
+	<string>4</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSApplicationCategoryType</key>
@@ -33,5 +33,9 @@
 	<true/>
 	<key>NSCalendarsUsageDescription</key>
 	<string>Nevr Late reads your calendar events (read-only) to remind you about upcoming meetings and detect video conference join links. No data leaves your device.</string>
+	<key>NSCalendarsFullAccessUsageDescription</key>
+	<string>Nevr Late reads your calendar events (read-only) to remind you about upcoming meetings and detect video conference join links. No data leaves your device.</string>
+	<key>NSHumanReadableCopyright</key>
+	<string>© 2026 Grüpi GmbH</string>
 </dict>
 </plist>

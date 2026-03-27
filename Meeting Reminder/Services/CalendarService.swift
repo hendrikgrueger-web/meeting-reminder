@@ -75,20 +75,28 @@ final class CalendarService: ObservableObject {
     // MARK: - Lifecycle
 
     func start() async {
+#if DEBUG
         print("[CalendarService] Start...")
+#endif
         // 1. Berechtigung anfragen
         do {
             // Nur requestFullAccessToEvents() ermöglicht Lese-Zugriff.
             // Die App schreibt NIEMALS in den Kalender.
             accessGranted = try await eventStore.requestFullAccessToEvents()
+#if DEBUG
             print("[CalendarService] Zugriff: \(accessGranted)")
+#endif
         } catch {
+#if DEBUG
             print("[CalendarService] Fehler bei Berechtigung: \(error)")
+#endif
             accessGranted = false
         }
 
         guard accessGranted else {
+#if DEBUG
             print("[CalendarService] Kein Zugriff, stoppe.")
+#endif
             return
         }
 
