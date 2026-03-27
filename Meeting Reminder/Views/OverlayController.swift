@@ -7,7 +7,6 @@ final class OverlayController: ObservableObject {
     static let shared = OverlayController()
 
     private(set) var panel: OverlayPanel?
-    @Published var isVisible = false
 
     func show(content: some View) {
         dismiss() // Vorheriges Panel schließen
@@ -26,13 +25,11 @@ final class OverlayController: ObservableObject {
         newPanel.makeKeyAndOrderFront(nil)
 
         self.panel = newPanel
-        self.isVisible = true
     }
 
     func dismiss() {
         panel?.close()
         panel = nil
-        isVisible = false
     }
 
     nonisolated static func isScreenSharing() -> Bool {

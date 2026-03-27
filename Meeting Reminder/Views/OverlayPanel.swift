@@ -11,7 +11,7 @@ final class OverlayPanel: NSPanel {
             defer: false
         )
 
-        self.level = .screenSaver
+        self.level = .floating
         self.collectionBehavior = [
             .canJoinAllSpaces,
             .fullScreenAuxiliary,

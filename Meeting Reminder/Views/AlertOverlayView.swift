@@ -27,11 +27,6 @@ struct AlertOverlayView: View {
         return loc
     }
 
-    /// Sekunden bis zum Start (positiv = noch nicht gestartet)
-    private var secondsUntilStart: Int {
-        Int(event.startDate.timeIntervalSince(now))
-    }
-
     var body: some View {
         ZStack {
             // Helles Frosted-Glass Hintergrund — Desktop scheint klar durch
