@@ -14,18 +14,27 @@ struct SettingsView: View {
 
             Divider().padding(.vertical, 8)
 
-            ScrollView {
-                VStack(alignment: .leading, spacing: 0) {
-                    // Tagesübersicht
-                    todaySection
+            ScrollViewReader { proxy in
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 0) {
+                        // Tagesübersicht
+                        todaySection
 
-                    Divider().padding(.vertical, 8)
+                        Divider().padding(.vertical, 8)
 
-                    calendarSection
-                    generalSection
+                        calendarSection
+                        generalSection
+                    }
+                }
+                .frame(maxHeight: 420)
+                .onAppear {
+                    if let targetID = scrollTargetEventID {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                            proxy.scrollTo(targetID, anchor: .top)
+                        }
+                    }
                 }
             }
-            .frame(maxHeight: 420)
 
             Divider().padding(.vertical, 8)
 
@@ -46,6 +55,21 @@ struct SettingsView: View {
             .padding(.bottom, 8)
         }
         .frame(width: 320)
+    }
+
+    /// ID des Events zu dem gescrollt werden soll (laufend oder nächstes zukünftig)
+    private var scrollTargetEventID: String? {
+        let now = Date()
+        let events = calendarService.todayEvents
+        // Laufendes Meeting
+        if let current = events.first(where: { $0.startDate <= now && $0.endDate > now }) {
+            return current.id
+        }
+        // Nächstes zukünftiges Meeting
+        if let next = events.first(where: { $0.endDate > now }) {
+            return next.id
+        }
+        return nil
     }
 
     // MARK: - Status

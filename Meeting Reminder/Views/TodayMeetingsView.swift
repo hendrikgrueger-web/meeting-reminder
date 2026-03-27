@@ -22,10 +22,25 @@ struct TodayMeetingsView: View {
             } else {
                 ForEach(calendarService.todayEvents) { event in
                     meetingRow(event)
+                        .id(event.id)
                 }
             }
         }
         .onReceive(timer) { now = $0 }
+    }
+
+    /// ID des Events, zu dem gescrollt werden soll (aktuelles oder nächstes zukünftiges)
+    var scrollTargetID: String? {
+        let events = calendarService.todayEvents
+        // Zuerst: laufendes Meeting
+        if let current = events.first(where: { eventStatus($0) == .current }) {
+            return current.id
+        }
+        // Dann: nächstes zukünftiges Meeting
+        if let next = events.first(where: { eventStatus($0) == .future }) {
+            return next.id
+        }
+        return nil
     }
 
     // MARK: - Meeting-Zeile
