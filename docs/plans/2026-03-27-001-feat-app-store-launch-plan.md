@@ -1,7 +1,7 @@
 ---
 title: "feat: Nevr Late — App Store Launch (Cleanup + Submission + Preismodell)"
 type: feat
-status: active
+status: completed
 date: 2026-03-27
 ---
 
@@ -228,7 +228,7 @@ Begründung:
 
 ---
 
-- [ ] **Unit 8: App Store Submission vorbereiten**
+- [x] **Unit 8: App Store Submission vorbereiten**
 
 **Goal:** Alle ASC-Blocker beheben und zur Submission bereit sein.
 
