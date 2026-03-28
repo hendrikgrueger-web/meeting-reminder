@@ -9,24 +9,23 @@
 /* Begin PBXBuildFile section */
 		014B684EB0FD35522F5F486B /* CalendarServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6776A61E19B56EDC4AC6DF9B /* CalendarServiceTests.swift */; };
 		038FCC3D6A7F1196C774FE30 /* MeetingReminderApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C908411B15A4734A9204778 /* MeetingReminderApp.swift */; };
+		0C3158EFE86BC25EDE9DD429 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AE85183504CEF2923153A863 /* InfoPlist.strings */; };
 		11BB53386C4163C8509A9EF1 /* MeetingProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76DBC14233FCB808AFCB3C74 /* MeetingProvider.swift */; };
 		1A1E748BEED0F3095C788583 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FF74CABDF7BBB8B37E144EE /* SettingsView.swift */; };
 		2501EBE97930AAFC00302074 /* OverlayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949E432ED20E73799943A634 /* OverlayController.swift */; };
 		2FB72522DFCB041C94A476B3 /* OverlayPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D161910594D360198E73816 /* OverlayPanel.swift */; };
 		3CA7ECD57EA92C3AD5026152 /* MeetingLinkExtractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA3F5841A56C4480A261CFF /* MeetingLinkExtractorTests.swift */; };
+		528FBBA188F3E9C87D814359 /* AppIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 7BD4D0BAE18A1F2536890860 /* AppIcon.icns */; };
 		5748FC874B8C69571D2016FB /* MeetingLinkExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A18888816757BF3BBC0AFD5 /* MeetingLinkExtractor.swift */; };
 		6E2A155073565E7E12DDB1D9 /* TodayMeetingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6039C95C46542A1CB38B28 /* TodayMeetingsView.swift */; };
 		7B9009041B129361125C6AB5 /* CalendarService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC689F1B33F003CFFD6CD25B /* CalendarService.swift */; };
+		7D3E1940D4A5C3D50D8EE995 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A11A0603571646DF98919878 /* Localizable.xcstrings */; };
+		8E81B67AD81FEADEBF6DE233 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 16CB96FE232986A33B4F2A53 /* Assets.xcassets */; };
+		920C014F8897EBC6F39E3C0B /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = C0CA2DF8E37EC15727E74CCE /* PrivacyInfo.xcprivacy */; };
 		C7EE99C6DCC8AD1940A3FDAE /* MeetingEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38FA63A0959D172CE24CA6F /* MeetingEvent.swift */; };
 		CCFC418B678C26450567C077 /* MeetingReminderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFA69F93AA2FCBFAF4B174B4 /* MeetingReminderTests.swift */; };
 		D97D634503D609FB71CDDB9C /* MeetingEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0102721E1319A074C1261981 /* MeetingEventTests.swift */; };
 		F07D63007118005681E715C9 /* AlertOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 985C300F196862414345B354 /* AlertOverlayView.swift */; };
-		AA000002000000000000A001 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000A001 /* Assets.xcassets */; };
-		AA000002000000000000A002 /* AppIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000A002 /* AppIcon.icns */; };
-		AA000002000000000000A003 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000A003 /* Localizable.xcstrings */; };
-		AA000002000000000000A004 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000A004 /* PrivacyInfo.xcprivacy */; };
-		AA000002000000000000A005 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000A005 /* InfoPlist.strings */; };
-		AA000002000000000000A006 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = AA000001000000000000A006 /* InfoPlist.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,6 +40,7 @@
 
 /* Begin PBXFileReference section */
 		0102721E1319A074C1261981 /* MeetingEventTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingEventTests.swift; sourceTree = "<group>"; };
+		16CB96FE232986A33B4F2A53 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3A18888816757BF3BBC0AFD5 /* MeetingLinkExtractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingLinkExtractor.swift; sourceTree = "<group>"; };
 		3C4DAA04861AD4EAAF35F6C8 /* NevLate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NevLate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6776A61E19B56EDC4AC6DF9B /* CalendarServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarServiceTests.swift; sourceTree = "<group>"; };
@@ -48,27 +48,31 @@
 		6C908411B15A4734A9204778 /* MeetingReminderApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingReminderApp.swift; sourceTree = "<group>"; };
 		6E6039C95C46542A1CB38B28 /* TodayMeetingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayMeetingsView.swift; sourceTree = "<group>"; };
 		76DBC14233FCB808AFCB3C74 /* MeetingProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingProvider.swift; sourceTree = "<group>"; };
+		7BD4D0BAE18A1F2536890860 /* AppIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = AppIcon.icns; sourceTree = "<group>"; };
 		949E432ED20E73799943A634 /* OverlayController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayController.swift; sourceTree = "<group>"; };
 		985C300F196862414345B354 /* AlertOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertOverlayView.swift; sourceTree = "<group>"; };
 		9D161910594D360198E73816 /* OverlayPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayPanel.swift; sourceTree = "<group>"; };
 		9FF74CABDF7BBB8B37E144EE /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		A11A0603571646DF98919878 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		C07F4F3E4512C399B78AE6D1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		C0CA2DF8E37EC15727E74CCE /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		C38FA63A0959D172CE24CA6F /* MeetingEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingEvent.swift; sourceTree = "<group>"; };
+		CA92CDB2BDC1250AF5291392 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		DC689F1B33F003CFFD6CD25B /* CalendarService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarService.swift; sourceTree = "<group>"; };
 		DFA69F93AA2FCBFAF4B174B4 /* MeetingReminderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingReminderTests.swift; sourceTree = "<group>"; };
 		EFA3F5841A56C4480A261CFF /* MeetingLinkExtractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingLinkExtractorTests.swift; sourceTree = "<group>"; };
-		AA000001000000000000A001 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Meeting Reminder/Assets.xcassets"; sourceTree = SOURCE_ROOT; };
-		AA000001000000000000A002 /* AppIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = "Meeting Reminder/AppIcon.icns"; sourceTree = SOURCE_ROOT; };
-		AA000001000000000000A003 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "Meeting Reminder/Localizable.xcstrings"; sourceTree = SOURCE_ROOT; };
-		AA000001000000000000A004 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Meeting Reminder/PrivacyInfo.xcprivacy"; sourceTree = SOURCE_ROOT; };
-		AA000001000000000000A005 /* InfoPlist.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = "Meeting Reminder/en.lproj/InfoPlist.strings"; sourceTree = SOURCE_ROOT; };
-		AA000001000000000000A006 /* InfoPlist.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = "Meeting Reminder/de.lproj/InfoPlist.strings"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
 		21824D2C76CB53E5E98F7A07 /* Meeting Reminder */ = {
 			isa = PBXGroup;
 			children = (
+				7BD4D0BAE18A1F2536890860 /* AppIcon.icns */,
+				16CB96FE232986A33B4F2A53 /* Assets.xcassets */,
+				AE85183504CEF2923153A863 /* InfoPlist.strings */,
+				A11A0603571646DF98919878 /* Localizable.xcstrings */,
 				6C908411B15A4734A9204778 /* MeetingReminderApp.swift */,
+				C0CA2DF8E37EC15727E74CCE /* PrivacyInfo.xcprivacy */,
 				4DECCE460C04B707B4D15EA8 /* Models */,
 				EA65DECC4B43B49B486EAD1F /* Services */,
 				71D7EADC8318B601B3312841 /* Views */,
@@ -141,9 +145,9 @@
 		51049C4B1D85CD4E28F0C1ED /* NevLate */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 39014429E674469397740F3E /* Build configuration list for PBXNativeTarget "NevLate" */;
-				buildPhases = (
-					AA000003000000000000A000 /* Resources */,
-					C44F653D44DFC34567465F6E /* Sources */,
+			buildPhases = (
+				C44F653D44DFC34567465F6E /* Sources */,
+				3132A740D0487EF15497931D /* Resources */,
 			);
 			buildRules = (
 			);
@@ -189,6 +193,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				Base,
+				de,
 				en,
 			);
 			mainGroup = 8136FD6FD694FDE74BBCFD46;
@@ -204,20 +209,20 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		AA000003000000000000A000 /* Resources */ = {
+		3132A740D0487EF15497931D /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AA000002000000000000A001 /* Assets.xcassets in Resources */,
-				AA000002000000000000A002 /* AppIcon.icns in Resources */,
-				AA000002000000000000A003 /* Localizable.xcstrings in Resources */,
-				AA000002000000000000A004 /* PrivacyInfo.xcprivacy in Resources */,
-				AA000002000000000000A005 /* InfoPlist.strings in Resources */,
-				AA000002000000000000A006 /* InfoPlist.strings in Resources */,
+				528FBBA188F3E9C87D814359 /* AppIcon.icns in Resources */,
+				8E81B67AD81FEADEBF6DE233 /* Assets.xcassets in Resources */,
+				0C3158EFE86BC25EDE9DD429 /* InfoPlist.strings in Resources */,
+				7D3E1940D4A5C3D50D8EE995 /* Localizable.xcstrings in Resources */,
+				920C014F8897EBC6F39E3C0B /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		22BB0DE0447AB97187C201D2 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -256,6 +261,18 @@
 			targetProxy = 4A0F2D745225756FA536D863 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		AE85183504CEF2923153A863 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CA92CDB2BDC1250AF5291392 /* de */,
+				C07F4F3E4512C399B78AE6D1 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		3D87A47BB4B4FAA44A275470 /* Debug */ = {
@@ -327,7 +344,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 4;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -427,7 +444,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 4;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;

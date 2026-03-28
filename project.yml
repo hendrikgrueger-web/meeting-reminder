@@ -42,14 +42,12 @@ targets:
       - path: Meeting Reminder
         includes:
           - "**/*.swift"
-
-    resources:
-      - "Meeting Reminder/Assets.xcassets"
-      - "Meeting Reminder/AppIcon.icns"
-      - "Meeting Reminder/Localizable.xcstrings"
-      - "Meeting Reminder/PrivacyInfo.xcprivacy"
-      - "Meeting Reminder/en.lproj/InfoPlist.strings"
-      - "Meeting Reminder/de.lproj/InfoPlist.strings"
+          - "Assets.xcassets"
+          - "AppIcon.icns"
+          - "Localizable.xcstrings"
+          - "PrivacyInfo.xcprivacy"
+          - "en.lproj/InfoPlist.strings"
+          - "de.lproj/InfoPlist.strings"
 
     entitlements:
       path: Meeting Reminder/Meeting_Reminder.entitlements
