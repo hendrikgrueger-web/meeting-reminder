@@ -23,52 +23,52 @@ private func makeEvent(
     )
 }
 
-// MARK: - menuBarIconName Tests
+// MARK: - menuBarIconState Tests
 
 final class MenuBarIconTests: XCTestCase {
 
     func testIcon_noAccess_returnsSlash() {
-        let icon = MeetingReminderApp.menuBarIconName(accessGranted: false, nextEvent: nil)
-        XCTAssertEqual(icon, "bell.slash")
+        let icon = MeetingReminderApp.menuBarIconState(accessGranted: false, nextEvent: nil)
+        XCTAssertEqual(icon, .noAccess)
     }
 
     func testIcon_noAccess_ignoresEvent() {
         let event = makeEvent(minutesFromNow: 2)
-        let icon = MeetingReminderApp.menuBarIconName(accessGranted: false, nextEvent: event)
-        XCTAssertEqual(icon, "bell.slash")
+        let icon = MeetingReminderApp.menuBarIconState(accessGranted: false, nextEvent: event)
+        XCTAssertEqual(icon, .noAccess)
     }
 
     func testIcon_noEvent_returnsBell() {
-        let icon = MeetingReminderApp.menuBarIconName(accessGranted: true, nextEvent: nil)
-        XCTAssertEqual(icon, "bell")
+        let icon = MeetingReminderApp.menuBarIconState(accessGranted: true, nextEvent: nil)
+        XCTAssertEqual(icon, .idle)
     }
 
     func testIcon_under5Min_returnsFill() {
         let now = Date()
         let event = makeEvent(minutesFromNow: 3)
-        let icon = MeetingReminderApp.menuBarIconName(accessGranted: true, nextEvent: event, now: now)
-        XCTAssertEqual(icon, "bell.badge.fill")
+        let icon = MeetingReminderApp.menuBarIconState(accessGranted: true, nextEvent: event, now: now)
+        XCTAssertEqual(icon, .urgent)
     }
 
     func testIcon_under15Min_returnsBadge() {
         let now = Date()
         let event = makeEvent(minutesFromNow: 10)
-        let icon = MeetingReminderApp.menuBarIconName(accessGranted: true, nextEvent: event, now: now)
-        XCTAssertEqual(icon, "bell.badge")
+        let icon = MeetingReminderApp.menuBarIconState(accessGranted: true, nextEvent: event, now: now)
+        XCTAssertEqual(icon, .soon)
     }
 
     func testIcon_over15Min_returnsBell() {
         let now = Date()
         let event = makeEvent(minutesFromNow: 30)
-        let icon = MeetingReminderApp.menuBarIconName(accessGranted: true, nextEvent: event, now: now)
-        XCTAssertEqual(icon, "bell")
+        let icon = MeetingReminderApp.menuBarIconState(accessGranted: true, nextEvent: event, now: now)
+        XCTAssertEqual(icon, .idle)
     }
 
     func testIcon_exactly5Min_returnsBadge() {
         let now = Date()
         let event = makeEvent(minutesFromNow: 5)
-        let icon = MeetingReminderApp.menuBarIconName(accessGranted: true, nextEvent: event, now: now)
-        XCTAssertEqual(icon, "bell.badge")
+        let icon = MeetingReminderApp.menuBarIconState(accessGranted: true, nextEvent: event, now: now)
+        XCTAssertEqual(icon, .soon)
     }
 }
 

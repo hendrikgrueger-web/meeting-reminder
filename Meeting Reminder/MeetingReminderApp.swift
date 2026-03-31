@@ -4,6 +4,13 @@ import UserNotifications
 import AppKit
 import Combine
 
+enum MenuBarIconState: Equatable {
+    case noAccess
+    case idle
+    case soon
+    case urgent
+}
+
 // MARK: - App
 
 @main
@@ -32,7 +39,7 @@ struct MeetingReminderApp: App {
     @ViewBuilder
     private var menuBarLabel: some View {
         HStack(spacing: 3) {
-            Image(systemName: menuBarIcon)
+            MenuBarIconView(state: menuBarIconState)
 
             // Zähler: nur anzeigen wenn > 0 Meetings in den nächsten 60 Min
             if calendarService.upcomingEventsCount > 0 {
@@ -44,9 +51,9 @@ struct MeetingReminderApp: App {
 
     // MARK: - Menu Bar Icon
 
-    /// Dynamisches Icon je nach Zeit bis zum nächsten Meeting und Zugriffsstand
-    private var menuBarIcon: String {
-        Self.menuBarIconName(
+    /// Dynamischer Icon-Zustand je nach Zeit bis zum nächsten Meeting und Zugriffsstand
+    private var menuBarIconState: MenuBarIconState {
+        Self.menuBarIconState(
             accessGranted: calendarService.accessGranted,
             nextEvent: calendarService.nextEvent
         )
@@ -64,19 +71,19 @@ struct MeetingReminderApp: App {
 
     // MARK: - Testbare Static-Hilfsfunktionen (nonisolated — kein @MainActor nötig)
 
-    /// Berechnet den Icon-Namen ohne Abhängigkeit von UI-Kontext.
+    /// Berechnet den Icon-Zustand ohne Abhängigkeit von UI-Kontext.
     /// `now` injizierbar für deterministische Unit Tests.
-    nonisolated static func menuBarIconName(
+    nonisolated static func menuBarIconState(
         accessGranted: Bool,
         nextEvent: MeetingEvent?,
         now: Date = Date()
-    ) -> String {
-        guard accessGranted else { return "bell.slash" }
-        guard let next = nextEvent else { return "bell" }
+    ) -> MenuBarIconState {
+        guard accessGranted else { return .noAccess }
+        guard let next = nextEvent else { return .idle }
         let minUntilStart = next.startDate.timeIntervalSince(now) / 60
-        if minUntilStart < 5 { return "bell.badge.fill" }
-        if minUntilStart < 15 { return "bell.badge" }
-        return "bell"
+        if minUntilStart < 5 { return .urgent }
+        if minUntilStart < 15 { return .soon }
+        return .idle
     }
 
     /// Berechnet den Tooltip-Text ohne Abhängigkeit von UI-Kontext.
@@ -92,6 +99,114 @@ struct MeetingReminderApp: App {
         if minutes <= 0 { return "Meeting läuft: \(next.title)" }
         if minutes == 1 { return "Nächstes Meeting: \(next.title) in 1 Min" }
         return "Nächstes Meeting: \(next.title) in \(minutes) Min"
+    }
+}
+
+// MARK: - Menu Bar Icon
+
+private struct MenuBarIconView: View {
+    let state: MenuBarIconState
+
+    private var lineWidth: CGFloat {
+        state == .urgent ? 1.9 : 1.7
+    }
+
+    var body: some View {
+        ZStack {
+            HeadsetClockMark(lineWidth: lineWidth)
+
+            switch state {
+            case .noAccess:
+                SlashOverlay(lineWidth: lineWidth)
+            case .soon:
+                StatusBadge(size: 3.8)
+            case .urgent:
+                StatusBadge(size: 5.2)
+                StatusBadgeRing(size: 7.0)
+            case .idle:
+                EmptyView()
+            }
+        }
+        .frame(width: 18, height: 14)
+        .foregroundStyle(.primary)
+        .accessibilityHidden(true)
+    }
+}
+
+private struct HeadsetClockMark: View {
+    let lineWidth: CGFloat
+
+    var body: some View {
+        ZStack {
+            Path { path in
+                path.addArc(
+                    center: CGPoint(x: 9, y: 7),
+                    radius: 5.45,
+                    startAngle: .degrees(205),
+                    endAngle: .degrees(-25),
+                    clockwise: false
+                )
+            }
+            .stroke(
+                style: StrokeStyle(lineWidth: lineWidth, lineCap: .round, lineJoin: .round)
+            )
+
+            Capsule()
+                .frame(width: 2.1, height: 4.5)
+                .offset(x: -5.2, y: 1.6)
+
+            Capsule()
+                .frame(width: 2.1, height: 4.5)
+                .offset(x: 5.2, y: 1.6)
+
+            Path { path in
+                path.move(to: CGPoint(x: 9, y: 7))
+                path.addLine(to: CGPoint(x: 9, y: 3.8))
+            }
+            .stroke(style: StrokeStyle(lineWidth: lineWidth, lineCap: .round))
+
+            Path { path in
+                path.move(to: CGPoint(x: 9, y: 7))
+                path.addLine(to: CGPoint(x: 12.7, y: 9.5))
+            }
+            .stroke(style: StrokeStyle(lineWidth: lineWidth, lineCap: .round))
+
+            Circle()
+                .frame(width: 2.35, height: 2.35)
+        }
+    }
+}
+
+private struct StatusBadge: View {
+    let size: CGFloat
+
+    var body: some View {
+        Circle()
+            .frame(width: size, height: size)
+            .offset(x: 6.1, y: -4.25)
+    }
+}
+
+private struct StatusBadgeRing: View {
+    let size: CGFloat
+
+    var body: some View {
+        Circle()
+            .stroke(style: StrokeStyle(lineWidth: 1, lineCap: .round))
+            .frame(width: size, height: size)
+            .offset(x: 6.1, y: -4.25)
+    }
+}
+
+private struct SlashOverlay: View {
+    let lineWidth: CGFloat
+
+    var body: some View {
+        Path { path in
+            path.move(to: CGPoint(x: 4, y: 11.1))
+            path.addLine(to: CGPoint(x: 13.9, y: 1.9))
+        }
+        .stroke(style: StrokeStyle(lineWidth: lineWidth, lineCap: .round))
     }
 }
 
