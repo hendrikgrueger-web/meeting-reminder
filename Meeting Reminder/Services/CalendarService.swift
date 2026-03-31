@@ -383,11 +383,12 @@ final class CalendarService: ObservableObject {
                 // Snooze aufheben
                 self.snoozedEvents.remove(event.id)
                 let now = Date()
-                let timeSinceStart = now.timeIntervalSince(event.startDate)
-                // Nur erneut anzeigen wenn < 5 Min seit Start
-                if timeSinceStart < 5 * 60 &&
-                   !self.dismissedEvents.contains(event.id) &&
-                   !self.pendingEvents.contains(where: { $0.id == event.id }) {
+                if CalendarService.shouldReShowSnoozedEvent(
+                    event,
+                    now: now,
+                    dismissedEvents: self.dismissedEvents,
+                    pendingEvents: self.pendingEvents
+                ) {
                     self.pendingEvents.append(event)
                 }
             }
@@ -396,6 +397,20 @@ final class CalendarService: ObservableObject {
         if pendingEvents.isEmpty {
             reloadAndReschedule()
         }
+    }
+
+    /// Entscheidet ob ein gesnooztes Event nach Ablauf der Snooze-Zeit erneut angezeigt werden soll.
+    /// Testbar als statische Methode (nonisolated: keine MainActor-Dependency).
+    nonisolated static func shouldReShowSnoozedEvent(
+        _ event: MeetingEvent,
+        now: Date,
+        dismissedEvents: Set<String>,
+        pendingEvents: [MeetingEvent]
+    ) -> Bool {
+        let timeSinceStart = now.timeIntervalSince(event.startDate)
+        return timeSinceStart < 5 * 60 &&
+               !dismissedEvents.contains(event.id) &&
+               !pendingEvents.contains(where: { $0.id == event.id })
     }
 
     // MARK: - Helpers

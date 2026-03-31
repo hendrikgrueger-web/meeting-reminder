@@ -94,6 +94,7 @@ struct TodayMeetingsView: View {
             ? "Klicken zum Beitreten via \(event.meetingProvider?.shortName ?? "Link")"
             : event.title
         )
+        .accessibilityLabel(accessibilityLabel(for: event, status: status))
     }
 
     // MARK: - Event-Status
@@ -110,6 +111,22 @@ struct TodayMeetingsView: View {
         } else {
             return .future
         }
+    }
+
+    // MARK: - Accessibility
+
+    private func accessibilityLabel(for event: MeetingEvent, status: EventStatus) -> String {
+        let time = event.startDate.formatted(.dateTime.hour(.twoDigits(amPM: .omitted)).minute(.twoDigits))
+        let statusText: String
+        switch status {
+        case .past: statusText = "vergangen"
+        case .current: statusText = "läuft jetzt"
+        case .future: statusText = "zukünftig"
+        }
+        if let provider = event.meetingProvider {
+            return "\(event.title), \(time) Uhr, \(statusText), \(provider.shortName) Meeting"
+        }
+        return "\(event.title), \(time) Uhr, \(statusText)"
     }
 
     // MARK: - Tap-Handler

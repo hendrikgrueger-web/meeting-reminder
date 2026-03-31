@@ -570,6 +570,60 @@ struct CalendarServiceTests {
         #expect(count == 2)
     }
 
+    // MARK: - Snooze-Callback Entscheidungslogik
+
+    @Test("Snooze: Event < 5 Min seit Start + nicht dismissed + nicht pending → erneut anzeigen")
+    func snoozeReShow_underFiveMinutes_shows() {
+        let now = Date()
+        let event = makeEvent(startDate: now.addingTimeInterval(-2 * 60)) // 2 Min her
+        let result = CalendarService.shouldReShowSnoozedEvent(
+            event, now: now, dismissedEvents: [], pendingEvents: []
+        )
+        #expect(result == true)
+    }
+
+    @Test("Snooze: Event > 5 Min seit Start → nicht erneut anzeigen")
+    func snoozeReShow_overFiveMinutes_hides() {
+        let now = Date()
+        let event = makeEvent(startDate: now.addingTimeInterval(-6 * 60)) // 6 Min her
+        let result = CalendarService.shouldReShowSnoozedEvent(
+            event, now: now, dismissedEvents: [], pendingEvents: []
+        )
+        #expect(result == false)
+    }
+
+    @Test("Snooze: Event dismissed → nicht erneut anzeigen")
+    func snoozeReShow_dismissed_hides() {
+        let now = Date()
+        let event = makeEvent(eventIdentifier: "dismissed-event", startDate: now.addingTimeInterval(-1 * 60))
+        let result = CalendarService.shouldReShowSnoozedEvent(
+            event, now: now, dismissedEvents: [event.id], pendingEvents: []
+        )
+        #expect(result == false)
+    }
+
+    @Test("Snooze: Event bereits in pendingEvents → nicht doppelt hinzufügen")
+    func snoozeReShow_alreadyPending_hides() {
+        let now = Date()
+        let event = makeEvent(startDate: now.addingTimeInterval(-1 * 60))
+        let result = CalendarService.shouldReShowSnoozedEvent(
+            event, now: now, dismissedEvents: [], pendingEvents: [event]
+        )
+        #expect(result == false)
+    }
+
+    @Test("Snooze: Event genau 5 Min → nicht mehr anzeigen (Grenzwert, strikt <)")
+    func snoozeReShow_exactlyFiveMinutes_hides() {
+        let now = Date()
+        let event = makeEvent(startDate: now.addingTimeInterval(-5 * 60))
+        let result = CalendarService.shouldReShowSnoozedEvent(
+            event, now: now, dismissedEvents: [], pendingEvents: []
+        )
+        #expect(result == false) // timeSinceStart == 300, Bedingung < 300 → false
+    }
+
+    // MARK: - upcomingCount-Logik
+
     @Test("upcomingCount-Logik: Laufendes Meeting zählt nicht als upcoming")
     func upcomingCountExcludesRunningMeeting() {
         let now = Date()

@@ -208,6 +208,8 @@ struct SettingsView: View {
                 )
                 .labelsHidden()
                 .controlSize(.small)
+                .accessibilityLabel("Vorlaufzeit")
+                .accessibilityValue("\(calendarService.leadTimeMinutes) Minuten")
             }
         }
 
@@ -368,6 +370,7 @@ struct SettingsView: View {
                 .labelsHidden()
                 .toggleStyle(.switch)
                 .controlSize(.small)
+                .accessibilityLabel("\(title) Kalender")
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 3)
@@ -395,6 +398,7 @@ struct SettingsView: View {
                 .labelsHidden()
                 .toggleStyle(.switch)
                 .controlSize(.small)
+                .accessibilityLabel(label)
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 4)

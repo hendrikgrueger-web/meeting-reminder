@@ -22,6 +22,7 @@
 		7D3E1940D4A5C3D50D8EE995 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A11A0603571646DF98919878 /* Localizable.xcstrings */; };
 		8E81B67AD81FEADEBF6DE233 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 16CB96FE232986A33B4F2A53 /* Assets.xcassets */; };
 		920C014F8897EBC6F39E3C0B /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = C0CA2DF8E37EC15727E74CCE /* PrivacyInfo.xcprivacy */; };
+		B20A4EA9516F237D251E2ACF /* AppIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB7C35B6AFC576F3167B2BA3 /* AppIntents.swift */; };
 		C7EE99C6DCC8AD1940A3FDAE /* MeetingEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38FA63A0959D172CE24CA6F /* MeetingEvent.swift */; };
 		CCFC418B678C26450567C077 /* MeetingReminderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFA69F93AA2FCBFAF4B174B4 /* MeetingReminderTests.swift */; };
 		D97D634503D609FB71CDDB9C /* MeetingEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0102721E1319A074C1261981 /* MeetingEventTests.swift */; };
@@ -60,6 +61,7 @@
 		CA92CDB2BDC1250AF5291392 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		DC689F1B33F003CFFD6CD25B /* CalendarService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarService.swift; sourceTree = "<group>"; };
 		DFA69F93AA2FCBFAF4B174B4 /* MeetingReminderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingReminderTests.swift; sourceTree = "<group>"; };
+		EB7C35B6AFC576F3167B2BA3 /* AppIntents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIntents.swift; sourceTree = "<group>"; };
 		EFA3F5841A56C4480A261CFF /* MeetingLinkExtractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingLinkExtractorTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -68,6 +70,7 @@
 			isa = PBXGroup;
 			children = (
 				7BD4D0BAE18A1F2536890860 /* AppIcon.icns */,
+				EB7C35B6AFC576F3167B2BA3 /* AppIntents.swift */,
 				16CB96FE232986A33B4F2A53 /* Assets.xcassets */,
 				AE85183504CEF2923153A863 /* InfoPlist.strings */,
 				A11A0603571646DF98919878 /* Localizable.xcstrings */,
@@ -240,6 +243,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F07D63007118005681E715C9 /* AlertOverlayView.swift in Sources */,
+				B20A4EA9516F237D251E2ACF /* AppIntents.swift in Sources */,
 				7B9009041B129361125C6AB5 /* CalendarService.swift in Sources */,
 				C7EE99C6DCC8AD1940A3FDAE /* MeetingEvent.swift in Sources */,
 				5748FC874B8C69571D2016FB /* MeetingLinkExtractor.swift in Sources */,
