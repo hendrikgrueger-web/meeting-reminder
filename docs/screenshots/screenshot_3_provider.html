@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1440">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1440px; height: 900px; overflow: hidden;
+    font-family: -apple-system, "SF Pro Display", "Helvetica Neue", sans-serif;
+    background:
+      radial-gradient(ellipse 1000px 600px at 50% 20%, #111d40 0%, transparent 70%),
+      #07101f;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+  }
+
+  body::before {
+    content: '';
+    position: absolute;
+    width: 900px; height: 400px;
+    background: radial-gradient(ellipse, rgba(59,130,246,0.08) 0%, transparent 70%);
+    top: -60px; left: 50%; transform: translateX(-50%);
+    pointer-events: none;
+  }
+
+  .headline {
+    text-align: center;
+    margin-bottom: 64px;
+    position: relative; z-index: 1;
+  }
+
+  .headline h1 {
+    font-size: 62px; font-weight: 800;
+    color: #fff;
+    letter-spacing: -2.5px; line-height: 1.04;
+    margin-bottom: 14px;
+  }
+
+  .headline h1 .accent {
+    background: linear-gradient(90deg, #60a5fa, #a78bfa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .headline p {
+    font-size: 18px; color: rgba(255,255,255,0.4);
+    font-weight: 400; letter-spacing: 0.1px;
+  }
+
+  /* Three card triptych */
+  .triptych {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    position: relative; z-index: 1;
+  }
+
+  .card {
+    width: 320px;
+    background: rgba(255,255,255,0.92);
+    border-radius: 24px;
+    padding: 28px 26px 24px;
+    color: #0f172a;
+    position: relative;
+  }
+
+  /* Left card — rotated & behind */
+  .card.left {
+    transform: rotate(-6deg) translateX(30px) translateY(10px);
+    z-index: 1;
+    opacity: 0.75;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+  }
+
+  /* Center card — straight & front */
+  .card.center {
+    transform: scale(1.06);
+    z-index: 3;
+    box-shadow:
+      0 40px 90px rgba(0,0,0,0.55),
+      0 0 60px rgba(37,99,235,0.18);
+  }
+
+  /* Right card — rotated & behind */
+  .card.right {
+    transform: rotate(6deg) translateX(-30px) translateY(10px);
+    z-index: 1;
+    opacity: 0.75;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+  }
+
+  .card-eyebrow {
+    font-size: 11px; font-weight: 700;
+    color: rgba(0,0,0,0.3);
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .card-title {
+    font-size: 17px; font-weight: 800;
+    color: #0f172a; margin-bottom: 5px;
+    letter-spacing: -0.3px;
+  }
+
+  .cal-row {
+    display: flex; align-items: center; gap: 6px;
+    margin-bottom: 14px;
+  }
+
+  .cal-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+  }
+
+  .cal-name { font-size: 12px; color: rgba(0,0,0,0.4); font-weight: 500; }
+
+  .timerange { font-size: 13px; color: rgba(0,0,0,0.35); margin-bottom: 18px; }
+
+  .join-btn {
+    width: 100%;
+    border-radius: 12px;
+    padding: 13px;
+    font-size: 15px; font-weight: 700;
+    color: white; text-align: center;
+    letter-spacing: -0.2px;
+  }
+
+  .btn-teams { background: linear-gradient(135deg, #2563eb, #1d4ed8); box-shadow: 0 4px 16px rgba(37,99,235,0.35); }
+  .btn-zoom  { background: linear-gradient(135deg, #2563eb, #1d4ed8); box-shadow: 0 4px 16px rgba(37,99,235,0.35); }
+  .btn-meet  { background: linear-gradient(135deg, #2563eb, #1d4ed8); box-shadow: 0 4px 16px rgba(37,99,235,0.35); }
+
+  .close-link {
+    text-align: center;
+    font-size: 12px; color: rgba(0,0,0,0.28);
+    font-weight: 500; margin-top: 10px;
+  }
+
+  /* Bottom line */
+  .bottom-row {
+    margin-top: 52px;
+    display: flex; align-items: center; gap: 12px;
+    position: relative; z-index: 1;
+  }
+
+  .provider-chip {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-size: 13px; font-weight: 600;
+    color: rgba(255,255,255,0.45);
+  }
+
+  .provider-chip.more {
+    color: rgba(255,255,255,0.25);
+  }
+</style>
+</head>
+<body>
+  <div class="headline">
+    <h1>Ein Klick.<br><span class="accent">Jedes Meeting.</span></h1>
+    <p>8 Provider automatisch erkannt — du musst nichts konfigurieren.</p>
+  </div>
+
+  <div class="triptych">
+    <div class="card left">
+      <div class="card-eyebrow">09:30 – 09:45</div>
+      <div class="card-title">Daily Standup</div>
+      <div class="cal-row">
+        <div class="cal-dot" style="background:#3b82f6"></div>
+        <div class="cal-name">Engineering</div>
+      </div>
+      <div class="timerange">Beginnt in 5 Min.</div>
+      <div class="join-btn btn-teams">🎥 &thinsp;Teams beitreten</div>
+      <div class="close-link">Schließen</div>
+    </div>
+
+    <div class="card center">
+      <div class="card-eyebrow">14:00 – 15:00</div>
+      <div class="card-title">Wöchentliches Review</div>
+      <div class="cal-row">
+        <div class="cal-dot" style="background:#22d3ee"></div>
+        <div class="cal-name">Sales Kalender</div>
+      </div>
+      <div class="timerange">Beginnt in 3 Min.</div>
+      <div class="join-btn btn-zoom">🎥 &thinsp;Zoom beitreten</div>
+      <div class="close-link">Schließen</div>
+    </div>
+
+    <div class="card right">
+      <div class="card-eyebrow">16:00 – 16:30</div>
+      <div class="card-title">Design Sprint Review</div>
+      <div class="cal-row">
+        <div class="cal-dot" style="background:#f59e0b"></div>
+        <div class="cal-name">Produkt</div>
+      </div>
+      <div class="timerange">Beginnt in 8 Min.</div>
+      <div class="join-btn btn-meet">🎥 &thinsp;Google Meet beitreten</div>
+      <div class="close-link">Schließen</div>
+    </div>
+  </div>
+
+  <div class="bottom-row">
+    <div class="provider-chip">Teams</div>
+    <div class="provider-chip">Zoom</div>
+    <div class="provider-chip">Google Meet</div>
+    <div class="provider-chip">WebEx</div>
+    <div class="provider-chip">GoTo</div>
+    <div class="provider-chip">Slack</div>
+    <div class="provider-chip more">+ 2 weitere</div>
+  </div>
+</body>
+</html>

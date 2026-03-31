@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1440">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1440px; height: 900px; overflow: hidden;
+    font-family: -apple-system, "SF Pro Display", "Helvetica Neue", sans-serif;
+    background:
+      radial-gradient(ellipse 800px 700px at 75% 50%, #0e2248 0%, transparent 65%),
+      radial-gradient(ellipse 500px 400px at 10% 80%, #120e30 0%, transparent 70%),
+      #060c1a;
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .menubar {
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 28px;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(20px);
+    display: flex; align-items: center;
+    justify-content: flex-end;
+    padding: 0 18px; gap: 16px; z-index: 10;
+  }
+
+  .mb { font-size: 12px; color: rgba(255,255,255,0.65); font-weight: 500; }
+
+  .mb-bell {
+    display: flex; align-items: center; gap: 4px;
+    background: rgba(255,255,255,0.14);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 7px;
+    padding: 2px 9px;
+    font-size: 13px; color: white; font-weight: 700;
+  }
+
+  .layout {
+    display: flex; align-items: center;
+    justify-content: space-between;
+    width: 100%; height: 100%;
+    padding: 52px 100px 40px 120px;
+    position: relative; z-index: 1;
+  }
+
+  /* LEFT */
+  .left { flex: 1; max-width: 480px; }
+
+  .eyebrow {
+    font-size: 12px; font-weight: 700;
+    color: #60a5fa;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .headline {
+    font-size: 56px; font-weight: 800;
+    color: #fff;
+    letter-spacing: -2px; line-height: 1.07;
+    margin-bottom: 24px;
+  }
+
+  .headline .accent {
+    background: linear-gradient(90deg, #60a5fa, #a78bfa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitle {
+    font-size: 18px;
+    color: rgba(255,255,255,0.4);
+    line-height: 1.6; max-width: 380px;
+  }
+
+  /* RIGHT — Popover */
+  .right { flex-shrink: 0; margin-left: 80px; position: relative; }
+
+  /* Arrow from menubar */
+  .arrow {
+    position: absolute;
+    top: -14px; right: 56px;
+    width: 0; height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 14px solid rgba(20,30,55,0.95);
+    z-index: 5;
+  }
+
+  .popover {
+    width: 400px;
+    background: rgba(14,22,50,0.96);
+    backdrop-filter: blur(40px);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow:
+      0 0 0 1px rgba(0,0,0,0.4),
+      0 30px 80px rgba(0,0,0,0.55),
+      0 0 60px rgba(37,99,235,0.1);
+  }
+
+  .pop-header {
+    padding: 16px 20px 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+
+  .pop-title { font-size: 15px; font-weight: 700; color: #fff; }
+
+  .next-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(34,197,94,0.14);
+    border: 1px solid rgba(34,197,94,0.22);
+    border-radius: 100px;
+    padding: 4px 12px;
+    font-size: 11px; font-weight: 700; color: #4ade80;
+  }
+
+  .next-dot { width: 6px; height: 6px; border-radius: 50%; background: #22c55e; }
+
+  .section-label {
+    padding: 12px 20px 6px;
+    font-size: 11px; font-weight: 700;
+    color: rgba(255,255,255,0.28);
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+  }
+
+  .list { padding: 0 12px 14px; }
+
+  .row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 10px; border-radius: 11px;
+    margin-bottom: 2px;
+  }
+
+  .row.past { opacity: 0.32; }
+  .row.upcoming {
+    background: rgba(37,99,235,0.18);
+    border: 1px solid rgba(59,130,246,0.22);
+  }
+
+  .row-time {
+    font-size: 13px; font-weight: 700;
+    color: rgba(255,255,255,0.45);
+    width: 44px; flex-shrink: 0;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .row.upcoming .row-time { color: #93c5fd; }
+
+  .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+  .row-name {
+    font-size: 14px; font-weight: 600;
+    color: rgba(255,255,255,0.8); flex: 1;
+  }
+
+  .row.upcoming .row-name { color: #fff; }
+
+  .row-tag {
+    font-size: 11px; font-weight: 700;
+    color: rgba(255,255,255,0.25); flex-shrink: 0;
+  }
+
+  .row.upcoming .row-tag { color: #60a5fa; }
+
+  .div { height: 1px; background: rgba(255,255,255,0.055); margin: 4px 10px; }
+</style>
+</head>
+<body>
+  <div class="menubar">
+    <div class="mb">WLAN &nbsp;🔋</div>
+    <div class="mb-bell">🔔 &thinsp;3</div>
+    <div class="mb" style="color:rgba(255,255,255,0.25)">|</div>
+    <div class="mb">13:52</div>
+  </div>
+
+  <div class="layout">
+    <div class="left">
+      <div class="eyebrow">Tagesübersicht</div>
+      <h1 class="headline">Dein Tag<br><span class="accent">im Blick.</span></h1>
+      <p class="subtitle">
+        Alle Meetings auf einen Blick —<br>direkt in der Menüleiste.<br>Nächstes Meeting immer sichtbar.
+      </p>
+    </div>
+
+    <div class="right">
+      <div class="arrow"></div>
+      <div class="popover">
+        <div class="pop-header">
+          <div class="pop-title">🔔 &thinsp;Nevr Late</div>
+          <div class="next-pill"><div class="next-dot"></div>In 8 Min.</div>
+        </div>
+
+        <div class="section-label">Heute</div>
+
+        <div class="list">
+          <div class="row past">
+            <div class="row-time">09:00</div>
+            <div class="dot" style="background:#22d3ee"></div>
+            <div class="row-name">Daily Kickoff</div>
+            <div class="row-tag">✓</div>
+          </div>
+          <div class="row past">
+            <div class="row-time">10:30</div>
+            <div class="dot" style="background:#a78bfa"></div>
+            <div class="row-name">Product Review</div>
+            <div class="row-tag">✓</div>
+          </div>
+
+          <div class="div"></div>
+
+          <div class="row upcoming">
+            <div class="row-time">14:00</div>
+            <div class="dot" style="background:#3b82f6"></div>
+            <div class="row-name">Teams Standup</div>
+            <div class="row-tag">Teams →</div>
+          </div>
+
+          <div class="div"></div>
+
+          <div class="row">
+            <div class="row-time">15:30</div>
+            <div class="dot" style="background:#f59e0b"></div>
+            <div class="row-name">Sprint Retro</div>
+            <div class="row-tag">Zoom</div>
+          </div>
+          <div class="row">
+            <div class="row-time">17:00</div>
+            <div class="dot" style="background:#22c55e"></div>
+            <div class="row-name">1:1 mit Max</div>
+            <div class="row-tag">Meet</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1440">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1440px; height: 900px; overflow: hidden;
+    font-family: -apple-system, "SF Pro Display", "Helvetica Neue", sans-serif;
+    background:
+      radial-gradient(ellipse 900px 700px at 15% 50%, #162b5c 0%, transparent 70%),
+      radial-gradient(ellipse 700px 500px at 85% 30%, #1a1060 0%, transparent 70%),
+      #070e1c;
+    position: relative;
+  }
+
+  /* Subtle grid overlay */
+  body::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 80px 80px;
+    pointer-events: none;
+  }
+
+  .layout {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    padding: 0 100px 0 110px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* LEFT */
+  .left { flex: 1; max-width: 600px; }
+
+  .app-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 50px;
+    padding: 8px 18px 8px 10px;
+    margin-bottom: 32px;
+  }
+
+  .badge-icon {
+    width: 32px; height: 32px;
+    background: linear-gradient(135deg, #1d4ed8, #2563eb);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+
+  .badge-text {
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 0.2px;
+  }
+
+  .headline {
+    font-size: 60px;
+    font-weight: 800;
+    line-height: 1.08;
+    color: #ffffff;
+    letter-spacing: -2px;
+    margin-bottom: 22px;
+  }
+
+  .headline .line2 {
+    background: linear-gradient(90deg, #60a5fa 0%, #a78bfa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitle {
+    font-size: 19px;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.55;
+    margin-bottom: 48px;
+    max-width: 500px;
+    font-weight: 400;
+  }
+
+  .features {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .feature {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 16px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.7);
+  }
+
+  .feature-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #3b82f6;
+    flex-shrink: 0;
+  }
+
+  /* RIGHT — Card */
+  .right { flex-shrink: 0; margin-left: 80px; }
+
+  .card-scene {
+    position: relative;
+    width: 380px;
+  }
+
+  /* Glow behind card */
+  .card-glow {
+    position: absolute;
+    width: 320px; height: 320px;
+    background: radial-gradient(circle, rgba(59,130,246,0.3) 0%, transparent 65%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  .card-wrapper {
+    transform: rotate(-3deg) translateY(-6px);
+    position: relative;
+    z-index: 2;
+    filter: drop-shadow(0 40px 80px rgba(0,0,0,0.6)) drop-shadow(0 0 60px rgba(59,130,246,0.15));
+  }
+
+  .overlay-card {
+    width: 360px;
+    background: rgba(255,255,255,0.95);
+    border-radius: 24px;
+    padding: 30px 28px 26px;
+    color: #1a1a2e;
+  }
+
+  .card-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    color: rgba(0,0,0,0.35);
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .card-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 6px;
+    letter-spacing: -0.5px;
+  }
+
+  .calendar-tag {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 18px;
+  }
+
+  .cal-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #3b82f6;
+  }
+
+  .cal-name {
+    font-size: 13px;
+    color: rgba(0,0,0,0.4);
+    font-weight: 500;
+  }
+
+  .countdown-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(34,197,94,0.12);
+    border: 1px solid rgba(34,197,94,0.25);
+    border-radius: 100px;
+    padding: 6px 14px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #16a34a;
+    margin-bottom: 22px;
+  }
+
+  .pill-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: #22c55e;
+  }
+
+  .join-btn {
+    width: 100%;
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    border-radius: 14px;
+    padding: 14px;
+    font-size: 16px;
+    font-weight: 700;
+    color: white;
+    text-align: center;
+    margin-bottom: 12px;
+    box-shadow: 0 4px 20px rgba(37,99,235,0.35);
+    letter-spacing: -0.2px;
+  }
+
+  .close-link {
+    text-align: center;
+    font-size: 13px;
+    color: rgba(0,0,0,0.3);
+    font-weight: 500;
+  }
+</style>
+</head>
+<body>
+  <div class="layout">
+    <div class="left">
+      <div class="app-badge">
+        <div class="badge-icon">🔔</div>
+        <div class="badge-text">Nevr Late for Mac</div>
+      </div>
+      <h1 class="headline">
+        Never Miss a<br>
+        <span class="line2">Meeting Again.</span>
+      </h1>
+      <p class="subtitle">
+        Elegant full-screen overlay — right when it matters,<br>directly on your Mac desktop.
+      </p>
+      <div class="features">
+        <div class="feature"><div class="feature-dot"></div>All calendars detected automatically</div>
+        <div class="feature"><div class="feature-dot"></div>Full-screen overlay with live countdown</div>
+        <div class="feature"><div class="feature-dot"></div>8 meeting providers — one click to join</div>
+        <div class="feature"><div class="feature-dot"></div>Snooze &amp; join directly</div>
+      </div>
+    </div>
+
+    <div class="right">
+      <div class="card-scene">
+        <div class="card-glow"></div>
+        <div class="card-wrapper">
+          <div class="overlay-card">
+            <div class="card-eyebrow">09:30 – 09:45 · 25. März</div>
+            <div class="card-title">Team Standup</div>
+            <div class="calendar-tag">
+              <div class="cal-dot"></div>
+              <div class="cal-name">Engineering</div>
+            </div>
+            <div class="countdown-pill">
+              <div class="pill-dot"></div>
+              Starts in 3 min.
+            </div>
+            <div class="join-btn">🎥 &thinsp;Join Teams</div>
+            <div class="close-link">Dismiss</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

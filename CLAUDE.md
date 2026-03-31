@@ -228,9 +228,17 @@ SF Symbol, dynamisch je nach Status:
 
 ## Nächste Schritte
 
-- [ ] App in App Store Connect anlegen (Bundle ID `de.hendrikgrueger.nevrlate`)
-- [ ] Subscription Group "Nevr Late Premium" + Produkte in ASC anlegen
-- [ ] Xcode Cloud Pipeline einrichten (Push main → TestFlight)
-- [ ] Screenshots erstellen (5 Clean Screenshots für Mac App Store)
+- [x] App in App Store Connect angelegt (App-ID: `6761079659`)
+- [x] Screenshots erstellt und hochgeladen (5× DE + 5× EN, alle ≥ 17/20 Punkte, kein Monetarisierungs-Versprechen)
+- [x] App Store Review eingereicht (READY_FOR_REVIEW seit 31.03.2026)
+- [ ] Monetarisierung aus App-Code entfernen (Freemium/StoreKit raus, wenn Entscheidung gefallen)
+- [ ] Xcode Cloud Pipeline einrichten (Push main → TestFlight automatisch)
 - [ ] Sleep/Wake-Handling im Feld testen (MacBook Wake-Szenarios)
 - [ ] Screen-Sharing-Erkennung auf Stabilität prüfen
+
+## Screenshots
+
+- **Quelle:** `docs/screenshots/screenshot_N_*.html` (HTML → Playwright → PNG)
+- **DE:** `docs/screenshots/appstore_1–5.png` | **EN:** `docs/screenshots/en/appstore_1–5.png`
+- **Workflow:** `../docs/screenshot-workflow.md` (Render-Befehl, Bewertungsmatrix ≥ 17/20, Sprachen)
+- **Zuletzt aktualisiert:** 2026-03-31 — alle 5 Screens neu, ohne Logos (nur Text), ohne Monetarisierung

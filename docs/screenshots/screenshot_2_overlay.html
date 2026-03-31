@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1440">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1440px; height: 900px; overflow: hidden;
+    font-family: -apple-system, "SF Pro Display", "Helvetica Neue", sans-serif;
+    background:
+      radial-gradient(ellipse 1000px 800px at 50% 40%, #0e2044 0%, transparent 70%),
+      #060d1a;
+    position: relative;
+  }
+
+  /* Simulated blurred desktop content behind */
+  .desktop-layer {
+    position: absolute; inset: 28px 0 0 0;
+    background:
+      radial-gradient(ellipse 400px 300px at 20% 30%, rgba(59,130,246,0.06) 0%, transparent 100%),
+      radial-gradient(ellipse 300px 200px at 80% 70%, rgba(167,139,250,0.05) 0%, transparent 100%);
+  }
+
+  /* Menu bar */
+  .menubar {
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 28px;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(20px);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 18px;
+    gap: 16px;
+    z-index: 10;
+  }
+
+  .mb { font-size: 12px; color: rgba(255,255,255,0.65); font-weight: 500; }
+
+  .mb-bell {
+    display: flex; align-items: center; gap: 4px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 7px;
+    padding: 2px 9px;
+    font-size: 13px; color: white; font-weight: 700;
+  }
+
+  /* Dim overlay */
+  .dim {
+    position: absolute; inset: 28px 0 0 0;
+    background: rgba(0,0,0,0.35);
+    backdrop-filter: blur(3px);
+    z-index: 1;
+  }
+
+  /* Center card */
+  .stage {
+    position: absolute; inset: 28px 0 0 0;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 2;
+  }
+
+  /* Soft spotlight behind card */
+  .spotlight {
+    position: absolute;
+    width: 600px; height: 500px;
+    background: radial-gradient(ellipse, rgba(37,99,235,0.18) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  .card {
+    width: 430px;
+    background: rgba(255,255,255,0.93);
+    border-radius: 28px;
+    padding: 36px 34px 30px;
+    color: #0f172a;
+    position: relative;
+    box-shadow:
+      0 40px 100px rgba(0,0,0,0.55),
+      0 0 0 1px rgba(255,255,255,0.1),
+      0 0 80px rgba(37,99,235,0.12);
+  }
+
+  /* LIVE badge */
+  .live-badge {
+    display: inline-flex; align-items: center; gap: 7px;
+    background: rgba(239,68,68,0.1);
+    border: 1px solid rgba(239,68,68,0.25);
+    border-radius: 100px;
+    padding: 5px 13px;
+    font-size: 12px; font-weight: 700;
+    color: #dc2626;
+    letter-spacing: 0.8px;
+    margin-bottom: 18px;
+  }
+
+  .live-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: #ef4444;
+  }
+
+  .big-time {
+    font-size: 52px; font-weight: 800;
+    color: #0f172a;
+    letter-spacing: -3px; line-height: 1;
+    margin-bottom: 14px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .card-title {
+    font-size: 24px; font-weight: 800;
+    color: #0f172a;
+    letter-spacing: -0.5px; line-height: 1.2;
+    margin-bottom: 10px;
+  }
+
+  .cal-row {
+    display: flex; align-items: center; gap: 7px;
+    margin-bottom: 6px;
+  }
+
+  .cal-dot {
+    width: 9px; height: 9px;
+    border-radius: 50%; background: #22d3ee;
+  }
+
+  .cal-name { font-size: 13px; color: rgba(0,0,0,0.4); font-weight: 500; }
+
+  .timerange { font-size: 14px; color: rgba(0,0,0,0.35); margin-bottom: 28px; }
+
+  .join-btn {
+    width: 100%;
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    border-radius: 16px;
+    padding: 16px;
+    font-size: 17px; font-weight: 800;
+    color: white; text-align: center;
+    margin-bottom: 14px;
+    box-shadow: 0 6px 24px rgba(37,99,235,0.4);
+    letter-spacing: -0.2px;
+  }
+
+  .actions {
+    display: flex; align-items: center;
+    justify-content: center; gap: 24px;
+  }
+
+  .action-btn {
+    font-size: 13px; color: rgba(0,0,0,0.35); font-weight: 600;
+  }
+
+  .sep { width: 1px; height: 14px; background: rgba(0,0,0,0.1); }
+
+  /* Bottom label */
+  .bottom-label {
+    position: absolute;
+    bottom: 32px; left: 0; right: 0;
+    text-align: center;
+    font-size: 14px; font-weight: 600;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 0.2px;
+    z-index: 5;
+  }
+</style>
+</head>
+<body>
+  <div class="menubar">
+    <div class="mb">WLAN</div>
+    <div class="mb">🔋 91%</div>
+    <div class="mb-bell">🔔 &thinsp;1</div>
+    <div class="mb">14:02</div>
+  </div>
+
+  <div class="desktop-layer"></div>
+  <div class="dim"></div>
+
+  <div class="stage">
+    <div class="spotlight"></div>
+    <div class="card">
+      <div class="live-badge"><div class="live-dot"></div>LIVE</div>
+      <div class="big-time">14:00</div>
+      <div class="card-title">Wöchentliches<br>Team Review</div>
+      <div class="cal-row">
+        <div class="cal-dot"></div>
+        <div class="cal-name">Sales Kalender</div>
+      </div>
+      <div class="timerange">14:00 – 15:00 · 25. März</div>
+      <div class="join-btn">🎥 &thinsp;Zoom beitreten</div>
+      <div class="actions">
+        <div class="action-btn">Später erinnern</div>
+        <div class="sep"></div>
+        <div class="action-btn">Schließen</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-label">Erscheint automatisch — du verpasst kein Meeting mehr.</div>
+</body>
+</html>
