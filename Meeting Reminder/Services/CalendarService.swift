@@ -24,6 +24,7 @@ final class CalendarService: ObservableObject {
     // MARK: - Settings (UserDefaults-backed, mit onChange-Reaktivität)
 
     @AppStorage("enabledCalendarIDs") private var enabledCalendarIDsData: Data = Data()
+    @AppStorage("knownCalendarIDs") private var knownCalendarIDsData: Data = Data()
     @AppStorage("soundEnabled") var soundEnabled: Bool = false
     @AppStorage("silentWhenScreenSharing") var silentWhenScreenSharing: Bool = true
     @AppStorage("globalShortcutEnabled") var globalShortcutEnabled: Bool = true
@@ -61,13 +62,20 @@ final class CalendarService: ObservableObject {
 
     var enabledCalendarIDs: Set<String> {
         get {
-            guard let ids = try? JSONDecoder().decode(Set<String>.self, from: enabledCalendarIDsData) else {
-                return Set(calendars.map(\.calendarIdentifier))
+            let allCurrentIDs = Set(calendars.map(\.calendarIdentifier))
+            guard let savedIDs = try? JSONDecoder().decode(Set<String>.self, from: enabledCalendarIDsData) else {
+                return allCurrentIDs
             }
-            return ids
+            let knownIDs = (try? JSONDecoder().decode(Set<String>.self, from: knownCalendarIDsData)) ?? Set()
+            // Neue Kalender (noch nie gesehen) automatisch aktivieren
+            let newIDs = allCurrentIDs.subtracting(knownIDs)
+            return savedIDs.union(newIDs)
         }
         set {
             enabledCalendarIDsData = (try? JSONEncoder().encode(newValue)) ?? Data()
+            // Alle aktuellen IDs als bekannt markieren
+            let allCurrentIDs = Set(calendars.map(\.calendarIdentifier))
+            knownCalendarIDsData = (try? JSONEncoder().encode(allCurrentIDs)) ?? Data()
             reloadAndReschedule()
         }
     }
@@ -193,7 +201,7 @@ final class CalendarService: ObservableObject {
         let runningEvents = events.filter { $0.startDate <= now && !dismissedEvents.contains($0.id) }
         if !runningEvents.isEmpty {
             pendingEvents = runningEvents
-            return
+            // Trotzdem Timer für nächstes zukünftiges Event setzen (kein Early Return)
         }
 
         // Timer auf nächstes Event setzen
@@ -327,16 +335,20 @@ final class CalendarService: ObservableObject {
     private func scheduleTimer(for events: [MeetingEvent], from now: Date) {
         alertTimer?.invalidate()
 
-        guard let nextEvent = events.first(where: { $0.startDate > now }) else { return }
-
         let leadTime = TimeInterval(leadTimeMinutes * 60)
-        let fireDate = nextEvent.startDate.addingTimeInterval(-leadTime)
+        let futureEvents = events.filter { $0.startDate > now }
 
-        guard fireDate > now else {
-            // Event ist bereits im Vorlauf-Fenster
-            pendingEvents = [nextEvent]
-            return
+        // Alle Events die bereits im Lead-Time-Fenster liegen sofort anzeigen
+        let eventsInWindow = futureEvents.filter { $0.startDate.addingTimeInterval(-leadTime) <= now }
+        if !eventsInWindow.isEmpty {
+            for event in eventsInWindow where !pendingEvents.contains(where: { $0.id == event.id }) {
+                pendingEvents.append(event)
+            }
         }
+
+        // Timer auf das erste Event setzen, das noch nicht im Lead-Time-Fenster ist
+        guard let nextEvent = futureEvents.first(where: { $0.startDate.addingTimeInterval(-leadTime) > now }) else { return }
+        let fireDate = nextEvent.startDate.addingTimeInterval(-leadTime)
 
         alertTimer = Timer.scheduledTimer(
             withTimeInterval: fireDate.timeIntervalSince(now),
