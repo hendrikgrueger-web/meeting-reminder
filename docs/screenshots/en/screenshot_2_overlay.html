@@ -22,6 +22,37 @@
       radial-gradient(ellipse 300px 200px at 80% 70%, rgba(167,139,250,0.05) 0%, transparent 100%);
   }
 
+  /* Fake Mac app windows in background */
+  .fake-win {
+    position: absolute;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  }
+
+  .win-titlebar {
+    height: 28px;
+    display: flex; align-items: center; gap: 7px;
+    padding: 0 12px;
+  }
+
+  .win-dot { width: 12px; height: 12px; border-radius: 50%; }
+
+  .win-body {
+    display: flex; flex-direction: column; gap: 8px;
+    padding: 14px 16px;
+  }
+
+  .win-line {
+    height: 11px; border-radius: 6px;
+    background: rgba(255,255,255,0.08);
+  }
+
+  .win-line.short { width: 55%; }
+  .win-line.med { width: 75%; }
+  .win-line.full { width: 100%; }
+  .win-line.accent { background: rgba(59,130,246,0.18); width: 40%; }
+
   /* Menu bar */
   .menubar {
     position: absolute;
@@ -50,8 +81,8 @@
   /* Dim overlay */
   .dim {
     position: absolute; inset: 28px 0 0 0;
-    background: rgba(0,0,0,0.35);
-    backdrop-filter: blur(3px);
+    background: rgba(0,0,0,0.52);
+    backdrop-filter: blur(4px);
     z-index: 1;
   }
 
@@ -65,22 +96,22 @@
   /* Soft spotlight behind card */
   .spotlight {
     position: absolute;
-    width: 600px; height: 500px;
-    background: radial-gradient(ellipse, rgba(37,99,235,0.18) 0%, transparent 65%);
+    width: 700px; height: 600px;
+    background: radial-gradient(ellipse, rgba(37,99,235,0.28) 0%, transparent 65%);
     pointer-events: none;
   }
 
   .card {
-    width: 430px;
-    background: rgba(255,255,255,0.93);
+    width: 480px;
+    background: rgba(255,255,255,0.96);
     border-radius: 28px;
-    padding: 36px 34px 30px;
+    padding: 38px 36px 32px;
     color: #0f172a;
     position: relative;
     box-shadow:
-      0 40px 100px rgba(0,0,0,0.55),
-      0 0 0 1px rgba(255,255,255,0.1),
-      0 0 80px rgba(37,99,235,0.12);
+      0 50px 120px rgba(0,0,0,0.65),
+      0 0 0 1px rgba(255,255,255,0.15),
+      0 0 100px rgba(37,99,235,0.2);
   }
 
   /* LIVE badge */
@@ -159,10 +190,29 @@
     position: absolute;
     bottom: 32px; left: 0; right: 0;
     text-align: center;
-    font-size: 14px; font-weight: 600;
-    color: rgba(255,255,255,0.3);
+    font-size: 15px; font-weight: 600;
+    color: rgba(255,255,255,0.45);
     letter-spacing: 0.2px;
     z-index: 5;
+  }
+
+  /* Top eyebrow label */
+  .top-label {
+    position: absolute;
+    top: 44px; left: 0; right: 0;
+    text-align: center;
+    z-index: 5;
+  }
+
+  .top-label-inner {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 100px;
+    padding: 7px 20px;
+    font-size: 13px; font-weight: 600;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 0.3px;
   }
 </style>
 </head>
@@ -174,7 +224,47 @@
     <div class="mb">14:02</div>
   </div>
 
-  <div class="desktop-layer"></div>
+  <div class="desktop-layer">
+    <!-- Fake code editor window -->
+    <div class="fake-win" style="top: 60px; left: 40px; width: 540px; height: 360px; background: rgba(22,32,62,0.88);">
+      <div class="win-titlebar" style="background: rgba(255,255,255,0.06);">
+        <div class="win-dot" style="background:#ff5f57"></div>
+        <div class="win-dot" style="background:#ffbd2e"></div>
+        <div class="win-dot" style="background:#28c840"></div>
+      </div>
+      <div class="win-body">
+        <div class="win-line accent" style="background:rgba(96,165,250,0.22)"></div>
+        <div class="win-line full"></div>
+        <div class="win-line med"></div>
+        <div class="win-line short"></div>
+        <div class="win-line full"></div>
+        <div class="win-line med" style="background:rgba(167,139,250,0.15)"></div>
+        <div class="win-line full"></div>
+        <div class="win-line short"></div>
+        <div class="win-line med"></div>
+        <div class="win-line full"></div>
+        <div class="win-line short" style="background:rgba(96,165,250,0.15)"></div>
+        <div class="win-line med"></div>
+      </div>
+    </div>
+    <!-- Fake browser window -->
+    <div class="fake-win" style="top: 70px; right: 40px; width: 460px; height: 300px; background: rgba(18,26,52,0.85);">
+      <div class="win-titlebar" style="background: rgba(255,255,255,0.05);">
+        <div class="win-dot" style="background:#ff5f57"></div>
+        <div class="win-dot" style="background:#ffbd2e"></div>
+        <div class="win-dot" style="background:#28c840"></div>
+      </div>
+      <div class="win-body">
+        <div class="win-line" style="background:rgba(255,255,255,0.09);height:22px;border-radius:6px;width:100%"></div>
+        <div class="win-line full" style="margin-top:8px;background:rgba(255,255,255,0.1)"></div>
+        <div class="win-line med" style="background:rgba(255,255,255,0.07)"></div>
+        <div class="win-line full" style="background:rgba(255,255,255,0.08)"></div>
+        <div class="win-line short" style="background:rgba(255,255,255,0.06)"></div>
+        <div class="win-line med" style="background:rgba(255,255,255,0.07)"></div>
+        <div class="win-line full" style="background:rgba(255,255,255,0.08)"></div>
+      </div>
+    </div>
+  </div>
   <div class="dim"></div>
 
   <div class="stage">
@@ -187,7 +277,7 @@
         <div class="cal-dot"></div>
         <div class="cal-name">Sales Calendar</div>
       </div>
-      <div class="timerange">14:00 – 15:00 · 25. März</div>
+      <div class="timerange">14:00 – 15:00 · March 25</div>
       <div class="join-btn">🎥 &thinsp;Join Zoom</div>
       <div class="actions">
         <div class="action-btn">Snooze</div>
@@ -197,6 +287,9 @@
     </div>
   </div>
 
-  <div class="bottom-label">Appears automatically — you will never miss a meeting again.</div>
+  <div class="top-label">
+    <div class="top-label-inner">🔔 &thinsp;Nevr Late pops up right when it matters</div>
+  </div>
+  <div class="bottom-label">Full-screen overlay — impossible to miss, one click to join.</div>
 </body>
 </html>
