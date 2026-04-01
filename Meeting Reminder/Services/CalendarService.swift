@@ -313,8 +313,8 @@ final class CalendarService: ObservableObject {
         dismissed.filter { key in
             guard let timestampString = key.split(separator: "_").last,
                   let timestamp = Double(timestampString) else { return false }
-            // Behalte für 2h nach Start (konservativ)
-            return Date(timeIntervalSince1970: timestamp).addingTimeInterval(2 * 3600) > now
+            // Behalte für 2h nach Start (inklusiv: genau 2h alt → noch behalten)
+            return Date(timeIntervalSince1970: timestamp).addingTimeInterval(2 * 3600) >= now
         }
     }
 

@@ -350,9 +350,8 @@ struct CalendarServiceTests {
         let key = "event-boundary_\(twoHoursAgoTimestamp)"
         let dismissed: Set<String> = [key]
         let cleaned = CalendarService.cleanedDismissedSet(dismissed, now: now)
-        // Event 2h alt, Cleanup-Grenze ist addingTimeInterval(2*3600) > now → exakt gleich → false
-        // Date(twoHoursAgoTimestamp).addingTimeInterval(2*3600) == now → nicht > now → wird entfernt
-        #expect(!cleaned.contains(key))
+        // Cleanup-Grenze ist >= now (inklusiv): genau 2h alt → gleich → true → wird behalten
+        #expect(cleaned.contains(key))
     }
 
     @Test("Dismissed Set Cleanup: Event 1h59min alt wird behalten")

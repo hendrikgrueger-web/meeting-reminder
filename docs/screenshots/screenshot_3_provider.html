@@ -9,8 +9,9 @@
     width: 1440px; height: 900px; overflow: hidden;
     font-family: -apple-system, "SF Pro Display", "Helvetica Neue", sans-serif;
     background:
-      radial-gradient(ellipse 1000px 600px at 50% 20%, #111d40 0%, transparent 70%),
-      #07101f;
+      radial-gradient(ellipse 1000px 600px at 50% 20%, #142050 0%, transparent 70%),
+      radial-gradient(ellipse 600px 400px at 50% 85%, #0e1a40 0%, transparent 65%),
+      #060e1c;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -22,10 +23,46 @@
   body::before {
     content: '';
     position: absolute;
-    width: 900px; height: 400px;
-    background: radial-gradient(ellipse, rgba(59,130,246,0.08) 0%, transparent 70%);
+    width: 1100px; height: 500px;
+    background: radial-gradient(ellipse, rgba(59,130,246,0.12) 0%, transparent 70%);
     top: -60px; left: 50%; transform: translateX(-50%);
     pointer-events: none;
+  }
+
+  /* Subtle grid */
+  body::after {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 80px 80px;
+    pointer-events: none;
+  }
+
+  /* Colored glows behind side cards */
+  .glow-left {
+    position: absolute;
+    width: 320px; height: 320px;
+    background: radial-gradient(circle, rgba(59,130,246,0.25) 0%, transparent 70%);
+    bottom: 40px; left: calc(50% - 420px);
+    pointer-events: none; z-index: 0;
+  }
+
+  .glow-center {
+    position: absolute;
+    width: 420px; height: 420px;
+    background: radial-gradient(circle, rgba(37,99,235,0.32) 0%, transparent 70%);
+    bottom: 20px; left: 50%; transform: translateX(-50%);
+    pointer-events: none; z-index: 0;
+  }
+
+  .glow-right {
+    position: absolute;
+    width: 320px; height: 320px;
+    background: radial-gradient(circle, rgba(59,130,246,0.25) 0%, transparent 70%);
+    bottom: 40px; right: calc(50% - 420px);
+    pointer-events: none; z-index: 0;
   }
 
   .headline {
@@ -74,24 +111,24 @@
   .card.left {
     transform: rotate(-6deg) translateX(30px) translateY(10px);
     z-index: 1;
-    opacity: 0.75;
+    opacity: 0.88;
     box-shadow: 0 30px 60px rgba(0,0,0,0.4);
   }
 
   /* Center card — straight & front */
   .card.center {
-    transform: scale(1.06);
+    transform: scale(1.08);
     z-index: 3;
     box-shadow:
-      0 40px 90px rgba(0,0,0,0.55),
-      0 0 60px rgba(37,99,235,0.18);
+      0 40px 90px rgba(0,0,0,0.6),
+      0 0 80px rgba(37,99,235,0.25);
   }
 
   /* Right card — rotated & behind */
   .card.right {
     transform: rotate(6deg) translateX(-30px) translateY(10px);
     z-index: 1;
-    opacity: 0.75;
+    opacity: 0.88;
     box-shadow: 0 30px 60px rgba(0,0,0,0.4);
   }
 
@@ -169,6 +206,9 @@
     <p>8 Provider automatisch erkannt — du musst nichts konfigurieren.</p>
   </div>
 
+  <div class="glow-left"></div>
+  <div class="glow-center"></div>
+  <div class="glow-right"></div>
   <div class="triptych">
     <div class="card left">
       <div class="card-eyebrow">09:30 – 09:45</div>

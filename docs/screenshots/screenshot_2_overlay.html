@@ -14,12 +14,69 @@
     position: relative;
   }
 
-  /* Simulated blurred desktop content behind */
+  /* Fake desktop windows behind the overlay */
   .desktop-layer {
     position: absolute; inset: 28px 0 0 0;
-    background:
-      radial-gradient(ellipse 400px 300px at 20% 30%, rgba(59,130,246,0.06) 0%, transparent 100%),
-      radial-gradient(ellipse 300px 200px at 80% 70%, rgba(167,139,250,0.05) 0%, transparent 100%);
+    overflow: hidden;
+  }
+
+  .fake-window {
+    position: absolute;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.07);
+  }
+
+  /* Code editor left */
+  .win-code {
+    left: 60px; top: 40px;
+    width: 520px; height: 480px;
+  }
+
+  .win-code-bar {
+    height: 28px; background: rgba(255,255,255,0.05);
+    border-radius: 10px 10px 0 0;
+    display: flex; align-items: center; padding: 0 12px; gap: 6px;
+  }
+
+  .win-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+  .win-code-body {
+    padding: 16px;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+
+  .code-line {
+    height: 10px; border-radius: 4px;
+    background: rgba(255,255,255,0.06);
+  }
+
+  /* Browser window right */
+  .win-browser {
+    right: 60px; top: 20px;
+    width: 460px; height: 380px;
+  }
+
+  .win-browser-bar {
+    height: 32px; background: rgba(255,255,255,0.05);
+    border-radius: 10px 10px 0 0;
+    display: flex; align-items: center; padding: 0 12px; gap: 8px;
+  }
+
+  .url-bar {
+    flex: 1; height: 18px; border-radius: 8px;
+    background: rgba(255,255,255,0.06);
+    margin: 0 8px;
+  }
+
+  .win-browser-body {
+    padding: 16px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+
+  .browser-block {
+    height: 14px; border-radius: 4px;
+    background: rgba(255,255,255,0.05);
   }
 
   /* Menu bar */
@@ -50,9 +107,27 @@
   /* Dim overlay */
   .dim {
     position: absolute; inset: 28px 0 0 0;
-    background: rgba(0,0,0,0.35);
+    background: rgba(0,0,0,0.52);
     backdrop-filter: blur(3px);
     z-index: 1;
+  }
+
+  /* Top label */
+  .top-label {
+    position: absolute;
+    top: 48px; left: 0; right: 0;
+    display: flex; justify-content: center;
+    z-index: 5;
+  }
+
+  .top-label-pill {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 100px;
+    padding: 6px 18px;
+    font-size: 13px; font-weight: 600;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 0.2px;
   }
 
   /* Center card */
@@ -65,13 +140,13 @@
   /* Soft spotlight behind card */
   .spotlight {
     position: absolute;
-    width: 600px; height: 500px;
+    width: 700px; height: 600px;
     background: radial-gradient(ellipse, rgba(37,99,235,0.18) 0%, transparent 65%);
     pointer-events: none;
   }
 
   .card {
-    width: 430px;
+    width: 480px;
     background: rgba(255,255,255,0.93);
     border-radius: 28px;
     padding: 36px 34px 30px;
@@ -174,8 +249,47 @@
     <div class="mb">14:02</div>
   </div>
 
-  <div class="desktop-layer"></div>
+  <div class="desktop-layer">
+    <div class="fake-window win-code">
+      <div class="win-code-bar">
+        <div class="win-dot" style="background:#ef4444"></div>
+        <div class="win-dot" style="background:#f59e0b"></div>
+        <div class="win-dot" style="background:#22c55e"></div>
+      </div>
+      <div class="win-code-body">
+        <div class="code-line" style="width:70%"></div>
+        <div class="code-line" style="width:45%;margin-left:20px"></div>
+        <div class="code-line" style="width:60%;margin-left:20px"></div>
+        <div class="code-line" style="width:30%;margin-left:40px"></div>
+        <div class="code-line" style="width:55%;margin-left:20px"></div>
+        <div class="code-line" style="width:20%"></div>
+        <div class="code-line" style="width:65%"></div>
+        <div class="code-line" style="width:40%;margin-left:20px"></div>
+        <div class="code-line" style="width:50%;margin-left:20px"></div>
+      </div>
+    </div>
+    <div class="fake-window win-browser">
+      <div class="win-browser-bar">
+        <div class="win-dot" style="background:#ef4444"></div>
+        <div class="win-dot" style="background:#f59e0b"></div>
+        <div class="win-dot" style="background:#22c55e"></div>
+        <div class="url-bar"></div>
+      </div>
+      <div class="win-browser-body">
+        <div class="browser-block" style="width:80%;height:20px"></div>
+        <div class="browser-block" style="width:60%"></div>
+        <div class="browser-block" style="width:90%;height:80px;margin-top:4px"></div>
+        <div class="browser-block" style="width:75%"></div>
+        <div class="browser-block" style="width:55%"></div>
+      </div>
+    </div>
+  </div>
+
   <div class="dim"></div>
+
+  <div class="top-label">
+    <div class="top-label-pill">🔔 Nevr Late erscheint genau dann, wenn es wichtig ist</div>
+  </div>
 
   <div class="stage">
     <div class="spotlight"></div>

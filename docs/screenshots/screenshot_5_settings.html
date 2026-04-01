@@ -11,32 +11,45 @@
     background:
       radial-gradient(ellipse 700px 600px at 25% 55%, #0f1d44 0%, transparent 65%),
       radial-gradient(ellipse 500px 400px at 85% 20%, #1a0a3a 0%, transparent 70%),
+      radial-gradient(ellipse 400px 300px at 70% 80%, #0e1630 0%, transparent 70%),
       #060c18;
     position: relative;
     display: flex; align-items: center;
   }
 
-  /* Ghost overlay card — result of the settings */
-  .ghost-card {
-    position: absolute;
-    right: -20px; top: 50%;
-    transform: translateY(-52%) rotate(4deg);
-    width: 300px;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 22px;
-    padding: 24px 22px 20px;
-    opacity: 0.55;
-    z-index: 0;
+  body::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 80px 80px;
+    pointer-events: none;
   }
 
-  .ghost-time { font-size: 36px; font-weight: 800; color: rgba(255,255,255,0.4); letter-spacing: -2px; margin-bottom: 8px; }
-  .ghost-title { font-size: 16px; font-weight: 700; color: rgba(255,255,255,0.3); margin-bottom: 14px; }
+  /* Ghost overlay card — result of the settings (light card like real overlay) */
+  .ghost-card {
+    position: absolute;
+    right: 80px; top: 44px;
+    transform: rotate(-3deg);
+    width: 300px;
+    background: rgba(255,255,255,0.92);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 22px;
+    padding: 24px 22px 20px;
+    opacity: 0.65;
+    z-index: 0;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.55), 0 0 50px rgba(37,99,235,0.15);
+  }
+
+  .ghost-time { font-size: 36px; font-weight: 800; color: #0f172a; letter-spacing: -2px; margin-bottom: 8px; }
+  .ghost-title { font-size: 16px; font-weight: 700; color: #1e293b; margin-bottom: 14px; }
   .ghost-btn {
-    width: 100%; background: rgba(37,99,235,0.25);
+    width: 100%; background: linear-gradient(135deg, #2563eb, #1d4ed8);
     border-radius: 11px; padding: 12px;
     font-size: 14px; font-weight: 700;
-    color: rgba(255,255,255,0.3); text-align: center;
+    color: white; text-align: center;
+    box-shadow: 0 4px 16px rgba(37,99,235,0.3);
   }
 
   .menubar {

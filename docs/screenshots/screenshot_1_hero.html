@@ -117,17 +117,35 @@
 
   .card-scene {
     position: relative;
-    width: 380px;
+    width: 420px;
   }
 
   /* Glow behind card */
   .card-glow {
     position: absolute;
-    width: 320px; height: 320px;
+    width: 380px; height: 380px;
     background: radial-gradient(circle, rgba(59,130,246,0.3) 0%, transparent 65%);
     top: 50%; left: 50%;
     transform: translate(-50%, -50%);
     pointer-events: none;
+  }
+
+  /* Ghost card — slightly behind and rotated differently */
+  .card-wrapper-ghost {
+    position: absolute;
+    top: 20px; left: -20px;
+    transform: rotate(3deg);
+    z-index: 1;
+    opacity: 0.45;
+    filter: drop-shadow(0 20px 40px rgba(0,0,0,0.4));
+  }
+
+  .overlay-card-ghost {
+    width: 360px;
+    background: rgba(255,255,255,0.75);
+    border-radius: 24px;
+    padding: 30px 28px 26px;
+    color: #1a1a2e;
   }
 
   .card-wrapper {
@@ -248,6 +266,22 @@
     <div class="right">
       <div class="card-scene">
         <div class="card-glow"></div>
+        <div class="card-wrapper-ghost">
+          <div class="overlay-card-ghost">
+            <div class="card-eyebrow">14:00 – 15:00 · 25. März</div>
+            <div class="card-title">Produkt Review</div>
+            <div class="calendar-tag">
+              <div class="cal-dot" style="background:#a78bfa"></div>
+              <div class="cal-name">Produkt</div>
+            </div>
+            <div class="countdown-pill">
+              <div class="pill-dot"></div>
+              Beginnt in 5 Min.
+            </div>
+            <div class="join-btn">🎥 &thinsp;Zoom beitreten</div>
+            <div class="close-link">Schließen</div>
+          </div>
+        </div>
         <div class="card-wrapper">
           <div class="overlay-card">
             <div class="card-eyebrow">09:30 – 09:45 · 25. März</div>
