@@ -11,6 +11,9 @@ struct CalendarServiceTests {
 
     // MARK: - Test Fixtures
 
+    /// Standard-Event-ID für Snooze-Tests
+    private var eventID: String { "event-123_1000000.0" }
+
     private func makeEvent(
         eventIdentifier: String = "event-123",
         title: String = "Team Meeting",
@@ -640,5 +643,108 @@ struct CalendarServiceTests {
         let todayEvents = [runningMeeting, futureMeeting].sorted { $0.startDate < $1.startDate }
         let count = todayEvents.filter { $0.startDate > now && $0.startDate <= oneHourFromNow }.count
         #expect(count == 1) // Nur futureMeeting, nicht runningMeeting
+    }
+
+    // MARK: - mergePendingWithRunning Tests
+
+    @Test("mergePendingWithRunning: pending=[A] running=[B] → [A,B] (beide behalten)")
+    func mergePendingAndRunningBothKept() {
+        let eventA = makeEvent(eventIdentifier: "a", title: "A")
+        let eventB = makeEvent(eventIdentifier: "b", title: "B")
+        let result = CalendarService.mergePendingWithRunning(pending: [eventA], running: [eventB])
+        #expect(result.count == 2)
+        #expect(result.contains(where: { $0.eventIdentifier == "a" }))
+        #expect(result.contains(where: { $0.eventIdentifier == "b" }))
+    }
+
+    @Test("mergePendingWithRunning: pending=[A] running=[A] → [A] (dedupliziert)")
+    func mergePendingAndRunningDedup() {
+        let eventA = makeEvent(eventIdentifier: "a", title: "A")
+        let result = CalendarService.mergePendingWithRunning(pending: [eventA], running: [eventA])
+        #expect(result.count == 1)
+        #expect(result[0].eventIdentifier == "a")
+    }
+
+    @Test("mergePendingWithRunning: pending=[A,B] running=[A] → [A,B] (A aus running, B behalten)")
+    func mergePendingAndRunningPartialOverlap() {
+        let eventA = makeEvent(eventIdentifier: "a", title: "A")
+        let eventB = makeEvent(eventIdentifier: "b", title: "B")
+        let result = CalendarService.mergePendingWithRunning(pending: [eventA, eventB], running: [eventA])
+        #expect(result.count == 2)
+        #expect(result.contains(where: { $0.eventIdentifier == "a" }))
+        #expect(result.contains(where: { $0.eventIdentifier == "b" }))
+    }
+
+    @Test("mergePendingWithRunning: leer pending + nicht-leer running → running")
+    func mergeEmptyPendingWithRunning() {
+        let eventB = makeEvent(eventIdentifier: "b", title: "B")
+        let result = CalendarService.mergePendingWithRunning(pending: [], running: [eventB])
+        #expect(result.count == 1)
+        #expect(result[0].eventIdentifier == "b")
+    }
+
+    @Test("mergePendingWithRunning: nicht-leer pending + leer running → pending")
+    func mergePendingWithEmptyRunning() {
+        let eventA = makeEvent(eventIdentifier: "a", title: "A")
+        let result = CalendarService.mergePendingWithRunning(pending: [eventA], running: [])
+        #expect(result.count == 1)
+        #expect(result[0].eventIdentifier == "a")
+    }
+
+    // MARK: - isSnoozeActive Tests
+
+    @Test("isSnoozeActive: snoozeUntil in der Zukunft → aktiv")
+    func snoozeActiveFutureDate() {
+        let now = Date()
+        let snoozeUntil = [eventID: now.addingTimeInterval(60)]
+        #expect(CalendarService.isSnoozeActive(eventID: eventID, snoozeUntil: snoozeUntil, now: now) == true)
+    }
+
+    @Test("isSnoozeActive: snoozeUntil in der Vergangenheit → nicht aktiv")
+    func snoozeNotActivePastDate() {
+        let now = Date()
+        let snoozeUntil = [eventID: now.addingTimeInterval(-60)]
+        #expect(CalendarService.isSnoozeActive(eventID: eventID, snoozeUntil: snoozeUntil, now: now) == false)
+    }
+
+    @Test("isSnoozeActive: Event nicht im snoozeUntil-Dictionary → nicht aktiv")
+    func snoozeNotActiveNoEntry() {
+        let now = Date()
+        let snoozeUntil: [String: Date] = [:]
+        #expect(CalendarService.isSnoozeActive(eventID: eventID, snoozeUntil: snoozeUntil, now: now) == false)
+    }
+
+    @Test("isSnoozeActive: snoozeUntil genau jetzt → nicht aktiv (abgelaufen)")
+    func snoozeNotActiveExactNow() {
+        let now = Date()
+        let snoozeUntil = [eventID: now]
+        #expect(CalendarService.isSnoozeActive(eventID: eventID, snoozeUntil: snoozeUntil, now: now) == false)
+    }
+
+    // MARK: - Snooze-Filter in reloadAndReschedule (indirekt)
+
+    @Test("Snooze-Filter: Event mit aktiver Snooze sollte nicht als running gelten")
+    func snoozedRunningEventFiltered() {
+        let now = Date()
+        let event = makeEvent(
+            eventIdentifier: "snoozed-running",
+            startDate: now.addingTimeInterval(-2 * 60) // laufend
+        )
+        let snoozeUntil = [event.id: now.addingTimeInterval(60)] // Snooze aktiv
+        // Das Event sollte herausgefiltert werden
+        let isActive = CalendarService.isSnoozeActive(eventID: event.id, snoozeUntil: snoozeUntil, now: now)
+        #expect(isActive == true) // Snooze aktiv → Event nicht anzeigen
+    }
+
+    @Test("Snooze-Filter: Event mit abgelaufener Snooze sollte als running gelten")
+    func expiredSnoozedRunningEventShown() {
+        let now = Date()
+        let event = makeEvent(
+            eventIdentifier: "expired-snooze",
+            startDate: now.addingTimeInterval(-2 * 60)
+        )
+        let snoozeUntil = [event.id: now.addingTimeInterval(-10)] // Snooze abgelaufen
+        let isActive = CalendarService.isSnoozeActive(eventID: event.id, snoozeUntil: snoozeUntil, now: now)
+        #expect(isActive == false) // Snooze abgelaufen → Event darf angezeigt werden
     }
 }

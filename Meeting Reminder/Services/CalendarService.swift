@@ -54,7 +54,7 @@ final class CalendarService: ObservableObject {
     private var fallbackTimer: Timer?
     private var debounceTask: Task<Void, Never>?
     private var dismissedEvents: Set<String> = []
-    private var snoozedEvents: Set<String> = []
+    private var snoozeUntil: [String: Date] = [:]
     private var defaultObservers: [Any] = []
     private var workspaceObservers: [Any] = []
 
@@ -175,11 +175,15 @@ final class CalendarService: ObservableObject {
         // Kalender aktualisieren
         calendars = eventStore.calendars(for: .event)
 
+        let now = Date()
+
+        // Snooze-Dictionary aufräumen — abgelaufene Einträge entfernen
+        snoozeUntil = snoozeUntil.filter { $0.value > now }
+
         // Dismissed-Set aufräumen
         cleanupDismissed()
 
         // Heutige Events laden (Mitternacht bis Mitternacht) — für Tagesübersicht
-        let now = Date()
         todayEvents = loadTodayEvents(now: now)
 
         // Events laden (24h-Fenster)
@@ -197,11 +201,14 @@ final class CalendarService: ObservableObject {
         let oneHourFromNow = now.addingTimeInterval(60 * 60)
         upcomingEventsCount = todayEvents.filter { $0.startDate > now && $0.startDate <= oneHourFromNow }.count
 
-        // Prüfen ob ein Meeting JETZT läuft (nach Wake)
-        let runningEvents = events.filter { $0.startDate <= now && !dismissedEvents.contains($0.id) }
+        // Prüfen ob ein Meeting JETZT läuft (nach Wake) — snoozeUntil und dismissed filtern
+        let runningEvents = events.filter { event in
+            event.startDate <= now &&
+            !dismissedEvents.contains(event.id) &&
+            !CalendarService.isSnoozeActive(eventID: event.id, snoozeUntil: snoozeUntil, now: now)
+        }
         if !runningEvents.isEmpty {
-            pendingEvents = runningEvents
-            // Trotzdem Timer für nächstes zukünftiges Event setzen (kein Early Return)
+            pendingEvents = CalendarService.mergePendingWithRunning(pending: pendingEvents, running: runningEvents)
         }
 
         // Timer auf nächstes Event setzen
@@ -318,9 +325,24 @@ final class CalendarService: ObservableObject {
         }
     }
 
+    /// Prüft ob ein Event aktuell gesnoozed ist (Snooze-Zeit liegt in der Zukunft)
+    nonisolated static func isSnoozeActive(eventID: String, snoozeUntil: [String: Date], now: Date) -> Bool {
+        guard let snoozeDate = snoozeUntil[eventID] else { return false }
+        return snoozeDate > now
+    }
+
+    /// Merged pending und running Events, dedupliziert nach ID (running hat Priorität)
+    nonisolated static func mergePendingWithRunning(pending: [MeetingEvent], running: [MeetingEvent]) -> [MeetingEvent] {
+        let runningIDs = Set(running.map(\.id))
+        // Pending Events behalten, die nicht in running sind
+        let uniquePending = pending.filter { !runningIDs.contains($0.id) }
+        let merged = running + uniquePending
+        return merged.sorted { compareEvents($0, $1) }
+    }
+
     private func isRelevant(_ event: MeetingEvent, now: Date) -> Bool {
         // Snoozed Events sind temporär ausgeblendet
-        guard !snoozedEvents.contains(event.id) else { return false }
+        guard !CalendarService.isSnoozeActive(eventID: event.id, snoozeUntil: snoozeUntil, now: now) else { return false }
 
         return CalendarService.isEventRelevant(
             event,
@@ -364,39 +386,15 @@ final class CalendarService: ObservableObject {
 
     func dismissEvent(_ event: MeetingEvent) {
         dismissedEvents.insert(event.id)
+        snoozeUntil.removeValue(forKey: event.id)
         pendingEvents.removeAll { $0.id == event.id }
-
-        if pendingEvents.isEmpty {
-            reloadAndReschedule()
-        }
+        reloadAndReschedule()
     }
 
     func snoozeEvent(_ event: MeetingEvent) {
-        // Event als snoozed markieren — verhindert dass reloadAndReschedule es sofort wieder anzeigt
-        snoozedEvents.insert(event.id)
+        snoozeUntil[event.id] = Date().addingTimeInterval(60)
         pendingEvents.removeAll { $0.id == event.id }
-
-        // Snooze-Timer: 1 Minute
-        Timer.scheduledTimer(withTimeInterval: 60, repeats: false) { [weak self] _ in
-            Task { @MainActor [weak self] in
-                guard let self else { return }
-                // Snooze aufheben
-                self.snoozedEvents.remove(event.id)
-                let now = Date()
-                if CalendarService.shouldReShowSnoozedEvent(
-                    event,
-                    now: now,
-                    dismissedEvents: self.dismissedEvents,
-                    pendingEvents: self.pendingEvents
-                ) {
-                    self.pendingEvents.append(event)
-                }
-            }
-        }
-
-        if pendingEvents.isEmpty {
-            reloadAndReschedule()
-        }
+        reloadAndReschedule()
     }
 
     /// Entscheidet ob ein gesnooztes Event nach Ablauf der Snooze-Zeit erneut angezeigt werden soll.
