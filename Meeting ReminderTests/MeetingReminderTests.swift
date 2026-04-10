@@ -131,6 +131,32 @@ final class HandlePendingEventsTests: XCTestCase {
         overlayController = OverlayController.shared
     }
 
+    override func tearDown() {
+        // Singleton-States auf Default-Werte zurücksetzen,
+        // damit Tests keine anderen Tests beeinflussen.
+
+        // CalendarService Settings
+        calendarService.silentWhenScreenSharing = true   // Default: true
+        calendarService.soundEnabled = false              // Default: false
+        calendarService.pendingEvents = []                // Default: []
+
+        // OverlayController: Panel aufräumen falls offen
+        overlayController.dismiss()
+
+        // Folgende Properties sind private und nicht direkt zurücksetzbar:
+        //   calendarService.snoozeUntil    (private, Default: [:])
+        //   calendarService.silencedEvents (private, Default: [])
+        //   calendarService.dismissedEvents (private, Default: [])
+        // Da reloadAndReschedule() silencedEvents.removeAll() aufruft und
+        // snoozeUntil abgelaufene Einträge filtert, sind diese States
+        // nach einem naechsten Reload automatisch bereinigt.
+
+        delegate = nil
+        calendarService = nil
+        overlayController = nil
+        super.tearDown()
+    }
+
     func testEmptyEvents_dismissesOverlay() {
         // Act: leere Event-Liste → dismiss
         delegate.handlePendingEvents(
