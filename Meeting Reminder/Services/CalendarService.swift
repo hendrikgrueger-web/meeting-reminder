@@ -54,6 +54,7 @@ final class CalendarService: ObservableObject {
     private var fallbackTimer: Timer?
     private var debounceTask: Task<Void, Never>?
     private var dismissedEvents: Set<String> = []
+    private var silencedEvents: Set<String> = []
     private var snoozeUntil: [String: Date] = [:]
     private var defaultObservers: [Any] = []
     private var workspaceObservers: [Any] = []
@@ -182,6 +183,9 @@ final class CalendarService: ObservableObject {
 
         // Dismissed-Set aufräumen
         cleanupDismissed()
+
+        // Silenced-Set zurücksetzen — beim Reload wird ggf. neu gesilenced
+        silencedEvents.removeAll()
 
         // Heutige Events laden (Mitternacht bis Mitternacht) — für Tagesübersicht
         todayEvents = loadTodayEvents(now: now)
@@ -344,6 +348,9 @@ final class CalendarService: ObservableObject {
         // Snoozed Events sind temporär ausgeblendet
         guard !CalendarService.isSnoozeActive(eventID: event.id, snoozeUntil: snoozeUntil, now: now) else { return false }
 
+        // Gesilenced Events (z.B. während Screen-Sharing) temporär ausblenden
+        guard !silencedEvents.contains(event.id) else { return false }
+
         return CalendarService.isEventRelevant(
             event,
             now: now,
@@ -393,6 +400,16 @@ final class CalendarService: ObservableObject {
 
     func snoozeEvent(_ event: MeetingEvent) {
         snoozeUntil[event.id] = Date().addingTimeInterval(60)
+        pendingEvents.removeAll { $0.id == event.id }
+        reloadAndReschedule()
+    }
+
+    /// Temporäres Stummschalten eines Events (z.B. während Screen-Sharing).
+    /// Im Gegensatz zu dismissEvent wird silencedEvents bei reloadAndReschedule() zurückgesetzt,
+    /// sodass das Event beim nächsten Reload wieder erscheint — es sei denn, Screen-Sharing
+    /// ist weiterhin aktiv und handlePendingEvents() silenced es erneut.
+    func silenceEvent(_ event: MeetingEvent) {
+        silencedEvents.insert(event.id)
         pendingEvents.removeAll { $0.id == event.id }
         reloadAndReschedule()
     }
