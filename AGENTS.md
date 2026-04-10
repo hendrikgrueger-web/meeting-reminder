@@ -1,4 +1,4 @@
-# CLAUDE.md — Nevr Late (Meeting Reminder)
+# AGENTS.md — Nevr Late (Meeting Reminder)
 
 > Zuletzt aktualisiert: 2026-04-10
 
@@ -214,3 +214,12 @@ Custom Path-Drawing (`HeadsetClockMark`), dynamisch je nach Status:
 - **DE:** `docs/screenshots/appstore_1–5.png` | **EN:** `docs/screenshots/en/appstore_1–5.png`
 - **Workflow:** `../docs/screenshot-workflow.md` (Render-Befehl, Bewertungsmatrix ≥ 17/20, Sprachen)
 - **Zuletzt aktualisiert:** 2026-03-31 — alle 5 Screens neu, ohne Logos (nur Text), ohne Monetarisierung
+
+## Review Context
+
+Bei Code-Reviews für Nevr Late beachten:
+- **Kein StoreKit** — App ist komplett kostenlos, keine Monetarisierung im Code
+- **Kein Provider-Filter** — Alle 8 Meeting-Provider werden immer unterstützt
+- **Custom Icon** — Menüleisten-Icon ist `HeadsetClockMark` (Path-Drawing), kein SF Symbol
+- **App Intents** — `AppIntents.swift` für Siri/Shortcuts/Spotlight-Integration vorhanden
+- **@MainActor** — CalendarService ist @MainActor, kein ReminderCounter/StoreKitService mehr
