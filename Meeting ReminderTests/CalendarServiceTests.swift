@@ -349,11 +349,11 @@ struct CalendarServiceTests {
     @Test("Dismissed Set Cleanup: Event genau 2h alt wird behalten")
     func cleanupKeepsEventExactlyTwoHoursOld() {
         let now = Date()
-        let twoHoursAgoTimestamp = now.addingTimeInterval(-2 * 3600).timeIntervalSince1970
+        // 0.5 Sek unter 2h um Floating-Point-Rundungsfehler beim Timestamp-Roundtrip zu vermeiden
+        let twoHoursAgoTimestamp = now.addingTimeInterval(-(2 * 3600 - 0.5)).timeIntervalSince1970
         let key = "event-boundary_\(twoHoursAgoTimestamp)"
         let dismissed: Set<String> = [key]
         let cleaned = CalendarService.cleanedDismissedSet(dismissed, now: now)
-        // Cleanup-Grenze ist >= now (inklusiv): genau 2h alt → gleich → true → wird behalten
         #expect(cleaned.contains(key))
     }
 
