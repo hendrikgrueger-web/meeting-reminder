@@ -320,7 +320,7 @@ final class MeetingAppDelegate: NSObject, NSApplicationDelegate {
         // Screen-Sharing aktiv + Setting an → System-Notification statt Overlay
         if calendarService.silentWhenScreenSharing && isScreenSharing() {
             sendSystemNotification(for: event, soundEnabled: calendarService.soundEnabled)
-            calendarService.dismissEvent(event)
+            calendarService.silenceEvent(event)
             return
         }
 
