@@ -137,42 +137,49 @@ private struct HeadsetClockMark: View {
     let lineWidth: CGFloat
 
     var body: some View {
-        ZStack {
-            Path { path in
-                path.addArc(
-                    center: CGPoint(x: 9, y: 7),
-                    radius: 5.45,
-                    startAngle: .degrees(205),
-                    endAngle: .degrees(-25),
-                    clockwise: false
-                )
-            }
-            .stroke(
-                style: StrokeStyle(lineWidth: lineWidth, lineCap: .round, lineJoin: .round)
+        Canvas { ctx, _ in
+            let style = StrokeStyle(lineWidth: lineWidth, lineCap: .round, lineJoin: .round)
+
+            // Kopfbügel-Bogen
+            var arc = Path()
+            arc.addArc(
+                center: CGPoint(x: 9, y: 7),
+                radius: 5.45,
+                startAngle: .degrees(205),
+                endAngle: .degrees(-25),
+                clockwise: false
+            )
+            ctx.stroke(arc, with: .foreground, style: style)
+
+            // Linkes Ohrpolster — Mittelpunkt in Canvas-Koordinaten: (9-5.2, 7+1.6) = (3.8, 8.6)
+            ctx.fill(
+                Capsule().path(in: CGRect(x: 2.75, y: 6.35, width: 2.1, height: 4.5)),
+                with: .foreground
             )
 
-            Capsule()
-                .frame(width: 2.1, height: 4.5)
-                .offset(x: -5.2, y: 1.6)
+            // Rechtes Ohrpolster — Mittelpunkt: (9+5.2, 7+1.6) = (14.2, 8.6)
+            ctx.fill(
+                Capsule().path(in: CGRect(x: 13.15, y: 6.35, width: 2.1, height: 4.5)),
+                with: .foreground
+            )
 
-            Capsule()
-                .frame(width: 2.1, height: 4.5)
-                .offset(x: 5.2, y: 1.6)
+            // Uhrzeiger 12-Uhr (senkrecht)
+            var hand12 = Path()
+            hand12.move(to: CGPoint(x: 9, y: 7))
+            hand12.addLine(to: CGPoint(x: 9, y: 3.8))
+            ctx.stroke(hand12, with: .foreground, style: StrokeStyle(lineWidth: lineWidth, lineCap: .round))
 
-            Path { path in
-                path.move(to: CGPoint(x: 9, y: 7))
-                path.addLine(to: CGPoint(x: 9, y: 3.8))
-            }
-            .stroke(style: StrokeStyle(lineWidth: lineWidth, lineCap: .round))
+            // Uhrzeiger 4-Uhr (schräg)
+            var hand4 = Path()
+            hand4.move(to: CGPoint(x: 9, y: 7))
+            hand4.addLine(to: CGPoint(x: 12.7, y: 9.5))
+            ctx.stroke(hand4, with: .foreground, style: StrokeStyle(lineWidth: lineWidth, lineCap: .round))
 
-            Path { path in
-                path.move(to: CGPoint(x: 9, y: 7))
-                path.addLine(to: CGPoint(x: 12.7, y: 9.5))
-            }
-            .stroke(style: StrokeStyle(lineWidth: lineWidth, lineCap: .round))
-
-            Circle()
-                .frame(width: 2.35, height: 2.35)
+            // Mittelpunkt
+            ctx.fill(
+                Path(ellipseIn: CGRect(x: 7.825, y: 5.825, width: 2.35, height: 2.35)),
+                with: .foreground
+            )
         }
     }
 }
