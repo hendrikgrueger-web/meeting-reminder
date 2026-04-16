@@ -178,6 +178,17 @@ final class CalendarService: ObservableObject {
 
         let now = Date()
 
+        // Heutige Events laden (Mitternacht bis Mitternacht) — für Tagesübersicht
+        todayEvents = loadTodayEvents(now: now)
+
+        // Snoozed Events auto-dismissen wenn Snooze abgelaufen UND Meeting bereits gestartet
+        // → User ist wahrscheinlich manuell ins Meeting beigetreten (z.B. via Teams/Zoom direkt)
+        for (eventID, snoozeDate) in snoozeUntil where snoozeDate <= now {
+            if let event = todayEvents.first(where: { $0.id == eventID }), event.startDate <= now {
+                dismissedEvents.insert(eventID)
+            }
+        }
+
         // Snooze-Dictionary aufräumen — abgelaufene Einträge entfernen
         snoozeUntil = snoozeUntil.filter { $0.value > now }
 
@@ -186,9 +197,6 @@ final class CalendarService: ObservableObject {
 
         // Silenced-Set zurücksetzen — beim Reload wird ggf. neu gesilenced
         silencedEvents.removeAll()
-
-        // Heutige Events laden (Mitternacht bis Mitternacht) — für Tagesübersicht
-        todayEvents = loadTodayEvents(now: now)
 
         // Events laden (24h-Fenster)
         let events = loadRelevantEvents(from: now)
