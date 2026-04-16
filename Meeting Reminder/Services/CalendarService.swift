@@ -375,9 +375,19 @@ final class CalendarService: ObservableObject {
             }
         }
 
-        // Timer auf das erste Event setzen, das noch nicht im Lead-Time-Fenster ist
-        guard let nextEvent = futureEvents.first(where: { $0.startDate.addingTimeInterval(-leadTime) > now }) else { return }
-        let fireDate = nextEvent.startDate.addingTimeInterval(-leadTime)
+        // Frühester Fire-Zeitpunkt: nächstes Event ODER früheste Snooze-Ablaufzeit
+        let nextEventFire = futureEvents
+            .first(where: { $0.startDate.addingTimeInterval(-leadTime) > now })
+            .map { $0.startDate.addingTimeInterval(-leadTime) }
+        let earliestSnoozeExpiry = snoozeUntil.values.filter { $0 > now }.min()
+
+        let fireDate: Date
+        switch (nextEventFire, earliestSnoozeExpiry) {
+        case (let e?, let s?): fireDate = min(e, s)
+        case (let e?, nil):    fireDate = e
+        case (nil, let s?):    fireDate = s
+        case (nil, nil):       return
+        }
 
         alertTimer = Timer.scheduledTimer(
             withTimeInterval: fireDate.timeIntervalSince(now),
